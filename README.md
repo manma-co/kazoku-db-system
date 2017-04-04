@@ -5,20 +5,21 @@ application up and running.
 
 Things you may want to cover:
 
-* Ruby version
+* Ruby version  
+ruby 2.4.0p0 (2016-12-24 revision 57164)
 
-* System dependencies
+* Rails version  
+Rails 5.0.2
 
 * Configuration
+Need to have secret.yml
 
 * Database creation
+Use sqlite3 for development environment
 
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+Run those command to run application
+```
+$ bundle install
+$ rails db:migrate
+$ rails s
+```
