@@ -5,3 +5,8 @@
 #
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
+
+emails = ["yoshihito522@gmail.com", "takashiba@to-on.com"]
+emails.each do |email|
+  Admin.find_or_create_by(email: email)
+end
