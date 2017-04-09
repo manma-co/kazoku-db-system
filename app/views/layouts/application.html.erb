@@ -3,15 +3,19 @@
   <head>
     <title>ManmaSystem</title>
     <%= csrf_meta_tags %>
-
     <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => 'reload' %>
     <%= javascript_include_tag 'application', 'data-turbolinks-track' => 'reload' %>
   </head>
 
   <body>
-  <p class="notice"><%= notice %></p>
-  <p class="alert"><%= alert %></p>
-    <%= yield %>
-    <%= debug(params) if Rails.env.development? %>
+    <%= render 'layouts/header' %>
+    <main>
+      <div class="container">
+        <p class="notice"><%= notice %></p>
+        <p class="alert"><%= alert %></p>
+        <%= yield %>
+      </div>
+    </main>
+    <%= render 'layouts/footer' %>
   </body>
 </html>
