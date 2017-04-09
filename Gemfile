@@ -39,6 +39,13 @@ gem 'devise'
 gem 'omniauth'
 gem 'omniauth-google-oauth2'
 
+# See document: https://github.com/mkhairi/materialize-sass
+gem 'materialize-sass'
+gem 'jquery-turbolinks'
+
+# See here: https://github.com/Angelmmiguel/material_icons
+gem 'material_icons'
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platform: :mri
