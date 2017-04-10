@@ -5,6 +5,15 @@ Rails.application.routes.draw do
     resources :family
   end
 
+  namespace :api, {format: 'json'} do
+    namespace :v1 do
+      get "/", :action => 'index'
+      namespace :family do
+        post "/", :action => 'create'
+      end
+    end
+  end
+
   root 'static_pages#index'
 
   devise_for :admins, :controllers => {
