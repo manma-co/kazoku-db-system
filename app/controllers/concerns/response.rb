@@ -1,5 +1,5 @@
 module Response
-  def json_response(object, status = :ok)
+  def json_response(object, status = :ok, location = '')
     info = {
         meta: {
             requesturi: request.fullpath,
@@ -10,6 +10,6 @@ module Response
         data: object,
         links: ""
     }
-    render json: info, status: status
+    render json: info, status: status, location: location
   end
 end
