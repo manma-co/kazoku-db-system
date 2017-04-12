@@ -30,17 +30,13 @@ class Api::V1::FamilyController < Api::V1Controller
     return json_response 'is_sns_ok is required',           :bad_request if is_sns_ok == nil
 
     user = User.new(
-        email_pc:      email,
-        email_phone:   body['email_phone'],
-        tel:           body['tel'],
         name:          name,
         kana:          body['kana'],
         sex:           sex.to_i,
-        address:       body['address'],
         is_family:     is_family,
     )
 
-    profile_family = user.profile_families.build(
+    profile_family = user.build_profile_family(
         job_style: job_style,
         number_of_children: body['number_of_children'],
         is_photo_ok: is_photo_ok,
@@ -58,25 +54,36 @@ class Api::V1::FamilyController < Api::V1Controller
         role: 'father'
     )
 
+    contact = user.build_contact(
+        email_pc: email,
+        email_phone: body['email_phone'],
+    )
+
+    location = user.build_location(
+        address: body['address']
+    )
+
     # Save user.
-    if user.save && profile_family.save && profile_mother.save && profile_father.save
+    if user.save && profile_family.save && profile_mother.save &&
+        profile_father.save && contact.save && location.save
       data = {
           user: user,
+          location: location,
+          contact: contact,
           family: profile_family,
           mother: profile_mother,
           father: profile_father
       }
       json_response data, :created
     else
-      json_response data.errors, :unprocessable_entity
+      json_response user.errors, :unprocessable_entity
     end
-
   end
 
   private
 
-  def check_user_exist(email)
-    User.exists?(:email_pc => email)
-  end
+    def check_user_exist(email)
+      Contact.exists?(:email_pc => email)
+    end
 
 end

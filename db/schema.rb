@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170412142647) do
+ActiveRecord::Schema.define(version: 20170412150947) do
 
   create_table "admins", force: :cascade do |t|
     t.string   "email",              default: "", null: false
@@ -24,10 +24,29 @@ ActiveRecord::Schema.define(version: 20170412142647) do
     t.index ["email"], name: "index_admins_on_email", unique: true
   end
 
+  create_table "contacts", force: :cascade do |t|
+    t.integer  "user_id"
+    t.string   "email_pc"
+    t.string   "email_phone"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+    t.index ["user_id"], name: "index_contacts_on_user_id", unique: true
+  end
+
   create_table "job_domains", force: :cascade do |t|
     t.string   "domain"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "locations", force: :cascade do |t|
+    t.integer  "user_id"
+    t.string   "address"
+    t.decimal  "latitude",   precision: 10, scale: 6
+    t.decimal  "longitude",  precision: 10, scale: 6
+    t.datetime "created_at",                          null: false
+    t.datetime "updated_at",                          null: false
+    t.index ["user_id"], name: "index_locations_on_user_id", unique: true
   end
 
   create_table "profile_families", force: :cascade do |t|
@@ -38,6 +57,7 @@ ActiveRecord::Schema.define(version: 20170412142647) do
     t.integer  "is_sns_ok"
     t.datetime "created_at",         null: false
     t.datetime "updated_at",         null: false
+    t.index ["user_id"], name: "index_profile_families_on_user_id", unique: true
   end
 
   create_table "profile_individuals", force: :cascade do |t|
@@ -50,17 +70,12 @@ ActiveRecord::Schema.define(version: 20170412142647) do
   end
 
   create_table "users", force: :cascade do |t|
-    t.string   "email_pc",    default: "",   null: false
-    t.string   "email_phone", default: "",   null: false
-    t.string   "tel"
-    t.string   "name",                       null: false
-    t.string   "kana",                       null: false
-    t.integer  "sex",                        null: false
-    t.string   "address"
-    t.boolean  "is_family",   default: true, null: false
-    t.datetime "created_at",                 null: false
-    t.datetime "updated_at",                 null: false
-    t.index ["email_pc"], name: "index_users_on_email_pc", unique: true
+    t.string   "name",                      null: false
+    t.string   "kana",                      null: false
+    t.integer  "sex",                       null: false
+    t.boolean  "is_family",  default: true, null: false
+    t.datetime "created_at",                null: false
+    t.datetime "updated_at",                null: false
   end
 
 end

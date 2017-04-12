@@ -9,5 +9,6 @@ class CreateProfileFamilies < ActiveRecord::Migration[5.0]
 
       t.timestamps
     end
+    add_index :profile_families, :user_id, unique: true
   end
 end

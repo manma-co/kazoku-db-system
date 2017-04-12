@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  profile_family_id: 1
+  address: MyString
+  latitude: MyString
+  longitude: MyString
+
+two:
+  profile_family_id: 1
+  address: MyString
+  latitude: MyString
+  longitude: MyString
