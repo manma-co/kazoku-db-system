@@ -31,7 +31,7 @@ ActiveRecord::Schema.define(version: 20170410143344) do
     t.string   "first_name",                null: false
     t.string   "kana_first"
     t.string   "kana_last"
-    t.boolean  "sex",                       null: false
+    t.integer  "sex",                       null: false
     t.string   "zip_code1"
     t.string   "zip_code2"
     t.string   "prefecture"
