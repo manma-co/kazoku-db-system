@@ -1,0 +1,2 @@
+class JobDomain < ApplicationRecord
+end

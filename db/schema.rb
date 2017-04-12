@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170412133549) do
+ActiveRecord::Schema.define(version: 20170412142647) do
 
   create_table "admins", force: :cascade do |t|
     t.string   "email",              default: "", null: false
@@ -24,12 +24,29 @@ ActiveRecord::Schema.define(version: 20170412133549) do
     t.index ["email"], name: "index_admins_on_email", unique: true
   end
 
+  create_table "job_domains", force: :cascade do |t|
+    t.string   "domain"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "profile_families", force: :cascade do |t|
-    t.text     "how_find_out"
-    t.string   "family_structure"
-    t.integer  "childcare_ratio"
-    t.datetime "created_at",       null: false
-    t.datetime "updated_at",       null: false
+    t.integer  "user_id",            null: false
+    t.integer  "job_style"
+    t.integer  "number_of_children"
+    t.integer  "is_photo_ok"
+    t.integer  "is_sns_ok"
+    t.datetime "created_at",         null: false
+    t.datetime "updated_at",         null: false
+  end
+
+  create_table "profile_individuals", force: :cascade do |t|
+    t.integer  "profile_family_id", null: false
+    t.datetime "birthday"
+    t.integer  "job_domain"
+    t.string   "role"
+    t.datetime "created_at",        null: false
+    t.datetime "updated_at",        null: false
   end
 
   create_table "users", force: :cascade do |t|

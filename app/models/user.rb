@@ -1,5 +1,7 @@
 class User < ApplicationRecord
 
+  has_many :profile_families, dependent: :destroy
+
   before_save {self.email_pc = email_pc.downcase}
   before_save {self.email_phone = email_phone.downcase}
 
