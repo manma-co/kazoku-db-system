@@ -8,28 +8,23 @@ class Api::V1::FamilyController < Api::V1Controller
 
     # Body is inside of request.request_parameters
     body = request.request_parameters
-    email = body['email']
+    email = body['email_pc']
 
     # Validation
     return json_response 'Invalid email.',                        :bad_request if email == nil
     return json_response 'This email is already used',            :bad_request if check_user_exist email
     return json_response 'Sex parameter is required.',            :bad_request if body['sex'] == nil
-    return json_response 'First name and last name are required', :bad_request if body['last_name'] == nil || body['first_name'] == nil
+    return json_response 'Name is required',                      :bad_request if body['name'] == nil
     return json_response 'Is family params is required',          :bad_request if body['is_family'] == nil
 
-    @user = User.new(email:      email,
-                     tel:        body['tel'],
-                     last_name:  body['last_name'],
-                     first_name: body['first_name'],
-                     kana_first: body['kana_first'],
-                     kana_last:  body['kana_last'],
-                     sex:        body['sex'].to_i,
-                     zip_code1:  body['zip_code1'],
-                     zip_code2:  body['zip_code2'],
-                     prefecture: body['prefecture'],
-                     address1:   body['address1'],
-                     address2:   body['address2'],
-                     is_family:  body['is_family'],
+    @user = User.new(email_pc:      email,
+                     email_phone:   body['email_phone'],
+                     tel:           body['tel'],
+                     name:          body['name'],
+                     kana:          body['kana'],
+                     sex:           body['sex'].to_i,
+                     address:       body['address'],
+                     is_family:     body['is_family'],
     )
 
     # Save user.
@@ -44,7 +39,7 @@ class Api::V1::FamilyController < Api::V1Controller
   private
 
   def check_user_exist(email)
-    User.exists?(:email => email)
+    User.exists?(:email_pc => email)
   end
 
 end

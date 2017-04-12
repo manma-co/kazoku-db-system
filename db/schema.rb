@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170410143344) do
+ActiveRecord::Schema.define(version: 20170412133549) do
 
   create_table "admins", force: :cascade do |t|
     t.string   "email",              default: "", null: false
@@ -24,23 +24,26 @@ ActiveRecord::Schema.define(version: 20170410143344) do
     t.index ["email"], name: "index_admins_on_email", unique: true
   end
 
+  create_table "profile_families", force: :cascade do |t|
+    t.text     "how_find_out"
+    t.string   "family_structure"
+    t.integer  "childcare_ratio"
+    t.datetime "created_at",       null: false
+    t.datetime "updated_at",       null: false
+  end
+
   create_table "users", force: :cascade do |t|
-    t.string   "email",      default: "",   null: false
+    t.string   "email_pc",    default: "",   null: false
+    t.string   "email_phone", default: "",   null: false
     t.string   "tel"
-    t.string   "last_name",                 null: false
-    t.string   "first_name",                null: false
-    t.string   "kana_first"
-    t.string   "kana_last"
-    t.integer  "sex",                       null: false
-    t.string   "zip_code1"
-    t.string   "zip_code2"
-    t.string   "prefecture"
-    t.string   "address1"
-    t.string   "address2"
-    t.boolean  "is_family",  default: true, null: false
-    t.datetime "created_at",                null: false
-    t.datetime "updated_at",                null: false
-    t.index ["email"], name: "index_users_on_email", unique: true
+    t.string   "name",                       null: false
+    t.string   "kana",                       null: false
+    t.integer  "sex",                        null: false
+    t.string   "address"
+    t.boolean  "is_family",   default: true, null: false
+    t.datetime "created_at",                 null: false
+    t.datetime "updated_at",                 null: false
+    t.index ["email_pc"], name: "index_users_on_email_pc", unique: true
   end
 
 end
