@@ -5,6 +5,9 @@ Rails.application.routes.draw do
     resources :family
   end
 
+  resources :locations, :only => [:index, :create]
+  get 'locations/search'
+
   namespace :api, {format: 'json'} do
     namespace :v1 do
       get "/", :action => 'index'
@@ -24,4 +27,5 @@ Rails.application.routes.draw do
     get "admin/sign_out", to: "devise/sessions#destroy"
   end
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
+
 end
