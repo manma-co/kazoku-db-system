@@ -1,0 +1,25 @@
+<%= render 'form' %>
+<% if @search_result_address.present? %>
+    <p>検索地点: <%= @search_result_address %></p>
+<% end %>
+
+<% if @candidate_hash.present? %>
+    <table border="1">
+      <thead>
+      <tr>
+        <th></th>
+        <th>候補先</th>
+        <th>距離(km)</th>
+      </tr>
+      </thead>
+      <tbody>
+      <% @candidate_hash.each_with_index do |(address, distance), index| %>
+          <tr>
+            <td><%= index + 1 %></td>
+            <td><%= address %></td>
+            <td><%= distance %></td>
+          </tr>
+      <% end %>
+      </tbody>
+    </table>
+<% end %>
