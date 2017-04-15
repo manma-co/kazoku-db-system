@@ -32,3 +32,18 @@ domains = %w(
 domains.each do |domain|
   JobDomain.create!(domain: domain)
 end
+
+locations = [
+  '東京都墨田区押上1丁目1−2', #スカイツリー
+  '千葉県千葉市美浜区中瀬2−1', #幕張メッセ
+  '京都府京都市北区金閣寺町1', #金寺
+  '広島県広島市中区大手町1−10', #原爆ドーム
+  '石川県金沢市丸の内1-1', #金沢城
+  '東京都足立区千住東2-17-1',
+]
+
+locations.each_with_index do |location, i|
+  user = User.create(name: "hoge間#{i}", kana: 'ほげま', sex: 0, is_family: true)
+  Location.create(user_id: user.id, address: location)
+end
+
