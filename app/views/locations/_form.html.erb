@@ -1,0 +1,5 @@
+<%= form_tag({action: :search}, {method: :get}) do %>
+    <%= label_tag :address, '住所:' %>
+    <%= text_field_tag :address %>
+    <%= submit_tag '検索' %>
+<% end %>
