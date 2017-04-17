@@ -21,5 +21,11 @@ Run those command to run application
 ```
 $ bundle install
 $ rails db:migrate
+$ rails db:seed
 $ rails s
+```
+
+##### Try those code to recreate database based on migration files
+```
+bundle exec rake db:drop db:create db:migrate db:seed
 ```
