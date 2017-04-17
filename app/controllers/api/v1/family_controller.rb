@@ -8,7 +8,7 @@ class Api::V1::FamilyController < Api::V1Controller
 
     # Auth validation
     return json_response 'Invalid auth key length.', :unauthorized unless key.length == 32
-    return json_response 'Invalid auth key. Make sure to use correct key.', :unauthorized if key != Rails.application.secrets.auth_key_base
+    return json_response 'Invalid auth key. Make sure to use correct key.', :unauthorized if key != ENV['AUTH_KEY_BASE']
 
     # Body is inside of request.request_parameters
     body = request.request_parameters
