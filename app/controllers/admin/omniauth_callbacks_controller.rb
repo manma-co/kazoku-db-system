@@ -6,7 +6,7 @@ class Admin::OmniauthCallbacksController < Devise::OmniauthCallbacksController
 
     session[:user_info] = info
 
-    if @admin.persisted?
+    if @admin&.persisted?
       flash[:notice] = I18n.t "devise.omniauth_callbacks.success", :kind => "Google"
       sign_in_and_redirect @admin, :event => :authentication
     else
