@@ -15,7 +15,10 @@
       <tbody>
       <% @candidate_hash.each_with_index do |(address, distance), index| %>
           <tr>
-            <td><%= index + 1 %></td>
+            <td>
+              <%= check_box_tag :index_num, { multiple: true } %>
+              <%= label_tag :index_num, index + 1 %>
+            </td>
             <td><%= address %></td>
             <td><%= distance %></td>
           </tr>
