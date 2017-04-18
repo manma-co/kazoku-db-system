@@ -119,6 +119,7 @@ GEM
       oauth2 (~> 1.0)
       omniauth (~> 1.2)
     orm_adapter (0.5.0)
+    pg (0.20.0)
     puma (3.8.2)
     rack (2.0.1)
     rack-test (0.6.3)
@@ -140,6 +141,11 @@ GEM
       nokogiri (~> 1.6)
     rails-html-sanitizer (1.0.3)
       loofah (~> 2.0)
+    rails_12factor (0.0.3)
+      rails_serve_static_assets
+      rails_stdout_logging
+    rails_serve_static_assets (0.0.5)
+    rails_stdout_logging (0.0.5)
     railties (5.0.2)
       actionpack (= 5.0.2)
       activesupport (= 5.0.2)
@@ -209,8 +215,10 @@ DEPENDENCIES
   materialize-sass
   omniauth
   omniauth-google-oauth2
+  pg
   puma (~> 3.0)
   rails (~> 5.0.2)
+  rails_12factor
   sass-rails (~> 5.0)
   spring
   spring-watcher-listen (~> 2.0.0)
