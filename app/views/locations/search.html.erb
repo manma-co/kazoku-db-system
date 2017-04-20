@@ -4,6 +4,8 @@
 <% end %>
 
 <% if @candidate_hash.present? %>
+    <%# TODO: アクション先はメール確認画面にする %>
+    <%= form_tag({action: :search}, {method: :get}) do %>
     <table border="1">
       <thead>
       <tr>
@@ -13,13 +15,19 @@
       </tr>
       </thead>
       <tbody>
-      <% @candidate_hash.each_with_index do |(address, distance), index| %>
+      <% @candidate_hash.each_with_index do |(location, distance), index| %>
           <tr>
-            <td><%= index + 1 %></td>
-            <td><%= address %></td>
+            <td>
+              <%= check_box_tag 'user_id[]', index, checked = false, :id => "user_id_#{location.user.id}" %>
+              <%= label_tag "user_id_#{location.user.id}", index + 1 %>
+            </td>
+            <td><%= location.address %></td>
             <td><%= distance %></td>
           </tr>
       <% end %>
       </tbody>
+
     </table>
+    <%= submit_tag '打診する' %>
+    <% end %>
 <% end %>
