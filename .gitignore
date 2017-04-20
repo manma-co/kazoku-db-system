@@ -24,3 +24,4 @@ config/environments/test.rb
 .key
 # Ignore Byebug command history file.
 .byebug_history
+.envrc

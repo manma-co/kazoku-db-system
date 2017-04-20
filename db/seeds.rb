@@ -6,7 +6,8 @@
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
 
-emails = ["yoshihito522@gmail.com", "takashiba@to-on.com"]
+emails = %w(yoshihito522@gmail.com takashiba@to-on.com shino@cps.im.dendai.ac.jp)
+
 emails.each do |email|
   Admin.find_or_create_by(email: email)
 end
@@ -34,16 +35,16 @@ domains.each do |domain|
 end
 
 locations = [
-  '東京都墨田区押上1丁目1−2', #スカイツリー
-  '千葉県千葉市美浜区中瀬2−1', #幕張メッセ
-  '京都府京都市北区金閣寺町1', #金寺
-  '広島県広島市中区大手町1−10', #原爆ドーム
-  '石川県金沢市丸の内1-1', #金沢城
-  '東京都足立区千住東2-17-1',
+    '東京都墨田区押上1丁目1−2', #スカイツリー
+    '千葉県千葉市美浜区中瀬2−1', #幕張メッセ
+    '京都府京都市北区金閣寺町1', #金寺
+    '広島県広島市中区大手町1−10', #原爆ドーム
+    '石川県金沢市丸の内1-1', #金沢城
+    '東京都足立区千住東2-17-1',
 ]
 
 locations.each_with_index do |location, i|
-  user = User.create(name: "hoge間#{i}", kana: 'ほげま', sex: 0, is_family: true)
+  user = User.create(name: "no_name_#{i}", kana: 'no_name', sex: 0, is_family: true)
   Location.create(user_id: user.id, address: location)
 end
 
