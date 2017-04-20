@@ -11,7 +11,8 @@ class Location < ApplicationRecord
     dept[:lng] = location['lng']
 
     candidate_hash = {}
-    locations = Location.all
+    # ユーザ情報も同時に取得する
+    locations = Location.all.includes(:user)
     locations.each do |n|
       # 目的地
       dist = Hash.new
@@ -19,7 +20,7 @@ class Location < ApplicationRecord
       dist[:lng] = n.longitude
 
       distance = distance_of_two_points(dept, dist)
-      candidate_hash.store(n.address, distance)
+      candidate_hash.store(n, distance)
     end
     candidate_hash.sort {|(k1, v1), (k2, v2)| v1 <=> v2 }
   end
