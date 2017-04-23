@@ -22,7 +22,7 @@
                   <%= check_box_tag 'user_id[]', index, checked = false, :id => "user_id_#{location.user.id}" %>
                   <%= label_tag "user_id_#{location.user.id}", index + 1 %>
                 </td>
-                <td><%= link_to location.user.name, :controller => '#family', :action => '#show' #作成中 %></td>
+                <td><%= link_to location.user.name, admin_family_path(location.user.id) %></td>
                 <td><%= location.address %></td>
                 <td><%= distance %></td>
               </tr>
