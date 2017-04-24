@@ -3,10 +3,10 @@ Rails.application.routes.draw do
   namespace :admin do
     get '/' => redirect("admin/family")
     resources :family
-  end
 
-  resources :locations, :only => [:index, :create]
-  get 'locations/search'
+    resources :locations, :only => [:index, :create]
+    get 'locations/search'
+  end
 
   namespace :api, {format: 'json'} do
     namespace :v1 do

@@ -1,4 +1,4 @@
-class LocationsController < ApplicationController
+class Admin::LocationsController < Admin::AdminController
   protect_from_forgery except: :create
 
   def index
