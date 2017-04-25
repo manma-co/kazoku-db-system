@@ -6,6 +6,9 @@ Rails.application.routes.draw do
 
     resources :locations, :only => [:index, :create]
     get 'locations/search'
+
+    resources :mails, :only => [:new]
+    get 'mails/confirm'
   end
 
   namespace :api, {format: 'json'} do
