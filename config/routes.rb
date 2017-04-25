@@ -8,7 +8,7 @@ Rails.application.routes.draw do
     get 'locations/search'
 
     resources :mails, :only => [:new]
-    get 'mails/confirm'
+    post 'mails/confirm'
   end
 
   namespace :api, {format: 'json'} do
