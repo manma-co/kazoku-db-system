@@ -7,3 +7,4 @@ class Admin::MailsController < Admin::AdminController
   def confirm
 
   end
+end
