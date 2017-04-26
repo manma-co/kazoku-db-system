@@ -55,6 +55,7 @@ ActiveRecord::Schema.define(version: 20170412150947) do
     t.integer  "number_of_children"
     t.integer  "is_photo_ok"
     t.integer  "is_sns_ok"
+    t.integer  "is_male_ok"
     t.datetime "created_at",         null: false
     t.datetime "updated_at",         null: false
     t.index ["user_id"], name: "index_profile_families_on_user_id", unique: true
@@ -72,7 +73,7 @@ ActiveRecord::Schema.define(version: 20170412150947) do
   create_table "users", force: :cascade do |t|
     t.string   "name",                      null: false
     t.string   "kana",                      null: false
-    t.integer  "sex",                       null: false
+    t.integer  "gender",                    null: false
     t.boolean  "is_family",  default: true, null: false
     t.datetime "created_at",                null: false
     t.datetime "updated_at",                null: false

@@ -5,5 +5,5 @@ class User < ApplicationRecord
   has_one :contact, dependent: :destroy
 
   validates :name, presence: true, length: {maximum: 20}
-  validates :sex, presence: true
+  validates :gender, presence: true
 end

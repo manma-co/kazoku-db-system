@@ -15,7 +15,7 @@ class Api::V1::FamilyController < Api::V1Controller
 
     # Set parameter
     email             = body['email_pc']
-    sex               = body['sex']
+    gender            = body['gender']
     name              = body['name']
     is_family         = body['is_family']
     job_style         = body['job_style']
@@ -23,22 +23,24 @@ class Api::V1::FamilyController < Api::V1Controller
     birthday_father   = body['birthday_father']
     is_photo_ok       = body['is_photo_ok']
     is_sns_ok         = body['is_sns_ok']
+    is_male_ok        = body['is_male_ok']
 
     # Validation
     return json_response 'Invalid email.',                  :bad_request if email == nil
     return json_response 'This email is already used',      :bad_request if check_user_exist email
-    return json_response 'Sex parameter is required.',      :bad_request if sex == nil
+    return json_response 'Gender parameter is required.',   :bad_request if gender == nil
     return json_response 'Name is required',                :bad_request if name == nil
     return json_response 'Is family params is required',    :bad_request if is_family == nil
     return json_response 'Job style params is required',    :bad_request if job_style == nil
     return json_response 'Birthday is required',            :bad_request if birthday_mother == nil || birthday_father == nil
     return json_response 'Is_photo_ok is required',         :bad_request if is_photo_ok == nil
     return json_response 'is_sns_ok is required',           :bad_request if is_sns_ok == nil
+    return json_response 'is_male_ok is required',          :bad_request if is_male_ok == nil
 
     user = User.new(
         name:          name,
         kana:          body['kana'],
-        sex:           sex.to_i,
+        gender:        gender.to_i,
         is_family:     is_family,
     )
 
@@ -46,7 +48,8 @@ class Api::V1::FamilyController < Api::V1Controller
         job_style:            job_style,
         number_of_children:   body['number_of_children'],
         is_photo_ok:          is_photo_ok,
-        is_sns_ok:            is_sns_ok
+        is_sns_ok:            is_sns_ok,
+        is_male_ok:           is_male_ok
     )
 
     profile_mother = profile_family.profile_individuals.build(
