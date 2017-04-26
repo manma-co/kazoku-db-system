@@ -7,7 +7,7 @@ one:
   first_name: MyString
   kana_first: MyString
   kana_last: MyString
-  sex: MyString
+  gender: MyString
   zip_code1: MyString
   zip_code2: MyString
   prefecture: MyString
@@ -21,7 +21,7 @@ two:
   first_name: MyString
   kana_first: MyString
   kana_last: MyString
-  sex: MyString
+  gender: MyString
   zip_code1: MyString
   zip_code2: MyString
   prefecture: MyString

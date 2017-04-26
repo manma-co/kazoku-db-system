@@ -6,6 +6,7 @@ class CreateProfileFamilies < ActiveRecord::Migration[5.0]
       t.integer :number_of_children
       t.integer :is_photo_ok  # 1 means ok, 2 means ok if the face of child is not clear, 0 means bad.
       t.integer :is_sns_ok  # 1 means ok, 2 means ok if the face of child is not clear, 0 means bad.
+      t.integer :is_male_ok # 1 means ok, 2 means NG
 
       t.timestamps
     end
