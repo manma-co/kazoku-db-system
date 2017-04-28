@@ -37,6 +37,7 @@ ActiveRecord::Schema.define(version: 20170412150947) do
     t.string   "domain"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index [nil], name: "index_job_domains_on_profile_individual_id", unique: true
   end
 
   create_table "locations", force: :cascade do |t|
