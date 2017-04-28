@@ -6,9 +6,9 @@
     <%= radio_button_tag 'job_style[]', 1, checked = false, :id => "job_style_1" %>
     <%= label_tag "job_style_1", '共働き' %>
     <%= radio_button_tag 'job_style[]', 0, checked = false, :id => "job_style_0" %>
-    <%= label_tag "job_style_0", '専業主婦' %><br>
-    <%= radio_button_tag 'is_male_ok[]', 1, checked = false, :id => "is_male_ok_1" %>
-    <%= label_tag "is_male_ok_1", '男性OK' %>
-    <%= radio_button_tag 'is_male_ok[]', 0, checked = false, :id => "is_male_ok_0" %>
+    <%= label_tag "job_style_0", '専業主婦' %>
+    <%= radio_button_tag 'job_style[]', 2, checked = false, :id => "job_style_none" %>
+    <%= label_tag "job_style_none", 'こだわらない' %><br>
+    <%= check_box_tag 'is_male_ok[]', 0, checked = false, :id => "is_male_ok_0" %>
     <%= label_tag "is_male_ok_0", '男性NG' %>
 <% end %>
