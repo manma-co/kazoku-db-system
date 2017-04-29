@@ -37,7 +37,6 @@ ActiveRecord::Schema.define(version: 20170412150947) do
     t.string   "domain"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index [nil], name: "index_job_domains_on_profile_individual_id", unique: true
   end
 
   create_table "locations", force: :cascade do |t|
@@ -65,10 +64,11 @@ ActiveRecord::Schema.define(version: 20170412150947) do
   create_table "profile_individuals", force: :cascade do |t|
     t.integer  "profile_family_id", null: false
     t.datetime "birthday"
-    t.integer  "job_domain"
+    t.integer  "job_domain_id"
     t.string   "role"
     t.datetime "created_at",        null: false
     t.datetime "updated_at",        null: false
+    t.index ["job_domain_id"], name: "index_profile_individuals_on_job_domain_id", unique: true
   end
 
   create_table "users", force: :cascade do |t|

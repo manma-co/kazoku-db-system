@@ -4,15 +4,19 @@ class Location < ApplicationRecord
   geocoded_by :address
   after_validation :geocode, if: :address_changed?
 
-  def self.candidate_list(location)
+  # 家族留学候補リストを取得する
+  # @param [Hash] location 検索対象の位置情報
+  # @param [Array] family_list 家族留学候補家庭リスト
+  # @return [Hash] candidate_hash 家族留学候補家庭ハッシュ key: location, value: 距離
+  def self.candidate_list(location, family_list)
     # 出発地
     dept = Hash.new
     dept[:lat] = location['lat']
     dept[:lng] = location['lng']
 
     candidate_hash = {}
-    # ユーザ情報も同時に取得する
-    locations = Location.all.includes(:user)
+    # 検索対象の位置情報リストを取得する
+    locations = family_list.map { |f| f.user.location }
     locations.each do |n|
       # 目的地
       dist = Hash.new
