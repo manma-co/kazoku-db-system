@@ -9,6 +9,7 @@ Rails.application.routes.draw do
 
     resources :mails, :only => [:new]
     post 'mails/confirm'
+    post 'mails/complete'
   end
 
   namespace :api, {format: 'json'} do
