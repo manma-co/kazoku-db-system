@@ -1,15 +1,15 @@
 <%= form_tag({action: :search}, {method: :get}) do %>
     <%= label_tag :address, '住所:' %>
-    <%= text_field_tag :address %>
+    <%= text_field_tag :address, @address, placeholder: '住所を入力してください' %>
     <%= submit_tag '検索' %><br>
     <p>検索条件</p>
-    <%= radio_button_tag 'job_style[]', 'none', checked = true, id: 'job_style_none' %>
+    <%= radio_button_tag 'job_style', :none, checked = @job_style == 'none' ? true : false, id: 'job_style_none' %>
     <%= label_tag 'job_style_none', '指定なし' %>
-    <%= radio_button_tag 'job_style[]', 'dual', checked = false, id: 'job_style_dual' %>
+    <%= radio_button_tag 'job_style', :dual, checked = @job_style == 'dual' ? true : false, id: 'job_style_dual' %>
     <%= label_tag 'job_style_dual', '共働き' %>
-    <%= radio_button_tag 'job_style[]', 'single', checked = false, id: 'job_style_single' %>
+    <%= radio_button_tag 'job_style', :single, checked = @job_style == 'single' ? true : false, id: 'job_style_single' %>
     <%= label_tag 'job_style_single', '専業主婦' %>
     <br>
-    <%= check_box_tag 'is_male_ok', 'checked', checked = false, id: 'is_male_ok' %>
-    <%= label_tag 'is_male_ok', '男性NG' %>
+    <%= check_box_tag 'is_male_ng', 'checked', checked = @is_male_ng, id: 'is_male_ng' %>
+    <%= label_tag 'is_male_ng', '男性NG' %>
 <% end %>
