@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
 
+  root 'static_pages#index'
+
   namespace :admin do
     get '/' => redirect("admin/family")
     resources :family
@@ -20,8 +22,6 @@ Rails.application.routes.draw do
       end
     end
   end
-
-  root 'static_pages#index'
 
   devise_for :admins, :controllers => {
       :omniauth_callbacks => "admin/omniauth_callbacks"

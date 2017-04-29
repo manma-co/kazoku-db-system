@@ -1,7 +1,10 @@
 <header>
   <nav>
     <div class="nav-wrapper">
-      <a href="#" class="brand-logo">Manma Family DB</a>
+      <div class="container">
+        <a href="#" class="brand-logo">Manma Family DB</a>
+        <%= link_to 'ログイン', admin_google_oauth2_omniauth_authorize_path, :class => 'grey-text text-lighten-4 right' %>
+      </div>
     </div>
   </nav>
 </header>
