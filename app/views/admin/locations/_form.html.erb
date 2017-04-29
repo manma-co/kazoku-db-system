@@ -3,12 +3,13 @@
     <%= text_field_tag :address %>
     <%= submit_tag '検索' %><br>
     <p>検索条件</p>
-    <%= radio_button_tag 'job_style[]', 1, checked = false, :id => "job_style_1" %>
-    <%= label_tag "job_style_1", '共働き' %>
-    <%= radio_button_tag 'job_style[]', 0, checked = false, :id => "job_style_0" %>
-    <%= label_tag "job_style_0", '専業主婦' %>
-    <%= radio_button_tag 'job_style[]', -1, checked = false, :id => "job_style_none" %>
-    <%= label_tag "job_style_none", 'こだわらない' %><br>
-    <%= check_box_tag 'is_male_ok[]', 2, checked = false, :id => "is_male_ok_0" %>
-    <%= label_tag "is_male_ok_0", '男性NG' %>
+    <%= radio_button_tag 'job_style[]', 'none', checked = true, id: 'job_style_none' %>
+    <%= label_tag 'job_style_none', '指定なし' %>
+    <%= radio_button_tag 'job_style[]', 'dual', checked = false, id: 'job_style_dual' %>
+    <%= label_tag 'job_style_dual', '共働き' %>
+    <%= radio_button_tag 'job_style[]', 'single', checked = false, id: 'job_style_single' %>
+    <%= label_tag 'job_style_single', '専業主婦' %>
+    <br>
+    <%= check_box_tag 'is_male_ok', 'checked', checked = false, id: 'is_male_ok' %>
+    <%= label_tag 'is_male_ok', '男性NG' %>
 <% end %>
