@@ -49,6 +49,8 @@ gem 'material_icons'
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platform: :mri
+  gem 'hirb'
+  gem 'hirb-unicode'
 end
 
 group :development do
@@ -60,10 +62,8 @@ group :development do
   gem 'spring-watcher-listen', '~> 2.0.0'
 end
 
-  # hirb
-group :development, :test do
-  gem 'hirb'
-  gem 'hirb-unicode'
+group :production do
+  gem 'mysql2', '~> 0.3.0'
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
