@@ -10,6 +10,7 @@ default: &default
   timeout: 5000
 
 mysql_settings: &mysql_settings
+   dataset_id: manma-mothership
    adapter: mysql2
    encoding: utf8
    pool: 5
