@@ -48,5 +48,8 @@ locations.each_with_index do |location, i|
   Location.create(user_id: user.id, address: location)
   Contact.create(user_id: user.id, email_pc: "abc#{i+1}@pc.com", email_phone: "abc#{i+1}@phone.com")
   ProfileFamily.create(user_id: user.id, job_style: 1, number_of_children: i+1, is_photo_ok: 1, is_sns_ok: 1, is_male_ok: 1)
+  ProfileIndividual.create(:profile_family_id: i+1, :birthday
+  t.integer :job_domain
+  t.string :role
 end
 
