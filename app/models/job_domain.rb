@@ -1,3 +1,4 @@
 class JobDomain < ApplicationRecord
-  has_many :profile_individuals
+  belongs_to :profile_individual
+  has_many :profile_individuals, dependent: :destroy
 end
