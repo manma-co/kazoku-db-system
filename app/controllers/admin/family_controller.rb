@@ -7,10 +7,4 @@ class Admin::FamilyController < Admin::AdminController
     user_id = params[:id]
     @family = User.find(user_id)
   end
-
-  # スプレッドシートからユーザ情報を取得する
-  def fetch
-
-    redirect_to action: :index
-  end
 end

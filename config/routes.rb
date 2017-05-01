@@ -4,7 +4,6 @@ Rails.application.routes.draw do
 
   namespace :admin do
     get '/' => redirect("admin/family")
-    post 'family/fetch'
     resources :family
 
     resources :locations, :only => [:index, :create]
