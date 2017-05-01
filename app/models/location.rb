@@ -20,6 +20,7 @@ class Location < ApplicationRecord
     locations.each do |n|
       # 目的地
       dist = Hash.new
+      next if n.latitude.nil? or n.longitude.nil?
       dist[:lat] = n.latitude
       dist[:lng] = n.longitude
 

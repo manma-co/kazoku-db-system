@@ -2,5 +2,12 @@
     ログイン中: <%= current_admin.email %>
 <% end %>
 <p>右上のボタンから打診メールの作成が可能です。</p>
+
+<%= button_to('スプレッドシートから家族情報を取得', admin_spread_sheets_authorize_path, method: :get) %>
+
 <h2>家庭一覧</h2>
-<p>準備中</p>
+<ul>
+  <% @user_list.each do |user| %>
+    <li><%= user.name %></li>
+  <% end %>
+</ul>

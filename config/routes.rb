@@ -12,6 +12,9 @@ Rails.application.routes.draw do
     resources :mails, :only => [:new]
     post 'mails/confirm'
     post 'mails/complete'
+
+    get 'spread_sheets/authorize'
+    get 'spread_sheets/oauth2callback'
   end
 
   namespace :api, {format: 'json'} do
