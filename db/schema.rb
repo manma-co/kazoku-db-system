@@ -72,12 +72,13 @@ ActiveRecord::Schema.define(version: 20170412150947) do
   end
 
   create_table "users", force: :cascade do |t|
-    t.string   "name",                      null: false
-    t.string   "kana",                      null: false
-    t.integer  "gender",                    null: false
-    t.boolean  "is_family",  default: true, null: false
-    t.datetime "created_at",                null: false
-    t.datetime "updated_at",                null: false
+    t.string   "name",                                   null: false
+    t.string   "kana",                                   null: false
+    t.integer  "gender",                                 null: false
+    t.boolean  "is_family",               default: true, null: false
+    t.string   "spread_sheets_timestamp"
+    t.datetime "created_at",                             null: false
+    t.datetime "updated_at",                             null: false
   end
 
 end
