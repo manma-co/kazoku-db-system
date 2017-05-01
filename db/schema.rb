@@ -12,7 +12,7 @@
 
 ActiveRecord::Schema.define(version: 20170412150947) do
 
-  create_table "admins", force: :cascade do |t|
+  create_table "admins", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "email",              default: "", null: false
     t.integer  "sign_in_count",      default: 0,  null: false
     t.datetime "current_sign_in_at"
@@ -21,35 +21,35 @@ ActiveRecord::Schema.define(version: 20170412150947) do
     t.string   "last_sign_in_ip"
     t.datetime "created_at",                      null: false
     t.datetime "updated_at",                      null: false
-    t.index ["email"], name: "index_admins_on_email", unique: true
+    t.index ["email"], name: "index_admins_on_email", unique: true, using: :btree
   end
 
-  create_table "contacts", force: :cascade do |t|
+  create_table "contacts", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "user_id"
     t.string   "email_pc"
     t.string   "email_phone"
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
-    t.index ["user_id"], name: "index_contacts_on_user_id", unique: true
+    t.index ["user_id"], name: "index_contacts_on_user_id", unique: true, using: :btree
   end
 
-  create_table "job_domains", force: :cascade do |t|
+  create_table "job_domains", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "domain"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
-  create_table "locations", force: :cascade do |t|
+  create_table "locations", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "user_id"
     t.string   "address"
     t.decimal  "latitude",   precision: 10, scale: 6
     t.decimal  "longitude",  precision: 10, scale: 6
     t.datetime "created_at",                          null: false
     t.datetime "updated_at",                          null: false
-    t.index ["user_id"], name: "index_locations_on_user_id", unique: true
+    t.index ["user_id"], name: "index_locations_on_user_id", unique: true, using: :btree
   end
 
-  create_table "profile_families", force: :cascade do |t|
+  create_table "profile_families", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "user_id",            null: false
     t.integer  "job_style"
     t.integer  "number_of_children"
@@ -58,20 +58,20 @@ ActiveRecord::Schema.define(version: 20170412150947) do
     t.integer  "is_male_ok"
     t.datetime "created_at",         null: false
     t.datetime "updated_at",         null: false
-    t.index ["user_id"], name: "index_profile_families_on_user_id", unique: true
+    t.index ["user_id"], name: "index_profile_families_on_user_id", unique: true, using: :btree
   end
 
-  create_table "profile_individuals", force: :cascade do |t|
+  create_table "profile_individuals", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "profile_family_id", null: false
     t.datetime "birthday"
     t.integer  "job_domain_id"
     t.string   "role"
     t.datetime "created_at",        null: false
     t.datetime "updated_at",        null: false
-    t.index ["job_domain_id"], name: "index_profile_individuals_on_job_domain_id", unique: true
+    t.index ["job_domain_id"], name: "index_profile_individuals_on_job_domain_id", unique: true, using: :btree
   end
 
-  create_table "users", force: :cascade do |t|
+  create_table "users", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "name",                      null: false
     t.string   "kana",                      null: false
     t.integer  "gender",                    null: false
