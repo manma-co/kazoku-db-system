@@ -25,7 +25,11 @@ class Admin::SpreadSheetsController < Admin::AdminController
     # ライブラリを参考にjsonを再読込
     auth_config = MultiJson.load(auth_config.to_json)
     client_id = Google::Auth::ClientId.from_hash(auth_config)
+    path = File.join(Rails.root, '.credentials')
+    # ディレクトリが存在しなければ作成
+    FileUtils.mkdir_p(path) unless FileTest.exist?(path)
     credential_path = File.join(Rails.root, '.credentials', 'sheet.yaml')
+
     token_store = Google::Auth::Stores::FileTokenStore.new(file: credential_path)
 
     authorizer = Google::Auth::WebUserAuthorizer.new(client_id, SCOPE, token_store, '/admin/spread_sheets/oauth2callback')
