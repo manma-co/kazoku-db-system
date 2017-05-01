@@ -4,6 +4,7 @@ require 'googleauth'
 require 'googleauth/web_user_authorizer'
 require 'googleauth/stores/file_token_store'
 require 'fileutils'
+require 'multi_json'
 
 class Admin::SpreadSheetsController < Admin::AdminController
 
@@ -14,12 +15,15 @@ class Admin::SpreadSheetsController < Admin::AdminController
   def authorize
     user_id = current_admin.id
     # 認証用IDとSECRETの生成
+
     auth_config = {
         web: {
             client_id: ENV['SPREAD_SHEET_CLIENT_ID'],
             client_secret: ENV['SPREAD_SHEET_CLIENT_SECRET']
         }
     }
+    # ライブラリを参考にjsonを再読込
+    auth_config = MultiJson.load(auth_config.to_json)
     client_id = Google::Auth::ClientId.from_hash(auth_config)
     credential_path = File.join(Rails.root, '.credentials', 'sheet.yaml')
     token_store = Google::Auth::Stores::FileTokenStore.new(file: credential_path)
