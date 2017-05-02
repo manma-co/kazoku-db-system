@@ -6,6 +6,8 @@
     <th>共働き</th>
     <th>子供の数</th>
     <th>男性OK?</th>
+    <th>写真OK?</th>
+    <th>SNS,OK?</th>
   </tr>
   </thead>
   <tbody>
@@ -31,6 +33,24 @@
           <%= "OK" %>
       <% elsif @family.profile_family.is_male_ok == 0 %>
           <%= "NG" %>
+      <% end %>
+    </td>
+    <td>
+      <% if @family.profile_family.is_photo_ok == 1 %>
+          <%= "OK" %>
+      <% elsif @family.profile_family.is_photo_ok == 0 %>
+          <%= "NG" %>
+      <% elsif @family.profile_family.is_photo_ok == 2 %>
+          <%= "顔がはっきり写らなければOK" %>
+      <% end %>
+    </td>
+    <td>
+      <% if @family.profile_family.is_sns_ok == 1 %>
+          <%= "OK" %>
+      <% elsif @family.profile_family.is_sns_ok == 0 %>
+          <%= "NG" %>
+      <% elsif @family.profile_family.is_sns_ok == 2 %>
+          <%= "顔がはっきり写らなければOK" %>
       <% end %>
     </td>
   </tr>

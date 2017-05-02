@@ -11,6 +11,7 @@
           <tr>
             <th></th>
             <th>名前</th>
+            <th>メールアドレス (PC)</th>
             <th>候補先</th>
             <th>距離(km)</th>
           </tr>
@@ -23,6 +24,7 @@
                   <%= label_tag "user_id_#{location.user.id}", index + 1 %>
                 </td>
                 <td><%= link_to location.user.name, admin_family_path(location.user.id) %></td>
+                <td><%= location.user.contact.email_pc %></td>
                 <td><%= location.address %></td>
                 <td><%= distance %></td>
               </tr>
