@@ -30,7 +30,7 @@ class Admin::LocationsController < Admin::AdminController
 
   def family_params
     # 働き方のステータス
-    @job_style = params[:job_style] || :none
+    @job_style = params[:job_style] || 'none'
     # 男性NGかどうか
     if params[:is_male_ng].nil?
       @is_male_ng = false

@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
 
+  root 'static_pages#index'
+
   namespace :admin do
     get '/' => redirect("admin/family")
     resources :family
@@ -9,6 +11,10 @@ Rails.application.routes.draw do
 
     resources :mails, :only => [:new]
     post 'mails/confirm'
+    post 'mails/complete'
+
+    get 'spread_sheets/authorize'
+    get 'spread_sheets/oauth2callback'
   end
 
   namespace :api, {format: 'json'} do
@@ -19,8 +25,6 @@ Rails.application.routes.draw do
       end
     end
   end
-
-  root 'static_pages#index'
 
   devise_for :admins, :controllers => {
       :omniauth_callbacks => "admin/omniauth_callbacks"

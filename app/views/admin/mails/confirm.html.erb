@@ -1,1 +1,16 @@
-<h1>Admin::Mails#confirm</h1>
+<h2>打診メール最終確認</h2>
+<ol>
+  <% @users.each do |user| %>
+    <li><%= user.name %>, <%= user.location.address %>, <%= user.contact.email_pc %></li>
+  <% end %>
+</ol>
+<p>メールアドレス</p>
+<p><%= (@users.map { |user| user.contact.email_pc }).join(',') %></p>
+
+
+<%= form_tag({action: :complete}, {method: :post}) do %>
+    <p>タイトル(編集不可)</p>
+    <%= text_field_tag :title, @title, readonly: true %>
+    <p>本文(編集不可)</p>
+    <%= text_area_tag :body, @body, size: '20x10', readonly: true, wrap: 'hard', style: 'height: 1000px' %>
+<% end %>

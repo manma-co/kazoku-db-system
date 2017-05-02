@@ -46,9 +46,16 @@ gem 'jquery-turbolinks'
 # See here: https://github.com/Angelmmiguel/material_icons
 gem 'material_icons'
 
+# Google関連のAPIにアクセスするため
+gem 'google-api-client', '~> 0.11'
+
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platform: :mri
+  # hirb
+  gem 'hirb'
+  gem 'hirb-unicode'
 end
 
 group :development do
@@ -58,12 +65,6 @@ group :development do
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
-end
-
-  # hirb
-group :development, :test do
-  gem 'hirb'
-  gem 'hirb-unicode'
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem

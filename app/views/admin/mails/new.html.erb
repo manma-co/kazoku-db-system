@@ -7,17 +7,29 @@
 </ol>
 
 <%= form_tag(admin_mails_confirm_path, method: :post) do %>
-  <%= label_tag :student_name, '学生氏名' %>
-  <%= text_field_tag 'mail[student_name]'  %>
-  <%= label_tag :motivation, '参加動機' %>
-  <%= text_field_tag 'mail[motivation]' %>
-  <%= label_tag '参加希望日時(打診日から2週間後~１ヶ月半以内' %><br>
-   <p>TODO: 現在時刻を表示したい</p>
-  <% 5.times do |i|  %>
-    <%= label_tag "date#{i+1}", "第#{i+1}希望" %>
-    <%= datetime_field :mail, "date[date#{i+1}]", { :format => "%Y-%m-%d %H:%M" } %>
+  <% @users.each do |user| %>
+    <%= hidden_field_tag 'user_id[]', user.id, id: "user_id_#{user.id}" %>
   <% end %>
-  <p>TODO: テンプレートの本文を表示する</p>
-  <%= text_area :mail, :body, size: '20x10', style: 'height: 500px' %>
+  <%= label_tag :student_name, '学生氏名' %>
+  <%= text_field_tag :student_name, @student_name, placeholder: '学生氏名を入力して下さい'  %>
+
+  <%= label_tag :belongs_to, '所属' %>
+  <%= text_field_tag :belongs_to, @belongs_to, placeholder: '○○大学○○年'  %>
+
+  <%= label_tag :station, '最寄り駅' %>
+  <%= text_field_tag :station, @station, placeholder: '最寄り駅を入力して下さい'  %>
+
+  <%= label_tag :motivation, '参加動機' %>
+  <%= text_field_tag :motivation, @motivation, placeholder: '参加動機を入力して下さい' %>
+
+  <%= label_tag '参加希望日時(打診日から2週間後~１ヶ月半以内' %><br>
+  <% 5.times do |i|  %>
+    <%= label_tag "date[date#{i+1}]", "第#{i+1}希望" %>
+    <%= datetime_field :date, "date#{i+1}", { format: '%Y-%m-%d %H:%M' } %>
+  <% end %>
+  <%= label_tag :title, 'タイトル' %>
+  <%= text_field_tag :title, @title, placeholder: '件名を入力して下さい' %>
+  <%= label_tag :body, '本文 ※[manma_template_...]の箇所は変更しないで下さい' %>
+  <%= text_area_tag :body, @body, size: '20x10', style: 'height: 1000px' %>
   <%= submit_tag value='確認' %>
 <% end %>

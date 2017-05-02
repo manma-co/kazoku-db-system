@@ -1,12 +1,13 @@
 <header>
   <nav>
     <div class="nav-wrapper">
-      <a href="#" class="brand-logo">Manma Family DB</a>
-      <ul id="nav-mobile" class="right hide-on-med-and-down">
-        <li><a href="sass.html">Sass</a></li>
-        <li><a href="badges.html">Components</a></li>
-        <li><a href="collapsible.html">JavaScript</a></li>
-      </ul>
+      <div class="container">
+        <a href="#" class="brand-logo">Manma Family DB</a>
+        <ul id="nav-mobile" class="right hide-on-med-and-down">
+          <li><%= link_to '打診メール作成', admin_locations_search_path, :class => 'grey-text text-lighten-4 right' %></li>
+          <li><%= link_to 'サインアウト', admin_sign_out_path, :class => 'grey-text text-lighten-4 right' %></li>
+        </ul>
+      </div>
     </div>
   </nav>
 </header>
