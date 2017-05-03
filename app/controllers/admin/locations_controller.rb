@@ -42,9 +42,9 @@ class Admin::LocationsController < Admin::AdminController
     # 働き方ステータスによってクエリを変更する
     job_style = nil
     if @job_style == 'dual'
-      job_style = 1
+      job_style = 0
     elsif @job_style == 'single'
-      job_style = 2
+      job_style = 1
     end
 
     if job_style.nil?
