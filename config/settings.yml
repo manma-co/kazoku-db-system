@@ -1,0 +1,11 @@
+default: &default
+  project_id: manma-mothership
+  oauth2:
+    client_id: <%= ENV["GOOGLE_CLIENT_ID"] %>
+    client_secret: <%= ENV["GOOGLE_CLIENT_SECRET"] %>
+
+development:
+  <<: *default
+
+production:
+  <<: *default
