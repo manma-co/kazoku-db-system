@@ -27,7 +27,7 @@
                 </td>
                 <td><%= link_to location.user.name, admin_family_path(location.user.id) %></td>
                 <td><%= location.address %></td>
-                <td><%= distance.ceil(1).to_f %></td>
+                <td><%= distance.round(2) %></td>
                 <td><%= job_style_str(location.user.profile_family.job_style) %></td>
                 <td><%= location.user.profile_family.number_of_children %></td>
                 <td><%= formatted_date(location.user.profile_family.child_birthday) %></td>
