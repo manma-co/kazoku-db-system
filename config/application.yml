@@ -13,13 +13,16 @@ defaults: &defaults
     number_of_children: 11
     is_male_ok: 29
   job_style:
+    # none: 指定なし
     # both: 共働き
     # both_single: 共働き(シングルマザー)
     # homemaker: 専業主婦(夫)
+    none: -1
     both: 0
     both_single: 1
     homemaker: 2
     str:
+      none: '指定なし'
       both: '共働き'
       both_single: '共働き ※シングルマザー（ファザー）含む'
       homemaker: 'どちらかが専業主婦（夫）'
