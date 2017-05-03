@@ -76,6 +76,7 @@ class Admin::SpreadSheetsController < Admin::AdminController
   end
 
   # レスポンス情報からユーザ情報の保存をする
+  # TODO: スレッド処理したい pallarelを使う？
   def store_users(response)
     response.values.map do |r|
       # ユーザ情報のパース
@@ -109,16 +110,17 @@ class Admin::SpreadSheetsController < Admin::AdminController
       p location.errors.messages
 
       # 家族情報のパース
-      job_style = row[Settings.sheet.job_style]
-      # TODO: 共働き※シングルマザーの情報の扱いについては別途相談
-      if job_style == Settings.sheet.str.both or job_style == Settings.sheet.str.both_single
+      job_style = r[Settings.sheet.job_style]
+      if job_style == Settings.job_style.str.both
         job_style = Settings.job_style.both
-      elsif job_style == Settings.sheet.str.homemaker
+      elsif job_style == Settings.job_style.str.both_single
+        job_style = Settings.job_style.both_single
+      elsif job_style == Settings.job_style.str.homemaker
         job_style = Settings.job_style.homemaker
       end
 
       is_male_ok = r[Settings.sheet.is_male_ok]
-      if is_male_ok.blank? or is_male_ok == Settings.sheet.all_participant
+      if is_male_ok.blank? or is_male_ok == Settings.is_male.str.all_participant
         is_male_ok = Settings.is_male.ok
       else
         is_male_ok = Settings.is_male.ng
@@ -127,11 +129,10 @@ class Admin::SpreadSheetsController < Admin::AdminController
       family_query = {
           user_id: user.id,
           job_style: job_style,
-          job_style_str: r[Settings.sheet.job_style],
           number_of_children: r[Settings.sheet.number_of_children],
-          # is_sns_ok: row[12], # TODO: 文字列情報のため変換が必要
-          # is_photo_ok: row[13], # TODO: 文字列情報のため変換が必要
-          is_male_ok: is_male_ok, # TODO: 文字列情報のため変換が必要
+          # is_sns_ok: r[12], # TODO: 文字列情報のため変換が必要
+          # is_photo_ok: r[13], # TODO: 文字列情報のため変換が必要
+          is_male_ok: is_male_ok,
       }
 
       family = ProfileFamily.where(family_query).first
@@ -140,7 +141,7 @@ class Admin::SpreadSheetsController < Admin::AdminController
       # お母様情報のパース
       mothers_query = {
           profile_family_id: family.id,
-          birthday: row[Settings.sheet.mothers_birthday],
+          birthday: r[Settings.sheet.mothers_birthday],
           job_domain_id: 0,
           # job_domain_id: row[9], # TODO: 文字列情報のため変換が必要
       }
@@ -148,7 +149,7 @@ class Admin::SpreadSheetsController < Admin::AdminController
       # お父様情報のパース
       fathers_query = {
           profile_family_id: family.id,
-          birthday: row[Settings.sheet.fathers.birthday],
+          birthday: r[Settings.sheet.fathers_birthday],
           job_domain_id: 0,
           # job_domain_id: row[10], # TODO: 文字列情報のため変換が必要
       }

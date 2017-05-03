@@ -1,10 +1,5 @@
 defaults: &defaults
   sheet:
-    str:
-      both: '共働き'
-      both_single: '共働き ※シングルマザー（ファザー）含む'
-      homemaker: 'どちらかが専業主婦（夫）'
-      all_participant: '全参加者'
     timestamp: 0
     name: 1
     kana: 2
@@ -18,16 +13,24 @@ defaults: &defaults
     number_of_children: 11
     is_male_ok: 29
   job_style:
-    # both: 共働き, homemaker: 専業主婦(夫)
+    # both: 共働き
+    # both_single: 共働き(シングルマザー)
+    # homemaker: 専業主婦(夫)
     both: 0
-    homemaker: 1
+    both_single: 1
+    homemaker: 2
+    str:
+      both: '共働き'
+      both_single: '共働き ※シングルマザー（ファザー）含む'
+      homemaker: 'どちらかが専業主婦（夫）'
   is_male:
     ok: 1
     ng: 0
+    str:
+      all_participant: '全参加者'
 
 development:
   <<: *defaults
-  neat_setting: 800
 
 test:
   <<: *defaults
