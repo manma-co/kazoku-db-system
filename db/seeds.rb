@@ -14,6 +14,24 @@ emails.each do |email|
   Admin.find_or_create_by(email: email)
 end
 
+
+locations = [
+    '東京都墨田区押上1丁目1−2', #スカイツリー
+    '千葉県千葉市美浜区中瀬2−1', #幕張メッセ
+    '京都府京都市北区金閣寺町1', #金寺
+    '広島県広島市中区大手町1−10', #原爆ドーム
+    '石川県金沢市丸の内1-1', #金沢城
+    '東京都足立区千住東2-17-1',
+]
+
+locations.each_with_index do |location, i|
+  user = User.create(name: "no_name_#{i+1}", kana: 'no_name', gender: 0, is_family: true)
+  Location.create(user_id: user.id, address: location)
+  Contact.create(user_id: user.id, email_pc: "abc#{i+1}@pc.com", email_phone: "abc#{i+1}@phone.com")
+  profile_family = ProfileFamily.create(user_id: user.id, job_style: 1, number_of_children: i+1, is_photo_ok: 1, is_sns_ok: 1, is_male_ok: 1)
+  ProfileIndividual.create(birthday: "Sun, #{i+1} Dec 2011 00:00:00 +0000", role: 'mother', profile_family_id: profile_family.id)
+end
+
 domains = %w(
     専業主婦・専業主夫（パート・アルバイトは除く）
    メーカー（食品、飲料、繊維、木材、印刷、化学、鉄鋼、精密機器）
@@ -32,23 +50,6 @@ domains = %w(
     自営業
     非営利団体
 )
-domains.each do |domain|
-  JobDomain.create!(domain: domain)
+domains.each_with_index do |domain, i|
+  JobDomain.create!(domain: domain, profile_individual_id: i+1)
 end
-
-locations = [
-    '東京都墨田区押上1丁目1−2', #スカイツリー
-    '千葉県千葉市美浜区中瀬2−1', #幕張メッセ
-    '京都府京都市北区金閣寺町1', #金寺
-    '広島県広島市中区大手町1−10', #原爆ドーム
-    '石川県金沢市丸の内1-1', #金沢城
-    '東京都足立区千住東2-17-1',
-]
-
-locations.each_with_index do |location, i|
-  user = User.create(name: "no_name_#{i+1}", kana: 'no_name', gender: 0, is_family: true)
-  Location.create(user_id: user.id, address: location)
-  Contact.create(user_id: user.id, email_pc: "abc#{i+1}@pc.com", email_phone: "abc#{i+1}@phone.com")
-  ProfileFamily.create(user_id: user.id, job_style: 1, number_of_children: i+1, is_photo_ok: 1, is_sns_ok: 1, is_male_ok: 1)
-end
-
