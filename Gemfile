@@ -46,9 +46,16 @@ gem 'jquery-turbolinks'
 # See here: https://github.com/Angelmmiguel/material_icons
 gem 'material_icons'
 
+# Google関連のAPIにアクセスするため
+gem 'google-api-client', '~> 0.11'
+
+# constをymlで定義する
+gem 'settingslogic'
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platform: :mri
+  # hirb
   gem 'hirb'
   gem 'hirb-unicode'
 end

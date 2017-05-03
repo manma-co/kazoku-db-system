@@ -3,9 +3,9 @@
   <tr>
     <th>名前</th>
     <th>住所</th>
-    <th>共働き</th>
+    <th>働き方</th>
     <th>子供の数</th>
-    <th>男性OK?</th>
+    <th>男性</th>
   </tr>
   </thead>
   <tbody>
@@ -17,21 +17,13 @@
       <%= @family.location.address %>
     </td>
     <td>
-      <% if @family.profile_family.job_style == 1 %>
-          <%= "○" %>
-      <% elsif @family.profile_family.job_style == 0 %>
-          <%= "×" %>
-      <% end %>
+      <%= job_style_str(@family.profile_family.job_style) %>
     </td>
     <td>
       <%= @family.profile_family.number_of_children %>
     </td>
     <td>
-      <% if @family.profile_family.is_male_ok == 1 %>
-          <%= "OK" %>
-      <% elsif @family.profile_family.is_male_ok == 0 %>
-          <%= "NG" %>
-      <% end %>
+      <%= is_male_ok_str(@family.profile_family.is_male_ok) %>
     </td>
   </tr>
   </tbody>

@@ -6,7 +6,9 @@
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
 
-emails = %w(yoshihito522@gmail.com takashiba@to-on.com shino@cps.im.dendai.ac.jp ricken0203@gmail.com info.manma@gmail.com)
+emails = %w(yoshihito522@gmail.com takashiba@to-on.com)
+emails += %w(shino@cps.im.dendai.ac.jp ricken0203@gmail.com)
+emails += %w(info.manma@gmail.com niori.hinae@gmail.com hino.ikura@gmail.com)
 
 emails.each do |email|
   Admin.find_or_create_by(email: email)
@@ -47,6 +49,6 @@ locations.each_with_index do |location, i|
   user = User.create(name: "no_name_#{i+1}", kana: 'no_name', gender: 0, is_family: true)
   Location.create(user_id: user.id, address: location)
   Contact.create(user_id: user.id, email_pc: "abc#{i+1}@pc.com", email_phone: "abc#{i+1}@phone.com")
-  ProfileFamily.create(user_id: user.id, job_style: 1, number_of_children: i+1, is_photo_ok: 1, is_sns_ok: 1, is_male_ok: 1)
+  ProfileFamily.create(user_id: user.id, job_style: 1, number_of_children: i+1, is_photo_ok: 1, is_report_ok: 1, is_male_ok: 1)
 end
 

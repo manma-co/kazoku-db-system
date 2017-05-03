@@ -4,7 +4,6 @@
 <% end %>
 
 <% if @candidate_hash.present? %>
-    <%# TODO: アクション先はメール確認画面にする %>
     <%= form_tag({controller: :mails, action: :new}, {method: :get}) do %>
         <table border="1">
           <thead>
@@ -13,6 +12,10 @@
             <th>名前</th>
             <th>候補先</th>
             <th>距離(km)</th>
+            <th>働き方</th>
+            <th>子どもの数</th>
+            <th>第一子の生年月日</th>
+            <th>男性</th>
           </tr>
           </thead>
           <tbody>
@@ -24,7 +27,11 @@
                 </td>
                 <td><%= link_to location.user.name, admin_family_path(location.user.id) %></td>
                 <td><%= location.address %></td>
-                <td><%= distance %></td>
+                <td><%= distance.round(2) %></td>
+                <td><%= job_style_str(location.user.profile_family.job_style) %></td>
+                <td><%= location.user.profile_family.number_of_children %></td>
+                <td><%= formatted_date(location.user.profile_family.child_birthday) %></td>
+                <td><%= is_male_ok_str(location.user.profile_family.is_male_ok) %></td>
               </tr>
           <% end %>
           </tbody>
