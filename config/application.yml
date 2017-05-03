@@ -1,4 +1,5 @@
 defaults: &defaults
+  # スプレッドシート上のカラム番号 A=0, B=1, C=2...と対応している
   sheet:
     timestamp: 0
     name: 1
@@ -11,23 +12,50 @@ defaults: &defaults
     job_style: 8
     job_domain: 9
     number_of_children: 11
-    is_male_ok: 29
+    is_photo: 12
+    is_report: 13
+    married_age: 14
+    first_child_born_age:  15
+    child_birthday: 16
+    # TODO： これ以降のスプレッドシートの情報の追加
+    is_male: 29
   job_style:
+    # none: 指定なし
     # both: 共働き
     # both_single: 共働き(シングルマザー)
     # homemaker: 専業主婦(夫)
+    none: -1
     both: 0
     both_single: 1
     homemaker: 2
     str:
+      none: '指定なし'
       both: '共働き'
       both_single: '共働き ※シングルマザー（ファザー）含む'
       homemaker: 'どちらかが専業主婦（夫）'
   is_male:
-    ok: 1
     ng: 0
+    ok: 1
     str:
       all_participant: '全参加者'
+  is_photo:
+    ng: 0
+    ok: 1
+    caution: 2
+    str:
+      title: '家族留学の際に撮影した写真をmanma HPやFacebookで使用してもよろしいでしょうか？（学生が撮影したご家庭の様子が写った写真が、manma HPやFacebookに掲載される可能性がございます。）'
+      ng: 'いいえ'
+      ok: 'はい'
+      caution: 'お子さんの顔がはっきり映らなければOK'
+  is_report:
+    ng: 0
+    ok: 1
+    caution: 2
+    str:
+      title: '家族留学終了後にご提出いただくレポートをmanma HPやFacebookで使用してもよろしいでしょうか？'
+      ng: 'いいえ'
+      ok: 'はい'
+      caution: 'お子さんの顔がはっきり映らなければOK'
 
 development:
   <<: *defaults

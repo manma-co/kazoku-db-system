@@ -30,28 +30,26 @@ class Admin::LocationsController < Admin::AdminController
 
   def family_params
     # 働き方のステータス
-    @job_style = params[:job_style] || 'none'
+    @job_style = params[:job_style] || Settings.job_style.none
+    @job_style = @job_style.to_i
+    if @job_style == Settings.job_style.both
+      job_style = [Settings.job_style.both, Settings.job_style.both_single]  # シングルも含む
+      family = ProfileFamily.where(job_style: job_style)
+    elsif @job_style == Settings.job_style.homemaker
+      job_style = Settings.job_style.homemaker
+      family = ProfileFamily.where(job_style: job_style)
+    else
+      family = ProfileFamily.all
+    end
+
     # 男性NGかどうか
+    @is_male_ng = params[:is_male_ng].nil? ? false : true
     if params[:is_male_ng].nil?
-      @is_male_ng = false
+      family ||= ProfileFamily.all
     else
-      @is_male_ng = true
+      family = family.where(is_male_ok: !@is_male_ng)
     end
-
-    # TODO: refactoring
-    # 働き方ステータスによってクエリを変更する
-    job_style = nil
-    if @job_style == 'dual'
-      job_style = 0
-    elsif @job_style == 'single'
-      job_style = 1
-    end
-
-    if job_style.nil?
-      ProfileFamily.where(is_male_ok: !@is_male_ng)
-    else
-      ProfileFamily.where(is_male_ok: !@is_male_ng, job_style: job_style)
-    end
+    family
   end
 
 end

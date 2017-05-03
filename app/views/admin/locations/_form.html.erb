@@ -3,12 +3,15 @@
     <%= text_field_tag :address, @address, placeholder: '住所を入力してください' %>
     <%= submit_tag '検索' %><br>
     <p>検索条件</p>
-    <%= radio_button_tag 'job_style', :none, checked = @job_style == 'none' ? true : false, id: 'job_style_none' %>
-    <%= label_tag 'job_style_none', '指定なし' %>
-    <%= radio_button_tag 'job_style', :dual, checked = @job_style == 'dual' ? true : false, id: 'job_style_dual' %>
-    <%= label_tag 'job_style_dual', '共働き' %>
-    <%= radio_button_tag 'job_style', :single, checked = @job_style == 'single' ? true : false, id: 'job_style_single' %>
-    <%= label_tag 'job_style_single', '専業主婦' %>
+    <% none = Settings.job_style.none %>
+    <% both = Settings.job_style.both %>
+    <% homemaker = Settings.job_style.homemaker %>
+    <%= radio_button_tag 'job_style', none, checked = @job_style == none ? true : false, id: 'job_style_none' %>
+    <%= label_tag 'job_style_none', Settings.job_style.str.none %>
+    <%= radio_button_tag 'job_style', both, checked = @job_style == both ? true : false, id: 'job_style_dual' %>
+    <%= label_tag 'job_style_dual', Settings.job_style.str.both %>
+    <%= radio_button_tag 'job_style', homemaker, checked = @job_style == homemaker ? true : false, id: 'job_style_single' %>
+    <%= label_tag 'job_style_single', Settings.job_style.str.homemaker %>
     <br>
     <%= check_box_tag 'is_male_ng', 'checked', checked = @is_male_ng, id: 'is_male_ng' %>
     <%= label_tag 'is_male_ng', '男性NG' %>

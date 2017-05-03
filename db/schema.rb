@@ -55,8 +55,9 @@ ActiveRecord::Schema.define(version: 20170412150947) do
     t.integer  "job_style"
     t.integer  "number_of_children"
     t.integer  "is_photo_ok"
-    t.integer  "is_sns_ok"
+    t.integer  "is_report_ok"
     t.integer  "is_male_ok"
+    t.date     "child_birthday"
     t.datetime "created_at",         null: false
     t.datetime "updated_at",         null: false
     t.integer  "user_id"

@@ -26,12 +26,12 @@ class Admin::SpreadSheetsController < Admin::AdminController
     auth_config = MultiJson.load(auth_config.to_json)
     client_id = Google::Auth::ClientId.from_hash(auth_config)
     path = File.join(Rails.root, '.credentials')
+
     # ディレクトリが存在しなければ作成
     FileUtils.mkdir_p(path) unless FileTest.exist?(path)
     credential_path = File.join(Rails.root, '.credentials', 'sheet.yaml')
 
     token_store = Google::Auth::Stores::FileTokenStore.new(file: credential_path)
-
     authorizer = Google::Auth::WebUserAuthorizer.new(client_id, SCOPE, token_store, '/admin/spread_sheets/oauth2callback')
     credentials = authorizer.get_credentials(user_id, request)
 
@@ -47,6 +47,7 @@ class Admin::SpreadSheetsController < Admin::AdminController
     redirect_to admin_family_index_path
   end
 
+  # 認証情報が保存されていなければGoogleアカウントの認証が行われる
   def oauth2callback
     target_url = Google::Auth::WebUserAuthorizer.handle_auth_callback_deferred(request)
     redirect_to target_url
@@ -55,6 +56,9 @@ class Admin::SpreadSheetsController < Admin::AdminController
   private
 
   # スプレッドシート情報の取得
+  # response.value でスプレッドシートから取得したデータを全てを配列で取得することが可能
+  # @param [authorize] authorize 認証情報
+  # @return [response] response スプレッドシートから取得した情報
   def fetch_spread_sheet(authorize)
     # Initialize the API
     service = Google::Apis::SheetsV4::SheetsService.new
@@ -62,22 +66,20 @@ class Admin::SpreadSheetsController < Admin::AdminController
     service.authorization = authorize
 
     # 家庭情報スプレッドシートID
-    # spreadsheet_id = '13z-3YJLbz7YPLL6a2nM-ub1eT-JGIb0tZZ4ggq0jw3o'
     spreadsheet_id = ENV['SPREAD_SHEET_ID']
     sheet_name = 'フォームの回答 1'
     range = "#{sheet_name}!A2:AD"
     response = service.get_spreadsheet_values(spreadsheet_id, range)
     puts 'No data found.' if response.values.empty?
 
-    response.values.each do |row|
-      puts "#{row[1]}"
-    end
     response
   end
 
   # レスポンス情報からユーザ情報の保存をする
+  # @param [array] response スプレッドシートから取得した情報の配列
+  # @param [bool] is_debug trueなら1行のみ処理を行う(動作確認用)
   # TODO: スレッド処理したい pallarelを使う？
-  def store_users(response)
+  def store_users(response, is_debug: false)
     response.values.map do |r|
       # ユーザ情報のパース
       user_query = {
@@ -110,6 +112,7 @@ class Admin::SpreadSheetsController < Admin::AdminController
       p location.errors.messages
 
       # 家族情報のパース
+      # 働き方情報のパース
       job_style = r[Settings.sheet.job_style]
       if job_style == Settings.job_style.str.both
         job_style = Settings.job_style.both
@@ -119,20 +122,46 @@ class Admin::SpreadSheetsController < Admin::AdminController
         job_style = Settings.job_style.homemaker
       end
 
-      is_male_ok = r[Settings.sheet.is_male_ok]
+      # 男性NG情報のパース
+      is_male_ok = r[Settings.sheet.is_male]
       if is_male_ok.blank? or is_male_ok == Settings.is_male.str.all_participant
         is_male_ok = Settings.is_male.ok
       else
         is_male_ok = Settings.is_male.ng
       end
 
+      # SNSへの写真アップロード許可情報のパース
+      is_photo = r[Settings.sheet.is_photo]
+      if is_photo == Settings.is_photo.str.ng
+        is_photo = Settings.is_photo.ng
+      elsif is_photo == Settings.is_photo.str.ok
+        is_photo = Settings.is_photo.ok
+      elsif is_photo == Settings.is_photo.str.caution
+        is_photo = Settings.is_photo.caution
+      else
+        is_photo = nil
+      end
+
+      # 家族留学レポート許可情報のパース
+      is_report = r[Settings.sheet.is_report]
+      if is_report == Settings.is_report.str.ng
+        is_report = Settings.is_report.ng
+      elsif is_report == Settings.is_report.str.ok
+        is_report = Settings.is_report.ok
+      elsif is_report == Settings.is_report.str.caution
+        is_report = Settings.is_report.caution
+      else
+        is_report = nil
+      end
+
       family_query = {
           user_id: user.id,
           job_style: job_style,
           number_of_children: r[Settings.sheet.number_of_children],
-          # is_sns_ok: r[12], # TODO: 文字列情報のため変換が必要
-          # is_photo_ok: r[13], # TODO: 文字列情報のため変換が必要
+          is_photo_ok: is_photo,
+          is_report_ok: is_report,
           is_male_ok: is_male_ok,
+          child_birthday: r[Settings.sheet.child_birthday]
       }
 
       family = ProfileFamily.where(family_query).first
@@ -159,6 +188,8 @@ class Admin::SpreadSheetsController < Admin::AdminController
       father = ProfileIndividual.where(fathers_query)
       father ||= ProfileIndividual.create(fathers_query)
 
+      # デバッグモード(1行のみ処理)
+      break if is_debug
     end
   end
 

@@ -24,7 +24,9 @@
     </tr>
     <tr>
       <td class="title">現在の働き方</td>
-      <td class="contents"><%= @family.name %></td>
+      <td class="contents">
+        <%= job_style_str(@family.profile_family.job_style) %>
+      </td>
     </tr>
     </tbody>
   </table>
@@ -103,7 +105,9 @@
     <tbody>
     <tr>
       <td class="title">人数</td>
-      <td class="contents"><%= @family.name %></td>
+      <td class="contents">
+        <%= @family.profile_family.number_of_children %>
+      </td>
     </tr>
     <tr>
       <td class="title">生年月日</td>
@@ -168,7 +172,9 @@
     <tbody>
     <tr>
       <td class="title">男性NG?</td>
-      <td class="contents"><%= @family.name %></td>
+      <td class="contents">
+        <%= is_male_ok_str(@family.profile_family.is_male_ok) %>
+      </td>
     </tr>
     </tbody>
   </table>

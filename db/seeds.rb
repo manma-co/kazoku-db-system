@@ -28,7 +28,7 @@ locations.each_with_index do |location, i|
   user = User.create(name: "no_name_#{i+1}", kana: 'no_name', gender: 0, is_family: true)
   Location.create(user_id: user.id, address: location)
   Contact.create(user_id: user.id, email_pc: "abc#{i+1}@pc.com", email_phone: "abc#{i+1}@phone.com")
-  profile_family = ProfileFamily.create(user_id: user.id, job_style: 1, number_of_children: i+1, is_photo_ok: 1, is_sns_ok: 1, is_male_ok: 1)
+  profile_family = ProfileFamily.create(user_id: user.id, job_style: 1, number_of_children: i+1, is_photo_ok: 1, is_report_ok: 1, is_male_ok: 1)
   ProfileIndividual.create(birthday: "Sun, #{i+1} Dec 2011 00:00:00 +0000", role: 'mother', profile_family_id: profile_family.id)
 end
 
