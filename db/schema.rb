@@ -57,18 +57,28 @@ ActiveRecord::Schema.define(version: 20170412150947) do
     t.integer  "is_photo_ok"
     t.integer  "is_report_ok"
     t.integer  "is_male_ok"
+    t.string   "has_time_shortening_experience"
+    t.string   "has_childcare_leave_experience"
+    t.string   "has_job_change_experience"
+    t.string   "marriaged_mother_age"
+    t.string   "childbirth_mother_age"
     t.date     "child_birthday"
-    t.datetime "created_at",         null: false
-    t.datetime "updated_at",         null: false
+    t.string   "opinion_or_question"
+    t.datetime "created_at",                     null: false
+    t.datetime "updated_at",                     null: false
     t.integer  "user_id"
     t.index ["user_id"], name: "index_profile_families_on_user_id"
   end
 
   create_table "profile_individuals", force: :cascade do |t|
     t.datetime "birthday"
+    t.string   "hometown"
     t.string   "role"
-    t.datetime "created_at",        null: false
-    t.datetime "updated_at",        null: false
+    t.string   "company"
+    t.string   "career"
+    t.string   "has_experience_abroad"
+    t.datetime "created_at",            null: false
+    t.datetime "updated_at",            null: false
     t.integer  "profile_family_id"
     t.index ["profile_family_id"], name: "index_profile_individuals_on_profile_family_id"
   end
