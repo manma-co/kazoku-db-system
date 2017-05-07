@@ -14,6 +14,10 @@ class Admin::MailsController < Admin::AdminController
 
   def complete
     # TODO: メール送信機能
+    user_params
+    @body = params[:body]
+    @title = params[:title]
+    CommonMailer.request_email_to_family(@title, @body, @users).deliver_now
   end
 
   private
