@@ -18,7 +18,6 @@ class Admin::MailsController < Admin::AdminController
     @body = params[:body]
     @title = params[:title]
     CommonMailer.request_email_to_family(@title, @body, @users).deliver_now
-    CommonMailer.notify_to_manma(@title, @body).deliver_now
   end
 
   private

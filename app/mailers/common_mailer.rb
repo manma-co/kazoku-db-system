@@ -20,16 +20,19 @@ class CommonMailer < ActionMailer::Base
     # Development の時はyoshihito.meからとりあえず送る設定。
     # Send Grid を使ってmanma.coからメールを送るようにする。
     if Rails.env == 'development'
-      mail(to: mails, from: 'manma <info@yoshihito.me>', subject: title)
+      mail(to: 'info@manma.co', bcc: mails, from: 'manma <info@yoshihito.me>', subject: 'テスト送信' + title)
     else
-      mail(to: mails, subject: title)
+      mail(to: 'info@manma.co', bcc: mails, subject: title)
     end
   end
 
   # info@manma.co にメールを送る設定。
   def notify_to_manma(title, body)
     @body = body
-    mail(to: 'info@manma.co', subject: title)
+    if Rails.env == 'development'
+      mail(to: 'info@manma.co', from: 'manma <info@yoshihito.me>', subject: 'テスト送信' + title)
+    else
+      mail(to: 'info@manma.co', subject: title)
+    end
   end
-
 end
