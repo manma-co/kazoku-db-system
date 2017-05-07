@@ -1,30 +1,207 @@
-<table>
-  <thead>
-  <tr>
-    <th>名前</th>
-    <th>住所</th>
-    <th>働き方</th>
-    <th>子供の数</th>
-    <th>男性</th>
-  </tr>
-  </thead>
-  <tbody>
-  <tr>
-    <td>
-      <%= @family.name %>
-    </td>
-    <td>
-      <%= @family.location.address %>
-    </td>
-    <td>
-      <%= job_style_str(@family.profile_family.job_style) %>
-    </td>
-    <td>
-      <%= @family.profile_family.number_of_children %>
-    </td>
-    <td>
-      <%= is_male_ok_str(@family.profile_family.is_male_ok) %>
-    </td>
-  </tr>
-  </tbody>
-</table>
+<h4><%= "#{@family.name}様のプロフィール" %></h4>
+<br>
+<div class="family-profile">
+  <div class="title-familypage-box">
+    <h5>基本情報</h5>
+  </div>
+  <table class="info-list">
+    <tbody>
+    <tr>
+      <td class="title">氏名(ふりがな)</td>
+      <td class="contents">
+        <%= @family.name %>
+      </td>
+    </tr>
+    <tr>
+      <td class="title">PCメールアドレス</td>
+      <td class="contents">
+        <%= @family.contact.email_pc %>
+      </td>
+    </tr>
+    <tr>
+      <td class="title">携帯メールアドレス</td>
+      <td class="contents">
+        <%= @family.contact.email_phone %>
+      </td>
+    </tr>
+    <tr>
+      <td class="title">ご住所</td>
+      <td class="contents">
+        <%= @family.location.address %>
+      </td>
+    </tr>
+    <tr>
+      <td class="title">現在の働き方</td>
+      <td class="contents">
+        <%= job_style_str(@family.profile_family.job_style) %>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+  <br>
+
+  <div class="title-familypage-box">
+    <h5>お母さま</h5>
+  </div>
+  <table class="info-list">
+    <tbody>
+    <tr>
+      <td class="title">生年月日</td>
+      <td class="contents">
+        <%= @family.profile_family.profile_individuals.find_by(role: 'mother').birthday %>
+      </td>
+    </tr>
+    <tr>
+      <td class="title">出身地</td>
+      <td class="contents"><%= @family.name %></td>
+    </tr>
+    <tr>
+      <td class="title">職業</td>
+      <td class="contents"><%= @family.profile_family.profile_individuals.find_by(role: 'mother').job_domain.domain %></td>
+    </tr>
+    <tr>
+      <td class="title">勤務先</td>
+      <td class="contents"><%= @family.name %></td>
+    </tr>
+    <tr>
+      <td class="title">ご結婚された年齢</td>
+      <td class="contents"><%= @family.name %></td>
+    </tr>
+    <tr>
+      <td class="title">第一子をご出産された年齢</td>
+      <td class="contents"><%= @family.name %></td>
+    </tr>
+    <tr>
+      <td class="title">キャリア変遷</td>
+      <td class="contents"><%= @family.name %></td>
+    </tr>
+    </tbody>
+  </table>
+  <br>
+
+  <div class="title-familypage-box">
+    <h5>お父さま</h5>
+  </div>
+  <table class="info-list">
+    <tbody>
+    <tr>
+      <td class="title">生年月日</td>
+      <td class="contents"><%= @family.profile_family&.profile_individuals&.find_by(role: 'father').birthday %></td>
+    </tr>
+    <tr>
+      <td class="title">出身地</td>
+      <td class="contents"><%= @family.name %></td>
+    </tr>
+    <tr>
+      <td class="title">職業</td>
+      <td class="contents"><%= @family.profile_family.profile_individuals.find_by(role: 'father').job_domain.domain %></td>
+    </tr>
+    <tr>
+      <td class="title">勤務先</td>
+      <td class="contents"><%= @family.name %></td>
+    </tr>
+    <tr>
+      <td class="title">キャリア変遷</td>
+      <td class="contents"><%= @family.name %></td>
+    </tr>
+    </tbody>
+  </table>
+  <br>
+
+  <div class="title-familypage-box">
+    <h5>お子さま</h5>
+  </div>
+  <table class="info-list">
+    <tbody>
+    <tr>
+      <td class="title">人数</td>
+      <td class="contents">
+        <%= "#{@family.profile_family.number_of_children} 人" %>
+      </td>
+    </tr>
+    <tr>
+      <td class="title">生年月日</td>
+      <td class="contents"><%= @family.name %></td>
+    </tr>
+    </tbody>
+  </table>
+  <br>
+
+  <div class="title-familypage-box">
+    <h5>ご経験</h5>
+  </div>
+  <table class="info-list">
+    <tbody>
+    <tr>
+      <td class="title">お母様の海外留学及び勤務のご経験の有無</td>
+      <td class="contents"><%= @family.name %></td>
+    </tr>
+    <tr>
+      <td class="title">お父様の海外留学及び勤務のご経験の有無</td>
+      <td class="contents"><%= @family.name %></td>
+    </tr>
+    <tr>
+      <td class="title">お母様及びお父様の時短勤務のご経験の有無</td>
+      <td class="contents"><%= @family.name %></td>
+    </tr>
+    <tr>
+      <td class="title">お母様及びお父様の育休のご経験の有無</td>
+      <td class="contents"><%= @family.name %></td>
+    </tr>
+    <tr>
+      <td class="title">お母様及びお父様の転職のご経験の有無</td>
+      <td class="contents"><%= @family.name %></td>
+    </tr>
+    </tbody>
+  </table>
+  <br>
+
+
+  <div class="title-familypage-box">
+    <h5>使用許可</h5>
+  </div>
+  <table class="info-list">
+    <tbody>
+    <% #TODO family_helperにモジュールを実装する %>
+    <tr>
+      <td class="title">写真をmanma HPやFacebookで使用してよいか</td>
+      <td class="contents"><%= is_photo_ok_str(@family.profile_family.is_photo_ok) %></td>
+    </tr>
+    <tr>
+      <td class="title">レポートをmanma HPやFacebookで使用してもよいか</td>
+      <td class="contents"><%= is_report_ok_str(@family.profile_family.is_report_ok) %></td>
+    </tr>
+    </tbody>
+  </table>
+  <br>
+
+
+  <div class="title-familypage-box">
+    <h5>受け入れ可能な参加者について</h5>
+  </div>
+  <table class="info-list">
+    <tbody>
+    <tr>
+      <td class="title">男性NG?</td>
+      <td class="contents">
+        <%= is_male_ok_str(@family.profile_family.is_male_ok) %>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+  <br>
+
+
+  <div class="title-familypage-box">
+    <h5>その他、ご意見/ご質問など</h5>
+  </div>
+  <table class="info-list">
+    <tbody>
+    <tr>
+      <td class="contents"><%= @family.name %></td>
+    </tr>
+    </tbody>
+  </table>
+  <br>
+
+</div>
