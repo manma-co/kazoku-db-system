@@ -1,0 +1,9 @@
+<h2>以下の内容で送信しました</h2>
+
+<p>宛先メールアドレス</p>
+<p><%= (@users.map { |user| user.contact.email_pc }).join(',') %></p>
+
+<p>タイトル</p>
+<%= @title %>
+<p>本文</p>
+<p><%= simple_format(@body) %></p>

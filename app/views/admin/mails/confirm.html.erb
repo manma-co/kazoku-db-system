@@ -9,8 +9,12 @@
 
 
 <%= form_tag({action: :complete}, {method: :post}) do %>
+    <% @users.each do |user| %>
+        <%= hidden_field_tag 'user_id[]', user.id, id: "user_id_#{user.id}" %>
+    <% end %>
     <p>タイトル(編集不可)</p>
     <%= text_field_tag :title, @title, readonly: true %>
     <p>本文(編集不可)</p>
     <%= text_area_tag :body, @body, size: '20x10', readonly: true, wrap: 'hard', style: 'height: 1000px' %>
+    <%= submit_tag value='以上の内容で送信' %>
 <% end %>
