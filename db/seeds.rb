@@ -33,6 +33,17 @@ locations.each_with_index do |location, i|
   ProfileIndividual.create(birthday: "Sun, #{i+1} Dec 2011 00:00:00 +0000", role: 'father', profile_family_id: profile_family.id)
 end
 
+dev_accounts = %w(shino@cps.im.dendai.ac.jp harimanmon@gmail.com)
+dev_accounts.each do |dac|
+  user = User.create(name: 'test', kana: 'test', gender: 0, is_family: true)
+  Location.create(user_id: user.id, address: locations[0])
+  Contact.create(user_id: user.id, email_pc: dac)
+  profile_family = ProfileFamily.create(user_id: user.id, job_style: 1, number_of_children: 1, is_photo_ok: 1, is_report_ok: 1, is_male_ok: 1)
+  ProfileIndividual.create(birthday: "Sun, 1 Dec 2011 00:00:00 +0000", role: 'mother', profile_family_id: profile_family.id)
+  ProfileIndividual.create(birthday: "Sun, 1 Dec 2011 00:00:00 +0000", role: 'father', profile_family_id: profile_family.id)
+end
+
+
 domains = %w(
     専業主婦・専業主夫（パート・アルバイトは除く）
    メーカー（食品、飲料、繊維、木材、印刷、化学、鉄鋼、精密機器）
