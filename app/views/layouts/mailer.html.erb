@@ -1,13 +1,26 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <style>
-      /* Email styles need to be inline */
-    </style>
-  </head>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>Canpathからのメール</title>
+</head>
 
-  <body>
-    <%= yield %>
-  </body>
+<body>
+<div class="wrapper" style="background-color: #F7F7F7;">
+
+  <%= render partial: 'common_mailer/header' %>
+
+  <div class="container" style="width:90%; max-width:800px; margin:15px auto 0; border-radius:3px; border:1px solid #ddd; padding: 15px; background-color: #fff;">
+    <table style="border-spacing:0; width:100%;">
+      <tbody>
+
+      <%= yield %>
+
+      </tbody>
+    </table>
+  </div>
+
+  <%= render partial: 'common_mailer/footer' %>
+</div>
+
+</body>
 </html>
