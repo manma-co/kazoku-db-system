@@ -1,8 +1,7 @@
 class CommonMailer < ActionMailer::Base
-  default from: 'Manma <info@manma.co>'
+  # default from: 'Manma <info@manma.co>'
+  default from: 'Manma <info@yoshihito.me>'
   layout 'mailer'
-
-  add_template_helper(TextHelper)
 
   def matched_email(contact)
     @contact = contact
