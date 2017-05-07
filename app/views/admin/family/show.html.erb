@@ -86,7 +86,7 @@
     <tbody>
     <tr>
       <td class="title">生年月日</td>
-      <td class="contents"><%= @family.profile_family.profile_individuals.find_by(role: 'father').birthday %></td>
+      <td class="contents"><%= @family.profile_family&.profile_individuals&.find_by(role: 'father').birthday %></td>
     </tr>
     <tr>
       <td class="title">出身地</td>
@@ -165,11 +165,11 @@
     <% #TODO family_helperにモジュールを実装する %>
     <tr>
       <td class="title">写真をmanma HPやFacebookで使用してよいか</td>
-      <td class="contents"><%= @family.profile_family.is_photo_ok %></td>
+      <td class="contents"><%= is_photo_ok_str(@family.profile_family.is_photo_ok) %></td>
     </tr>
     <tr>
       <td class="title">レポートをmanma HPやFacebookで使用してもよいか</td>
-      <td class="contents"><%= @family.profile_family.is_report_ok %></td>
+      <td class="contents"><%= is_report_ok_str(@family.profile_family.is_report_ok) %></td>
     </tr>
     </tbody>
   </table>

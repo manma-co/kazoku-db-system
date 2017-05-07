@@ -24,4 +24,27 @@ module Admin::FamilyHelper
     end
   end
 
+  # SNS上での写真使用に関する文字列を取得する
+  # @param [int] is_photo_ok 写真の使用を許可するか
+  # @return [String] 写真使用に関する文字列
+  def is_photo_ok_str(is_photo_ok)
+    if is_photo_ok == Settings.is_photo.ng
+      Settings.is_photo.str.ng
+    elsif is_photo_ok == Settings.is_photo.ok
+      Settings.is_photo.str.ok
+    elsif is_photo_ok == Settings.is_photo.caution
+      Settings.is_photo.str.caution
+    end
+  end
+
+  def is_report_ok_str(is_report_ok)
+    if is_report_ok == Settings.is_report.ng
+      Settings.is_photo.str.ng
+    elsif is_report_ok == Settings.is_report.ok
+      Settings.is_report.str.ok
+    elsif is_report_ok == Settings.is_report.caution
+      Settings.is_report.str.caution
+    end
+  end
+
 end
