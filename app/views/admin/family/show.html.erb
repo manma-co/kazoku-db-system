@@ -53,7 +53,7 @@
     </tr>
     <tr>
       <td class="title">出身地</td>
-      <td class="contents"><%= @family.name %></td>
+      <td class="contents"><%= @family.profile_family.profile_individuals.find_by(role: 'mother').hometown %></td>
     </tr>
     <tr>
       <td class="title">職業</td>
@@ -61,19 +61,19 @@
     </tr>
     <tr>
       <td class="title">勤務先</td>
-      <td class="contents"><%= @family.name %></td>
+      <td class="contents"><%= @family.profile_family.profile_individuals.find_by(role: 'mother').company %></td>
     </tr>
     <tr>
       <td class="title">ご結婚された年齢</td>
-      <td class="contents"><%= @family.name %></td>
+      <td class="contents"><%= @family.profile_family.marriaged_mother_age %></td>
     </tr>
     <tr>
       <td class="title">第一子をご出産された年齢</td>
-      <td class="contents"><%= @family.name %></td>
+      <td class="contents"><%= @family.profile_family.childbirth_mother_age %></td>
     </tr>
     <tr>
       <td class="title">キャリア変遷</td>
-      <td class="contents"><%= @family.name %></td>
+      <td class="contents"><%= @family.profile_family.profile_individuals.find_by(role: 'mother').career %></td>
     </tr>
     </tbody>
   </table>
@@ -90,7 +90,7 @@
     </tr>
     <tr>
       <td class="title">出身地</td>
-      <td class="contents"><%= @family.name %></td>
+      <td class="contents"><%= @family.profile_family.profile_individuals.find_by(role: 'father').hometown %></td>
     </tr>
     <tr>
       <td class="title">職業</td>
@@ -98,11 +98,11 @@
     </tr>
     <tr>
       <td class="title">勤務先</td>
-      <td class="contents"><%= @family.name %></td>
+      <td class="contents"><%= @family.profile_family.profile_individuals.find_by(role: 'father').company %></td>
     </tr>
     <tr>
       <td class="title">キャリア変遷</td>
-      <td class="contents"><%= @family.name %></td>
+      <td class="contents"><%= @family.profile_family.profile_individuals.find_by(role: 'father').career %></td>
     </tr>
     </tbody>
   </table>
@@ -121,7 +121,7 @@
     </tr>
     <tr>
       <td class="title">生年月日</td>
-      <td class="contents"><%= @family.name %></td>
+      <td class="contents"><%= @family.profile_family.child_birthday %></td>
     </tr>
     </tbody>
   </table>
@@ -134,23 +134,23 @@
     <tbody>
     <tr>
       <td class="title">お母様の海外留学及び勤務のご経験の有無</td>
-      <td class="contents"><%= @family.name %></td>
+      <td class="contents"><%= @family.profile_family.profile_individuals.find_by(role: 'mother').has_experience_abroad %></td>
     </tr>
     <tr>
       <td class="title">お父様の海外留学及び勤務のご経験の有無</td>
-      <td class="contents"><%= @family.name %></td>
+      <td class="contents"><%= @family.profile_family.profile_individuals.find_by(role: 'father').has_experience_abroad %></td>
     </tr>
     <tr>
       <td class="title">お母様及びお父様の時短勤務のご経験の有無</td>
-      <td class="contents"><%= @family.name %></td>
+      <td class="contents"><%= @family.profile_family.has_time_shortening_experience %></td>
     </tr>
     <tr>
       <td class="title">お母様及びお父様の育休のご経験の有無</td>
-      <td class="contents"><%= @family.name %></td>
+      <td class="contents"><%= @family.profile_family.has_childcare_leave_experience %></td>
     </tr>
     <tr>
       <td class="title">お母様及びお父様の転職のご経験の有無</td>
-      <td class="contents"><%= @family.name %></td>
+      <td class="contents"><%= @family.profile_family.has_job_change_experience  %></td>
     </tr>
     </tbody>
   </table>
@@ -198,7 +198,7 @@
   <table class="info-list">
     <tbody>
     <tr>
-      <td class="contents"><%= @family.name %></td>
+      <td class="contents"><%= @family.profile_family.opinion_or_question %></td>
     </tr>
     </tbody>
   </table>
