@@ -28,7 +28,7 @@ locations.each_with_index do |location, i|
   user = User.create(name: "no_name_#{i+1}", kana: 'no_name', gender: 0, is_family: true)
   Location.create(user_id: user.id, address: location)
   Contact.create(user_id: user.id, email_pc: "abc#{i+1}@pc.com", email_phone: "abc#{i+1}@phone.com")
-  profile_family = ProfileFamily.create(user_id: user.id, job_style: 1, number_of_children: 1, is_photo_ok: 1, is_report_ok: 1,
+  profile_family = ProfileFamily.create(user_id: user.id, job_style: 1, number_of_children: 1, is_photo_ok: 1, is_report_ok: 1, is_male_ok: 1,
                                         has_time_shortening_experience: '母親のみ', has_childcare_leave_experience: '母親のみ',
                                         has_job_change_experience: '父親のみ', marriaged_mother_age: '30', childbirth_mother_age: '32',
                                         child_birthday: '2016-02-03', opinion_or_question: '家族留学楽しみにしております！')
@@ -43,7 +43,7 @@ dev_accounts.each do |dac|
   user = User.create(name: 'test', kana: 'test', gender: 0, is_family: true)
   Location.create(user_id: user.id, address: locations[0])
   Contact.create(user_id: user.id, email_pc: dac)
-  profile_family = ProfileFamily.create(user_id: user.id, job_style: 1, number_of_children: 1, is_photo_ok: 1, is_report_ok: 1,
+  profile_family = ProfileFamily.create(user_id: user.id, job_style: 1, number_of_children: 1, is_photo_ok: 1, is_report_ok: 1, is_male_ok: 1,
                                         has_time_shortening_experience: '母親のみ', has_childcare_leave_experience: '母親のみ',
                                         has_job_change_experience: '父親のみ', marriaged_mother_age: '30', childbirth_mother_age: '32',
                                         child_birthday: '2016-02-03', opinion_or_question: '家族留学楽しみにしております！')
