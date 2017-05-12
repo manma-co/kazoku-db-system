@@ -41,6 +41,7 @@ class Admin::MailsController < Admin::AdminController
     @body.sub!(/\[manma_template_station\]/, station)
     @body.sub!(/\[manma_template_motivation\]/, motivation)
     @body.sub!(/\[manma_template_dates\]/, construct_dates)
+    @body.sub!(/\[manma_template_endtime\]/, endtime)
   end
 
   def construct_dates
@@ -51,6 +52,18 @@ class Admin::MailsController < Admin::AdminController
       if date != ''
         date = DateTime.strptime(date, '%Y-%m-%dT%H:%M')
         date.strftime('%Y年%m月%d日 %H時%M分')
+      end
+    }).join(br)
+  end
+
+  def endtime
+    br = <<-EOS
+
+    EOS
+    (params[:endtime].map { |key, endtime|
+      if endtime != ''
+        endtime = DateTime.strptime(endtime, '%H:%M')
+        endtime.strftime('%H時%M分')
       end
     }).join(br)
   end
@@ -78,7 +91,7 @@ class Admin::MailsController < Admin::AdminController
 参加動機：[manma_template_motivation]
  
 【候補日】
-[manma_template_dates]
+[manma_template_dates]~[manma_template_endtime]
  
  ＝＝＝＝＝＝返信用フォーマット＝＝＝＝＝＝＝＝
 ●受け入れ可能 or 不可
