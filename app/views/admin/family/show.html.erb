@@ -57,7 +57,7 @@
     </tr>
     <tr>
       <td class="title">職業</td>
-      <td class="contents"><%= @family.profile_family&.profile_individuals&.find_by(role: 'mother')&.job_domain.domain %></td>
+      <td class="contents"><%= @family.profile_family&.profile_individuals&.find_by(role: 'mother')&.job_domain&.domain %></td>
     </tr>
     <tr>
       <td class="title">勤務先</td>
@@ -94,7 +94,7 @@
     </tr>
     <tr>
       <td class="title">職業</td>
-      <td class="contents"><%= @family.profile_family&.profile_individuals&.find_by(role: 'father')&.job_domain.domain %></td>
+      <td class="contents"><%= @family.profile_family&.profile_individuals&.find_by(role: 'father')&.job_domain&.domain %></td>
     </tr>
     <tr>
       <td class="title">勤務先</td>
