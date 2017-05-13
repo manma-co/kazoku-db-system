@@ -13,6 +13,8 @@ Rails.application.routes.draw do
     post 'mails/confirm'
     post 'mails/complete'
 
+    get 'mails/histories'
+    get 'mails/history/:id', to: 'mails#history', as: 'mails_history'
     get 'spread_sheets/authorize'
     get 'spread_sheets/oauth2callback'
   end

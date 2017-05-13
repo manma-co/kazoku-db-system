@@ -13,11 +13,18 @@ class Admin::MailsController < Admin::AdminController
   end
 
   def complete
-    # TODO: メール送信機能
     user_params
     @body = params[:body]
     @title = params[:title]
     CommonMailer.request_email_to_family(@title, @body, @users).deliver_now
+  end
+
+  def histories
+    @sent_mails = EmailQueue.all
+  end
+
+  def history
+    @sent_mail = EmailQueue.find(params[:id])
   end
 
   private

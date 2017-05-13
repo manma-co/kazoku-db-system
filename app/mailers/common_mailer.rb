@@ -17,20 +17,37 @@ class CommonMailer < ActionMailer::Base
     @users.each do |user|
       mails += user.contact.email_pc + ', '
     end
+
+    # Insert to DB
+    EmailQueue.create!(
+        :sender_address => 'info@manma.co',
+        :to_address => 'info@manma.co',
+        :bcc_address => mails,
+        :subject => title,
+        :body_text => body,
+        :retry_count => 0,
+        :sent_status => 0,
+        :email_type => 'request_email_to_family'
+    )
+
     # Development の時はyoshihito.meからとりあえず送る設定。
     # Send Grid を使ってmanma.coからメールを送るようにする。
     if Rails.env == 'development'
-      mail(to: 'info@manma.co', bcc: mails, from: 'manma <info@yoshihito.me>', subject: 'テスト送信' + title)
+      mail(to: 'info@example.com', bcc: mails, from: 'manma <info@yoshihito.me>', subject: 'テスト送信' + title)
     else
       mail(to: 'info@manma.co', bcc: mails, subject: title)
     end
+
+    # Update email queue status
+    queue = EmailQueue.where(bcc_address: mails).order('created_at desc').limit(1)
+    queue.update(sent_status: true, time_delivered: Time.now)
   end
 
   # info@manma.co にメールを送る設定。
   def notify_to_manma(title, body)
     @body = body
     if Rails.env == 'development'
-      mail(to: 'info@manma.co', from: 'manma <info@yoshihito.me>', subject: 'テスト送信' + title)
+      mail(to: 'info@example.com', from: 'manma <info@yoshihito.me>', subject: 'テスト送信' + title)
     else
       mail(to: 'info@manma.co', subject: title)
     end

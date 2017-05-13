@@ -1,0 +1,32 @@
+
+<h4>送信済みメール一覧</h4>
+<p>過去に送信したメールと詳細を表示できます。</p>
+<% if @sent_mails %>
+<table class="bordered highlight responsive-table">
+  <thead>
+  <tr>
+    <th>#</th>
+    <th>タイトル</th>
+    <th>送信日時</th>
+    <th>ステータス</th>
+    <th>アクション</th>
+  </tr>
+  </thead>
+
+  <tbody>
+  <% @sent_mails.each do |mail| %>
+      <tr>
+        <td><%= mail.id %></td>
+        <td><%= mail.subject %></td>
+        <td><%= mail.time_delivered.try(:strftime, ('%Y年%m月%d日 %H:%M')) %></td>
+        <td><%= mail.status %></td>
+        <td><%= link_to '詳細', admin_mails_history_path(mail) %></td>
+      </tr>
+  <% end %>
+  </tbody>
+</table>
+<% else %>
+    <p>まだ送信済みのメールはありません</p>
+<% end %>
+
+
