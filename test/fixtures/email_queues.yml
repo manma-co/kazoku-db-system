@@ -1,0 +1,17 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  sender_address: MyString
+  recipient_address: MyString
+  subject: MyString
+  body_text: MyText
+  retry_count: 1
+  sent_status: false
+
+two:
+  sender_address: MyString
+  recipient_address: MyString
+  subject: MyString
+  body_text: MyText
+  retry_count: 1
+  sent_status: false

@@ -1,0 +1,2 @@
+class EmailQueue < ApplicationRecord
+end

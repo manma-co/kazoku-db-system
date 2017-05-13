@@ -13,7 +13,6 @@ class Admin::MailsController < Admin::AdminController
   end
 
   def complete
-    # TODO: メール送信機能
     user_params
     @body = params[:body]
     @title = params[:title]

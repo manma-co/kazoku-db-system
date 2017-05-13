@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170412150947) do
+ActiveRecord::Schema.define(version: 20170513083510) do
 
   create_table "admins", force: :cascade do |t|
     t.string   "email",              default: "", null: false
@@ -31,6 +31,21 @@ ActiveRecord::Schema.define(version: 20170412150947) do
     t.datetime "updated_at",  null: false
     t.integer  "user_id"
     t.index ["user_id"], name: "index_contacts_on_user_id"
+  end
+
+  create_table "email_queues", force: :cascade do |t|
+    t.string   "sender_address", null: false
+    t.string   "to_address",     null: false
+    t.string   "cc_address"
+    t.string   "bcc_address"
+    t.string   "subject"
+    t.text     "body_text"
+    t.integer  "retry_count"
+    t.boolean  "sent_status"
+    t.string   "email_type"
+    t.datetime "time_delivered"
+    t.datetime "created_at",     null: false
+    t.datetime "updated_at",     null: false
   end
 
   create_table "job_domains", force: :cascade do |t|
