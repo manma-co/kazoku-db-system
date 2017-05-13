@@ -1,8 +1,12 @@
 <%= form_tag({action: :search}, {method: :get}) do %>
-    <%= label_tag :address, '住所:' %>
-    <%= text_field_tag :address, @address, placeholder: '住所を入力してください' %>
-    <%= submit_tag '検索' %><br>
-    <p>検索条件</p>
+    <div class="row">
+      <div class="input-field col s12">
+        <%= text_field_tag :address, @address, placeholder: '東京都千代田区x-x-x' %>
+        <%= label_tag :address, '家庭検索' %>
+      </div>
+    </div>
+
+    <label>検索条件</label>
     <% none = Settings.job_style.none %>
     <% both = Settings.job_style.both %>
     <% homemaker = Settings.job_style.homemaker %>
@@ -12,7 +16,13 @@
     <%= label_tag 'job_style_dual', Settings.job_style.str.both %>
     <%= radio_button_tag 'job_style', homemaker, checked = @job_style == homemaker ? true : false, id: 'job_style_single' %>
     <%= label_tag 'job_style_single', Settings.job_style.str.homemaker %>
-    <br>
     <%= check_box_tag 'is_male_ng', 'checked', checked = @is_male_ng, id: 'is_male_ng' %>
     <%= label_tag 'is_male_ng', '男性NG' %>
+
+    <div class="row">
+      <div class="input-field col s12">
+        <button class="btn waves-effect waves-light" name="action" type="submit">検索<i class="material-icons left">search</i>
+        </button>
+      </div>
+    </div>
 <% end %>
