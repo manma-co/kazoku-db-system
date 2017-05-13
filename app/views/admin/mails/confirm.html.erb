@@ -1,10 +1,10 @@
 <h2>打診メール最終確認</h2>
 <ol>
   <% @users.each do |user| %>
-    <li><%= user.name %>, <%= user.location.address %>, <%= user.contact.email_pc %></li>
+      <li><%= user.name %>, <%= user.location.address %>, <%= user.contact.email_pc %></li>
   <% end %>
 </ol>
-<p>メールアドレス</p>
+<p>送信先メールアドレス（コピー用）</p>
 <p><%= (@users.map { |user| user.contact.email_pc }).join(',') %></p>
 
 
@@ -12,9 +12,27 @@
     <% @users.each do |user| %>
         <%= hidden_field_tag 'user_id[]', user.id, id: "user_id_#{user.id}" %>
     <% end %>
-    <p>タイトル(編集不可)</p>
-    <%= text_field_tag :title, @title, readonly: true %>
-    <p>本文(編集不可)</p>
-    <%= text_area_tag :body, @body, size: '20x10', readonly: true, wrap: 'hard', style: 'height: 1000px' %>
-    <%= submit_tag value='以上の内容で送信' %>
+
+    <fieldset>
+      <div class="row">
+        <div class="input-field col s12">
+          <%= text_field_tag :title, @title, readonly: true, class: 'validate' %>
+          <%= label_tag :title, 'タイトル(編集する場合は、前のページに戻って編集して下さい' %>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="input-field col s12">
+          <%= text_area_tag :body, @body, size: '20x10', readonly: true, wrap: 'hard', class: 'materialize-textarea' %>
+          <%= label_tag :body, '本文(前のページに戻って編集して下さい)' %>
+        </div>
+      </div>
+    </fieldset>
+
+    <div class="row">
+      <div class="input-field col s12">
+        <button class="btn waves-effect waves-light" name="action" type="submit">上記の内容で送信<i class="material-icons right">send</i>
+        </button>
+      </div>
+    </div>
 <% end %>

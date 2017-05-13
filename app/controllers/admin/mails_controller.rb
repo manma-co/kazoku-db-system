@@ -50,15 +50,25 @@ class Admin::MailsController < Admin::AdminController
     @body.sub!(/\[manma_template_dates\]/, construct_dates)
   end
 
+  # 希望日程、開始日時、終了日時をパースして文字列化 -> 配列
   def construct_dates
+    # 改行文字列
     br = <<-EOS
 
     EOS
-    (params[:date].map { |key, date|
-      if date != ''
-        date = DateTime.strptime(date, '%Y-%m-%dT%H:%M')
-        date.strftime('%Y年%m月%d日 %H時%M分')
-      end
+
+    # 希望日程、開始日時、終了日時をパースして文字列化 -> 配列
+    ((0..4).to_a.map { |i|
+      date_key = "date#{i}_submit".to_sym
+      start_time_key = "start_time#{i}".to_sym
+      finish_time_key = "finish_time#{i}".to_sym
+
+      date = params[date_key]
+      next if date == ''
+      start_time = params[start_time_key]
+      finish_time = params[finish_time_key]
+
+      "#{date} #{start_time} ~ #{finish_time}"
     }).join(br)
   end
 
