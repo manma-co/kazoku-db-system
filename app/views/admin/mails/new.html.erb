@@ -1,41 +1,91 @@
-<h2>打診メール作成</h2>
+<h3>打診メール作成</h3>
 <p>メールを送信する家庭一覧</p>
 <ol>
-<% @users.each do |user| %>
-  <li><%= user.name %>, <%= user.location.address %>, <%= user.contact.email_pc %></li>
-<% end %>
+  <% @users.each do |user| %>
+      <li><%= user.name %>, <%= user.location.address %>, <%= user.contact.email_pc %></li>
+  <% end %>
 </ol>
 
-<%= form_tag(admin_mails_confirm_path, method: :post) do %>
-  <% @users.each do |user| %>
-    <%= hidden_field_tag 'user_id[]', user.id, id: "user_id_#{user.id}" %>
+<div class="row">
+  <%= form_tag(admin_mails_confirm_path, method: :post, class: 'col s12') do %>
+      <% @users.each do |user| %>
+          <%= hidden_field_tag 'user_id[]', user.id, id: "user_id_#{user.id}" %>
+      <% end %>
+      <h5>参加者情報</h5>
+      <fieldset>
+        <div class="row">
+          <div class="input-field col s4">
+            <%= text_field_tag :student_name, '', class: 'validate' %>
+            <%= label_tag :student_name, '氏名', class: 'active' %>
+          </div>
+          <div class="input-field col s4">
+            <%= text_field_tag :belongs_to, '', placeholder: '○○大学○○年', class: 'validate'  %>
+            <%= label_tag :belongs_to, '所属' %>
+          </div>
+          <div class="input-field col s4">
+            <%= text_field_tag :station, '', class: 'validate' %>
+            <%= label_tag :station, '最寄り駅' %>
+          </div>
+        </div>
+        <div class="row">
+          <div class="input-field col s12">
+            <%= text_field_tag :motivation, '', class: 'validate'%>
+            <%= label_tag :motivation, '参加動機' %>
+          </div>
+        </div>
+      </fieldset>
+
+      <h5>希望日程(打診日から2週間後~１ヶ月半以内)</h5>
+      <fieldset>
+        <% 5.times do |i| %>
+            <div class="row">
+              <div class="input-field col s4">
+                <%= text_field_tag "date#{i}", '', class: 'datepicker picker__input', readonly: true %>
+                <%= label_tag "date#{i}", "第#{i+1}希望日", class: 'active' %>
+              </div>
+              <div class="input-field col s4">
+                <%= time_field_tag "start_time#{i}", '', class: 'validate' %>
+                <%= label_tag "start_time#{i}", '開始時刻', class: 'active' %>
+              </div>
+              <div class="input-field col s4">
+                <%= time_field_tag "finish_time#{i}", '', class: 'validate' %>
+                <%= label_tag "finish_time#{i}", '終了時刻', class: 'active' %>
+              </div>
+            </div>
+        <% end %>
+      </fieldset>
+
+      <script>$('.datepicker').pickadate({
+          monthsShort: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'],
+          monthsFull: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'],
+          weekdaysFull: ['月曜日', '火曜日', '水曜日', '木曜日', '金曜日', '土曜日', '日曜日'],
+          weekdaysShort: ['月', '火', '水', '木', '金', '土', '日'],
+          today: '今日',
+          clear: 'リセット',
+          close: '閉じる',
+          format: 'yyyy年mm月dd日 dddd',
+          formatSubmit: 'yyyy/mm/dd'
+      });</script>
+
+      <h5>メール作成</h5>
+      <fieldset>
+        <div class="row">
+          <div class="input-field col s12">
+            <%= text_field_tag :title, @title, placeholder: '件名を入力して下さい' %>
+            <%= label_tag :title, 'タイトル' %>
+          </div>
+        </div>
+        <div class="row">
+          <div class="input-field col s12">
+            <%= text_area_tag :body, @body, size: '20x10', style: 'height: 1000px', class: 'materialize-textarea' %>
+            <%= label_tag :body, '本文 ※[manma_template_...]の箇所は変更しないで下さい' %>
+          </div>
+        </div>
+      </fieldset>
+
+      <p>
+        <button class="btn waves-effect waves-light" name="action" type="submit">確認する<i class="material-icons right">send</i></button>
+      </p>
   <% end %>
-  <%= label_tag :student_name, '学生氏名' %>
-  <%= text_field_tag :student_name, @student_name, placeholder: '学生氏名を入力して下さい'  %>
+</div>
 
-  <%= label_tag :belongs_to, '所属' %>
-  <%= text_field_tag :belongs_to, @belongs_to, placeholder: '○○大学○○年'  %>
-
-  <%= label_tag :station, '最寄り駅' %>
-  <%= text_field_tag :station, @station, placeholder: '最寄り駅を入力して下さい'  %>
-
-  <%= label_tag :motivation, '参加動機' %>
-  <%= text_field_tag :motivation, @motivation, placeholder: '参加動機を入力して下さい' %>
-
-  <%= label_tag '参加希望日時(打診日から2週間後~１ヶ月半以内' %><br>
-  <% 5.times do |i|  %>
-        <table class="datetime-field">
-          <thead>
-          <%= label_tag "date[date#{i+1}]", "第#{i+1}希望" %>
-          </thead>
-          <tr>
-            <td><%= datetime_field :date, "date#{i+1}", { format: '%Y-%m-%d %H:%M' } %></td>
-            <td><%= time_field :endtime, "time#{i+1}", { format: '%H:%M' } %></td>
-          </tr>
-  <% end %>
-  <%= label_tag :title, 'タイトル' %>
-  <%= text_field_tag :title, @title, placeholder: '件名を入力して下さい' %>
-  <%= label_tag :body, '本文 ※[manma_template_...]の箇所は変更しないで下さい' %>
-  <%= text_area_tag :body, @body, size: '20x10', style: 'height: 1000px' %>
-  <%= submit_tag value='確認' %>
-<% end %>
