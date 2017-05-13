@@ -19,6 +19,14 @@ class Admin::MailsController < Admin::AdminController
     CommonMailer.request_email_to_family(@title, @body, @users).deliver_now
   end
 
+  def histories
+    @sent_mails = EmailQueue.all
+  end
+
+  def history
+    @sent_mail = EmailQueue.find(params[:id])
+  end
+
   private
 
   def user_params

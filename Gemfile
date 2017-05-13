@@ -41,6 +41,7 @@ gem 'omniauth-google-oauth2'
 
 # See document: https://github.com/mkhairi/materialize-sass
 gem 'materialize-sass'
+gem 'material_icons'
 gem 'jquery-turbolinks'
 
 # See here: https://github.com/Angelmmiguel/material_icons

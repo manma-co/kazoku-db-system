@@ -1,0 +1,54 @@
+
+<table>
+  <tbody>
+  <tr>
+    <td>送信アドレス</td>
+    <td><%= @sent_mail.sender_address %></td>
+  </tr>
+  <tr>
+    <td>To</td>
+    <td><%= @sent_mail.to_address %></td>
+  </tr>
+  <tr>
+    <td>Cc</td>
+    <td><%= @sent_mail.cc_address %></td>
+  </tr>
+  <tr>
+    <td>Bcc</td>
+    <td><%= @sent_mail.bcc_address %></td>
+  </tr>
+  <tr>
+    <td>メールタイトル</td>
+    <td><%= @sent_mail.subject %></td>
+  </tr>
+  <tr>
+    <td style="vertical-align: top;">本文</td>
+    <td><%= simple_format @sent_mail.body_text %></td>
+  </tr>
+  <tr>
+    <td>送信日</td>
+    <td><%= @sent_mail.time_delivered.try(:strftime, ('%Y年%m月%d日 %H:%M')) %></td>
+  </tr>
+  <tr>
+    <td>ステータス</td>
+    <td><%= @sent_mail.status %></td>
+  </tr>
+  <!-- TODO: Create resend function -->
+  <% unless @sent_mail.sent_status %>
+      <tr>
+        <td>アクション</td>
+        <td>
+          <button class="btn waves-effect waves-light">再送する
+            <i class="material-icons right">send</i>
+          </button>
+        </td>
+      </tr>
+  <% end %>
+  </tbody>
+</table>
+
+<style>
+  td {
+    min-width: 200px;
+  }
+</style>
