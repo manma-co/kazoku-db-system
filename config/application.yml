@@ -14,10 +14,21 @@ defaults: &defaults
     number_of_children: 11
     is_photo: 12
     is_report: 13
-    married_age: 14
-    first_child_born_age:  15
+    married_mother_age: 14
+    first_childbirth_mother_age:  15
     child_birthday: 16
-    # TODO： これ以降のスプレッドシートの情報の追加
+    mothers_hometown: 17
+    fathers_hometown: 18
+    mothers_company: 19
+    fathers_company: 20
+    mothers_experience_abroad: 21
+    fathers_experience_abroad: 22
+    has_time_shortening_experience: 23
+    has_childcare_leave_experience: 24
+    has_job_change_experience: 25
+    mothers_career: 26
+    fathers_career: 27
+    opinion_or_question: 28
     is_male: 29
   job_style:
     # none: 指定なし
