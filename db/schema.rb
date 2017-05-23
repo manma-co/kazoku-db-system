@@ -50,10 +50,8 @@ ActiveRecord::Schema.define(version: 20170513083510) do
 
   create_table "job_domains", force: :cascade do |t|
     t.string   "domain"
-    t.datetime "created_at",            null: false
-    t.datetime "updated_at",            null: false
-    t.integer  "profile_individual_id"
-    t.index ["profile_individual_id"], name: "index_job_domains_on_profile_individual_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "locations", force: :cascade do |t|
@@ -95,6 +93,8 @@ ActiveRecord::Schema.define(version: 20170513083510) do
     t.datetime "created_at",            null: false
     t.datetime "updated_at",            null: false
     t.integer  "profile_family_id"
+    t.integer  "job_domain_id"
+    t.index ["job_domain_id"], name: "index_profile_individuals_on_job_domain_id"
     t.index ["profile_family_id"], name: "index_profile_individuals_on_profile_family_id"
   end
 

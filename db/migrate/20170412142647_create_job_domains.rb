@@ -4,6 +4,5 @@ class CreateJobDomains < ActiveRecord::Migration[5.0]
       t.string :domain
       t.timestamps
     end
-    add_reference :job_domains, :profile_individual
   end
 end
