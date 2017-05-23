@@ -11,5 +11,6 @@ class CreateProfileIndividuals < ActiveRecord::Migration[5.0]
       t.timestamps
     end
     add_reference :profile_individuals, :profile_family
+    add_reference :profile_individuals, :job_domain
   end
 end
