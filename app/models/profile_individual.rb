@@ -1,16 +1,4 @@
 class ProfileIndividual < ApplicationRecord
-  def change
-    create_table :profile_individuals do |t|
-      t.datetime :birthday
-      t.string :hometown
-      t.string :role
-      t.string :company
-      t.string :career
-      t.string :has_experience_abroad
-
-      t.timestamps
-    end
-    add_reference :profile_individuals, :profile_family
-    add_reference :profile_individuals, :job_domain
-  end
+  belongs_to :profile_family
+  belongs_to :job_domain
 end
