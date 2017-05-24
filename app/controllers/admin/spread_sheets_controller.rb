@@ -42,7 +42,7 @@ class Admin::SpreadSheetsController < Admin::AdminController
 
     # スプレッドシートの情報取得
     response = fetch_spread_sheet(credentials)
-    store_users(response)
+    store_users(response, is_debug: true)
 
     redirect_to admin_family_index_path
   end
@@ -111,7 +111,6 @@ class Admin::SpreadSheetsController < Admin::AdminController
       location ||= Location.create(location_query)
       p location.errors.messages
 
-      # 家族情報のパース
       # 働き方情報のパース
       job_style = r[Settings.sheet.job_style]
       if job_style == Settings.job_style.str.both
@@ -154,6 +153,7 @@ class Admin::SpreadSheetsController < Admin::AdminController
         is_report = nil
       end
 
+      # 家族情報のパース
       family_query = {
           user_id: user.id,
           job_style: job_style,
@@ -161,6 +161,11 @@ class Admin::SpreadSheetsController < Admin::AdminController
           is_photo_ok: is_photo,
           is_report_ok: is_report,
           is_male_ok: is_male_ok,
+          has_time_shortening_experience: r[Settings.sheet.has_time_shortening_experience],
+          has_childcare_leave_experience: r[Settings.sheet.has_childcare_leave_experience],
+          has_job_change_experience: r[Settings.sheet.has_job_change_experience],
+          married_mother_age: r[Settings.sheet.married_mother_age],
+          first_childbirth_mother_age: r[Settings.sheet.first_childbirth_mother_age],
           child_birthday: r[Settings.sheet.child_birthday]
       }
 
@@ -171,7 +176,12 @@ class Admin::SpreadSheetsController < Admin::AdminController
       mothers_query = {
           profile_family_id: family.id,
           birthday: r[Settings.sheet.mothers_birthday],
-          job_domain_id: 0,
+          hometown: r[Settings.sheet.mothers_hometown],
+          role: 'mother',
+          company: r[Settings.sheet.mothers_company],
+          career: r[Settings.sheet.mothers_career],
+          has_experience_abroad: r[Settings.sheet.mothers_experience_abroad],
+          job_domain_id: 1,
           # job_domain_id: row[9], # TODO: 文字列情報のため変換が必要
       }
 
@@ -179,15 +189,21 @@ class Admin::SpreadSheetsController < Admin::AdminController
       fathers_query = {
           profile_family_id: family.id,
           birthday: r[Settings.sheet.fathers_birthday],
-          job_domain_id: 0,
+          hometown: r[Settings.sheet.fathers_hometown],
+          role: 'father',
+          company: r[Settings.sheet.fathers_company],
+          career: r[Settings.sheet.fathers_career],
+          has_experience_abroad: r[Settings.sheet.fathers_experience_abroad],
+          job_domain_id: 1,
           # job_domain_id: row[10], # TODO: 文字列情報のため変換が必要
       }
 
-      mother = ProfileIndividual.where(mothers_query)
+      mother = ProfileIndividual.where(mothers_query).first
       mother ||= ProfileIndividual.create(mothers_query)
-      father = ProfileIndividual.where(fathers_query)
+      p mother.errors.messages
+      father = ProfileIndividual.where(fathers_query).first
       father ||= ProfileIndividual.create(fathers_query)
-
+      p father.errors.messages
       # デバッグモード(1行のみ処理)
       break if is_debug
     end
