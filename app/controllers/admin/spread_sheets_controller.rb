@@ -42,7 +42,7 @@ class Admin::SpreadSheetsController < Admin::AdminController
 
     # スプレッドシートの情報取得
     response = fetch_spread_sheet(credentials)
-    store_users(response, is_debug: true)
+    store_users(response)
 
     redirect_to admin_family_index_path
   end
@@ -101,7 +101,6 @@ class Admin::SpreadSheetsController < Admin::AdminController
       contact = Contact.where(contact_query).first
       contact ||= Contact.create(contact_query)
 
-      p contact.errors.messages
       # 位置情報のパース
       location_query = {
           user_id: user.id,
@@ -109,7 +108,6 @@ class Admin::SpreadSheetsController < Admin::AdminController
       }
       location = Location.where(location_query).first
       location ||= Location.create(location_query)
-      p location.errors.messages
 
       # 働き方情報のパース
       job_style = r[Settings.sheet.job_style]
@@ -200,10 +198,9 @@ class Admin::SpreadSheetsController < Admin::AdminController
 
       mother = ProfileIndividual.where(mothers_query).first
       mother ||= ProfileIndividual.create(mothers_query)
-      p mother.errors.messages
       father = ProfileIndividual.where(fathers_query).first
       father ||= ProfileIndividual.create(fathers_query)
-      p father.errors.messages
+
       # デバッグモード(1行のみ処理)
       break if is_debug
     end
