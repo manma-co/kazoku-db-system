@@ -73,8 +73,8 @@ ActiveRecord::Schema.define(version: 20170513083510) do
     t.string   "has_time_shortening_experience"
     t.string   "has_childcare_leave_experience"
     t.string   "has_job_change_experience"
-    t.string   "marriaged_mother_age"
-    t.string   "childbirth_mother_age"
+    t.string   "married_mother_age"
+    t.string   "first_childbirth_mother_age"
     t.date     "child_birthday"
     t.string   "opinion_or_question"
     t.datetime "created_at",                     null: false
