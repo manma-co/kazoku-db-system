@@ -103,10 +103,9 @@ ActiveRecord::Schema.define(version: 20170525135405) do
     t.date     "day"
     t.string   "time"
     t.boolean  "decided"
-    t.datetime "created_at",      null: false
-    t.datetime "updated_at",      null: false
-    t.integer  "request_logs_id"
-    t.index ["request_logs_id"], name: "index_request_days_on_request_logs_id"
+    t.datetime "created_at",     null: false
+    t.datetime "updated_at",     null: false
+    t.index ["request_log_id"], name: "index_request_days_on_request_log_id"
   end
 
   create_table "request_logs", force: :cascade do |t|

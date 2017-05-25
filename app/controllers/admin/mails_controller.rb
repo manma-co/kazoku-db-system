@@ -10,10 +10,13 @@ class Admin::MailsController < Admin::AdminController
     construct_dates
     @title = params[:title]
     construct_body
+    store_user_info
+    store_date_n_time get_date_n_time
   end
 
   def complete
     user_params
+    save_request_day save_request_log
     @body = params[:body]
     @title = params[:title]
     CommonMailer.request_email_to_family(@title, @body, @users).deliver_now
@@ -118,6 +121,21 @@ class Admin::MailsController < Admin::AdminController
  
 manma
 EOS
+  end
+
+  def get_date_n_time
+    ((0..4).to_a.map { |i|
+      date_key = "date#{i}_submit".to_sym
+      start_time_key = "start_time#{i}".to_sym
+      finish_time_key = "finish_time#{i}".to_sym
+
+      date = params[date_key]
+      next if date == ''
+      start_time = params[start_time_key]
+      finish_time = params[finish_time_key]
+
+      "#{date} #{start_time} ~ #{finish_time}"
+    }).join(",")
   end
 
 end
