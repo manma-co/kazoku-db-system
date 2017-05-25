@@ -110,14 +110,14 @@ ActiveRecord::Schema.define(version: 20170525135405) do
   end
 
   create_table "request_logs", force: :cascade do |t|
-    t.string   "hashed_string"
+    t.string   "hashed_key"
     t.string   "name"
     t.string   "belongs"
     t.string   "station"
-    t.text     "reason"
+    t.text     "motivation"
     t.integer  "status"
-    t.datetime "created_at",    null: false
-    t.datetime "updated_at",    null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "users", force: :cascade do |t|
