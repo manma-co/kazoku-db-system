@@ -1,0 +1,31 @@
+
+
+<div class="container">
+  <h5>こんにちは<%= @user.name %>さん</h5>
+  <small><a href="#"><%= @user.name %>さんでない場合はこちら</a></small>
+
+  <p>家族留学の申し込み内容は以下の通りです。</p>
+
+  <table>
+
+    <tbody>
+    <tr>
+      <td>名前:&nbsp;</td>
+      <td><%= @log.name %></td>
+    </tr>
+    <tr>
+      <td>所属:&nbsp;</td>
+      <td><%= @log.belongs %></td>
+    </tr>
+    <% @days.each do |day| %>
+        <tr>
+          <td>参加希望日:&nbsp;</td>
+          <td><%= day.day %></td>
+        </tr>
+    <% end %>
+    </tbody>
+  </table>
+</div>
+
+
+
