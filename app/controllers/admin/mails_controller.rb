@@ -20,8 +20,7 @@ class Admin::MailsController < Admin::AdminController
     save_request_day log
     @body = params[:body]
     @title = params[:title]
-    add_hashed_key_to_template hash
-    CommonMailer.request_email_to_family(@title, @body, @users).deliver_now
+    CommonMailer.request_email_to_family(@title, @body, @users, hash, root_url(only_path: false)).deliver_now
   end
 
   def histories
@@ -53,11 +52,6 @@ class Admin::MailsController < Admin::AdminController
     @body.sub!(/\[manma_template_station\]/, station)
     @body.sub!(/\[manma_template_motivation\]/, motivation)
     @body.sub!(/\[manma_template_dates\]/, construct_dates)
-  end
-
-  def add_hashed_key_to_template(hash)
-    link = root_url(only_path: false) + 'request_confirm/' + hash
-    @body.sub!(/\[manma_request_link\]/, link)
   end
 
   # 希望日程、開始日時、終了日時をパースして文字列化 -> 配列

@@ -28,6 +28,8 @@ Rails.application.routes.draw do
     end
   end
 
+  get 'request/:id' => 'request#confirm'
+
   devise_for :admins, :controllers => {
       :omniauth_callbacks => "admin/omniauth_callbacks"
   }
