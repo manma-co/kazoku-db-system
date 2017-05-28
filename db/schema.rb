@@ -102,9 +102,9 @@ ActiveRecord::Schema.define(version: 20170525135405) do
     t.integer  "request_log_id"
     t.date     "day"
     t.string   "time"
-    t.boolean  "decided"
-    t.datetime "created_at",     null: false
-    t.datetime "updated_at",     null: false
+    t.boolean  "decided",        default: false
+    t.datetime "created_at",                     null: false
+    t.datetime "updated_at",                     null: false
     t.index ["request_log_id"], name: "index_request_days_on_request_log_id"
   end
 
@@ -114,9 +114,9 @@ ActiveRecord::Schema.define(version: 20170525135405) do
     t.string   "belongs"
     t.string   "station"
     t.text     "motivation"
-    t.integer  "status"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.integer  "status",     default: 0
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
   end
 
   create_table "users", force: :cascade do |t|

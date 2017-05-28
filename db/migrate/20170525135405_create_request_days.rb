@@ -4,7 +4,7 @@ class CreateRequestDays < ActiveRecord::Migration[5.0]
       t.belongs_to :request_log
       t.date :day
       t.string :time
-      t.boolean :decided
+      t.boolean :decided, default: false
 
       t.timestamps
     end

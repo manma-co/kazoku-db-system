@@ -12,7 +12,10 @@ module Admin::AdminHelper
   end
 
   def save_request_log
+    # Hash key を作成
     hashed_key = SecureRandom.random_number(36**24).to_s(36).rjust(24, "0")
+
+    # Save log data
     @log = RequestLog.create(
         :hashed_key => hashed_key,
         :name       => session[:student_name],
@@ -22,18 +25,22 @@ module Admin::AdminHelper
         :status     => false
     )
 
-    # Set nil
+    # データの重複を防ぐために一度空にする
     session[:student_name]  = nil
     session[:belongs_to]    = nil
     session[:station]       = nil
     session[:motivation]    = nil
 
-    @log
+    # 日付保存のためにデータを返却
+    return @log, hashed_key
 
   end
 
   def save_request_day(log)
-    date_n_time = session[:date_n_time].split(",")
+    br = <<-EOS
+
+    EOS
+    date_n_time = session[:date_n_time].split(br)
     date_n_time.each do |d|
       dnt = d.split(" ", 2)
       date = dnt[0]
@@ -44,6 +51,7 @@ module Admin::AdminHelper
           :decided => false,
       )
     end
+    # データの重複を防ぐために一度空にする
     session[:date_n_time] = nil
   end
 

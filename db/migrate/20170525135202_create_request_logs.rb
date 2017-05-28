@@ -6,7 +6,7 @@ class CreateRequestLogs < ActiveRecord::Migration[5.0]
       t.string :belongs
       t.string :station
       t.text :motivation
-      t.integer :status
+      t.integer :status, default: false # Status shows if this event is approved or not. Maybe there is more status like IN PROGRESS, SECOND CHANGE...
 
       t.timestamps
     end

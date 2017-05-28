@@ -11,14 +11,16 @@ class Admin::MailsController < Admin::AdminController
     @title = params[:title]
     construct_body
     store_user_info
-    store_date_n_time get_date_n_time
+    store_date_n_time construct_dates
   end
 
   def complete
     user_params
-    save_request_day save_request_log
+    log, hash = save_request_log
+    save_request_day log
     @body = params[:body]
     @title = params[:title]
+    add_hashed_key_to_template hash
     CommonMailer.request_email_to_family(@title, @body, @users).deliver_now
   end
 
@@ -51,6 +53,11 @@ class Admin::MailsController < Admin::AdminController
     @body.sub!(/\[manma_template_station\]/, station)
     @body.sub!(/\[manma_template_motivation\]/, motivation)
     @body.sub!(/\[manma_template_dates\]/, construct_dates)
+  end
+
+  def add_hashed_key_to_template(hash)
+    link = root_url(only_path: false) + 'request_confirm/' + hash
+    @body.sub!(/\[manma_request_link\]/, link)
   end
 
   # 希望日程、開始日時、終了日時をパースして文字列化 -> 配列
@@ -109,6 +116,8 @@ class Admin::MailsController < Admin::AdminController
 ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
 連絡先： kubo@manma.co（担当：久保）
 
+リンクはこちら
+[manma_request_link]
 
  
 ＊  注意事項＊
@@ -121,21 +130,6 @@ class Admin::MailsController < Admin::AdminController
  
 manma
 EOS
-  end
-
-  def get_date_n_time
-    ((0..4).to_a.map { |i|
-      date_key = "date#{i}_submit".to_sym
-      start_time_key = "start_time#{i}".to_sym
-      finish_time_key = "finish_time#{i}".to_sym
-
-      date = params[date_key]
-      next if date == ''
-      start_time = params[start_time_key]
-      finish_time = params[finish_time_key]
-
-      "#{date} #{start_time} ~ #{finish_time}"
-    }).join(",")
   end
 
 end
