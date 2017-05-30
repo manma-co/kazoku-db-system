@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170525135405) do
+ActiveRecord::Schema.define(version: 20170530132144) do
 
   create_table "admins", force: :cascade do |t|
     t.string   "email",              default: "", null: false
@@ -96,6 +96,16 @@ ActiveRecord::Schema.define(version: 20170525135405) do
     t.integer  "job_domain_id"
     t.index ["job_domain_id"], name: "index_profile_individuals_on_job_domain_id"
     t.index ["profile_family_id"], name: "index_profile_individuals_on_profile_family_id"
+  end
+
+  create_table "reply_logs", force: :cascade do |t|
+    t.boolean  "result"
+    t.integer  "request_log_id"
+    t.integer  "user_id"
+    t.datetime "created_at",     null: false
+    t.datetime "updated_at",     null: false
+    t.index ["request_log_id"], name: "index_reply_logs_on_request_log_id"
+    t.index ["user_id"], name: "index_reply_logs_on_user_id"
   end
 
   create_table "request_days", force: :cascade do |t|
