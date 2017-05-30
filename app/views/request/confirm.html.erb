@@ -1,30 +1,60 @@
 
 
 <div class="container">
+
+  <!-- 共通 -->
   <h5>こんにちは<%= @user.name %>さん</h5>
-  <small><a href="#"><%= @user.name %>さんでない場合はこちら</a></small>
 
-  <p>家族留学の申し込み内容は以下の通りです。</p>
 
-  <table>
+  <!-- 締め切っていた場合 -->
+  <% if @log.status != 0 %>
 
-    <tbody>
-    <tr>
-      <td>名前:&nbsp;</td>
-      <td><%= @log.name %></td>
-    </tr>
-    <tr>
-      <td>所属:&nbsp;</td>
-      <td><%= @log.belongs %></td>
-    </tr>
-    <% @days.each do |day| %>
+      <h5>募集は修了しました。</h5>
+      <p>次回よろしくお願い致します。</p>
+
+  <% else %>
+
+      <!-- 応募可能 -->
+      <p>家族留学の申し込み内容は以下の通りです。</p>
+
+      <table>
+
+        <tbody>
         <tr>
-          <td>参加希望日:&nbsp;</td>
-          <td><%= day.day %></td>
+          <td>名前:&nbsp;</td>
+          <td><%= @log.name %></td>
         </tr>
-    <% end %>
-    </tbody>
-  </table>
+        <tr>
+          <td>所属:&nbsp;</td>
+          <td><%= @log.belongs %></td>
+        </tr>
+        <% @days.each_with_index do |day, i| %>
+            <tr>
+              <td>参加希望日(<%= i + 1 %>):&nbsp;</td>
+              <td><%= day.day %></td>
+            </tr>
+        <% end %>
+        <tr>
+          <td>所属: </td>
+          <td><%= @log.belongs %></td>
+        </tr>
+        <tr>
+          <td>最寄駅: </td>
+          <td><%= @log.station %></td>
+        </tr>
+        <tr>
+          <td>希望理由: </td>
+          <td><%= @log.motivation %></td>
+        </tr>
+        </tbody>
+      </table>
+
+      <h4>家族留学を受け入れますか？（家族留学実施日は参加希望日の時間を変えることも可能です。）</h4>
+      <%= link_to '受け入れる', '#', :class => 'btn btn-default' %>
+      <%= link_to '今回は辞退する', '#', :class => 'btn btn-default' %>
+
+<% end %>
+
 </div>
 
 
