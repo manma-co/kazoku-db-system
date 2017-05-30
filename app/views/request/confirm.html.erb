@@ -50,7 +50,7 @@
       </table>
 
       <h4>家族留学を受け入れますか？（家族留学実施日は参加希望日の時間を変えることも可能です。）</h4>
-      <%= link_to '受け入れる', '#', :class => 'btn btn-default' %>
+      <%= link_to '受け入れる', reply_path(params[:id], email: params[:email]), :class => 'btn btn-default' %>
       <%= link_to '今回は辞退する', '#', :class => 'btn btn-default' %>
 
 <% end %>

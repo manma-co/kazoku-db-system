@@ -29,6 +29,7 @@ Rails.application.routes.draw do
   end
 
   get 'request/:id' => 'request#confirm'
+  get 'reply/:id' => 'request#reply', as: 'reply'
 
   devise_for :admins, :controllers => {
       :omniauth_callbacks => "admin/omniauth_callbacks"
