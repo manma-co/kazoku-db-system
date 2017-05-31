@@ -97,6 +97,7 @@ class Admin::SpreadSheetsController < Admin::AdminController
           user_id: user.id,
           email_pc: r[Settings.sheet.email_pc],
           email_phone: r[Settings.sheet.email_phone],
+          phone_number: r[Settings.sheet.phone_number]
       }
       contact = Contact.where(contact_query).first
       contact ||= Contact.create(contact_query)
