@@ -48,7 +48,7 @@ locations = [
 locations.each_with_index do |location, i|
   user = User.create(name: "no_name_#{i+1}", kana: 'no_name', gender: 0, is_family: true)
   Location.create(user_id: user.id, address: location)
-  Contact.create(user_id: user.id, email_pc: "abc#{i+1}@pc.com", email_phone: "abc#{i+1}@phone.com")
+  Contact.create(user_id: user.id, email_pc: "abc#{i+1}@pc.com", email_phone: "abc#{i+1}@phone.com", phone_number: '000-0000-0000')
 
   profile_family = ProfileFamily.create(
       user_id: user.id, job_style: 1, number_of_children: 1, is_photo_ok: 1, is_report_ok: 1, is_male_ok: 1,
