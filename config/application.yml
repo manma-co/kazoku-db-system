@@ -30,6 +30,7 @@ defaults: &defaults
     fathers_career: 27
     opinion_or_question: 28
     is_male: 29
+    phone_number: 30
   job_style:
     # none: 指定なし
     # both: 共働き
