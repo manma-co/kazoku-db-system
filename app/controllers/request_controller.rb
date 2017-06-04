@@ -4,6 +4,9 @@ class RequestController < ApplicationController
 
   def confirm
     @log = RequestLog.find_by(hashed_key: params[:id])
+    # Check exist
+    redirect_to deny_path if @log.nil?
+
     @days = @log.request_day unless @log.nil?
     contact = Contact.find_by(email_pc: params[:email])
     @user = contact.user if contact
@@ -11,7 +14,7 @@ class RequestController < ApplicationController
       reply = ReplyLog.find_by(request_log_id: @log.id, user_id: @user.id)
       redirect_to deny_path if reply
     end
-    redirect_to deny_path if @user.nil?
+
   end
 
   def reply
