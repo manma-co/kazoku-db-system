@@ -30,6 +30,7 @@ Rails.application.routes.draw do
 
   get 'request/:id' => 'request#confirm'
   get 'reply/:id' => 'request#reply', as: 'reply'
+  post 'reply/create' => 'request#event_create', as: 'event_dates'
   get 'deny' => 'request#deny', as: 'deny'
 
   devise_for :admins, :controllers => {

@@ -1,1 +1,17 @@
-<%= yield %>
+<!DOCTYPE html>
+<html>
+<head>
+  <title>家族留学</title>
+  <%= csrf_meta_tags %>
+  <%#= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => 'reload' %>
+  <%= javascript_include_tag 'application', 'data-turbolinks-track' => 'reload' %>
+</head>
+
+<body>
+<main>
+  <div class="container">
+    <%= yield %>
+  </div>
+</main>
+</body>
+</html>

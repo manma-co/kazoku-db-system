@@ -1,7 +1,7 @@
-class CreateEvents < ActiveRecord::Migration[5.0]
+class CreateEventDates < ActiveRecord::Migration[5.0]
   def change
-    create_table :events do |t|
-      t.date :date
+    create_table :event_dates do |t|
+      t.date :hold_date
       t.time :start_time
       t.time :end_time
       t.belongs_to :user, foreign_key: true
