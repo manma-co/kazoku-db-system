@@ -82,6 +82,7 @@ class RequestController < ApplicationController
       )
       # TODO: check uniqueness
       reply.save!
+      # TODO: send mail to user.
       redirect_to :deny
     end
   end
