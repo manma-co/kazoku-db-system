@@ -33,6 +33,7 @@ Rails.application.routes.draw do
   post 'reply/create' => 'request#event_create', as: 'event_dates'
   get 'deny' => 'request#deny', as: 'deny'
   get 'thanks' => 'request#thanks', as: 'thanks'
+  get 'sorry' => 'request#sorry', as: 'sorry'
 
   devise_for :admins, :controllers => {
       :omniauth_callbacks => "admin/omniauth_callbacks"

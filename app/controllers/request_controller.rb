@@ -5,7 +5,7 @@ class RequestController < ApplicationController
   def confirm
     @log = RequestLog.find_by(hashed_key: params[:id])
     # Check exist
-    redirect_to deny_path if @log.nil?
+    return redirect_to deny_path if @log.nil?
 
     @days = @log.request_day unless @log.nil?
     contact = Contact.find_by(email_pc: params[:email])
@@ -13,7 +13,13 @@ class RequestController < ApplicationController
     if @user
       # 回答済みの場合はリダイレクト
       reply = ReplyLog.find_by(request_log_id: @log.id, user_id: @user.id)
-      redirect_to deny_path if reply
+      puts "Already responsed..."
+      return redirect_to deny_path if reply
+
+      # すでにマッチングが成立していたらリダイレクト
+      event = EventDate.find_by(request_log_id: @log)
+      puts "Already matched..."
+      return redirect_to sorry_path if event
 
     else
       # ユーザーが存在しなかったらリダイレクト
@@ -83,6 +89,9 @@ class RequestController < ApplicationController
   def thanks
     event_id = session[:event]
     @event = EventDate.find(event_id)
+  end
+
+  def sorry
   end
 
   private
