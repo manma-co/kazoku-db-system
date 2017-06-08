@@ -13,4 +13,10 @@ class CommonMailerPreview < ActionMailer::Preview
     users = User.limit(3)
     CommonMailer.matched_email_to_family(title, body, users)
   end
+
+  def matching_start
+    email = "info@example.com"
+    CommonMailer.matching_start(email)
+  end
+  
 end

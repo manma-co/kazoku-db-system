@@ -52,4 +52,10 @@ class CommonMailer < ActionMailer::Base
       mail(to: 'info@manma.co', subject: title)
     end
   end
+
+  def matching_start(email)
+    mail(to: email, subject: '【manma】家族留学の打診を開始いたしました')
+  end
+
+
 end
