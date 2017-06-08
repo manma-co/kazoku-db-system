@@ -11,8 +11,13 @@ class RequestController < ApplicationController
     contact = Contact.find_by(email_pc: params[:email])
     @user = contact.user if contact
     if @user
+      # 回答済みの場合はリダイレクト
       reply = ReplyLog.find_by(request_log_id: @log.id, user_id: @user.id)
       redirect_to deny_path if reply
+
+    else
+      # ユーザーが存在しなかったらリダイレクト
+      redirect_to deny_path
     end
 
   end
@@ -47,8 +52,15 @@ class RequestController < ApplicationController
     event.event_time = event_params[:event_time]
     event.information = event_params[:information]
     if event.save!
-      # Send email to manma, family and candidate.
-      redirect_to root_path
+
+      session[:event] = event.id
+
+      # TODO: Send email to manma, family and candidate.
+
+      # Save new reply log
+      user.reply_log.create!(request_log: log, result: true)
+
+      redirect_to thanks_path
     end
 
   end
@@ -66,6 +78,11 @@ class RequestController < ApplicationController
       reply.save!
       redirect_to :deny
     end
+  end
+
+  def thanks
+    event_id = session[:event]
+    @event = EventDate.find(event_id)
   end
 
   private

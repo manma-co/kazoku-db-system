@@ -1,0 +1,27 @@
+<h3>ありがとうございました。</h3>
+
+
+<table>
+  <tbody>
+  <tr>
+    <td><lable>日程: </lable></td>
+    <td><%= @event.hold_date %></td>
+  </tr>
+  <tr>
+    <td>開始時間: </td>
+    <td><%= @event.start_time.strftime("%H時%M分") %></td>
+  </tr>
+  <tr>
+    <td>終了時間: </td>
+    <td><%= @event.end_time.strftime("%H時%M分") %></td>
+  </tr>
+  <tr>
+    <td>待ち合わせ場所</td>
+    <td><%= @event.meeting_place %></td>
+  </tr>
+  <tr>
+    <td>備考</td>
+    <td><%= @event.nil_replace %></td>
+  </tr>
+  </tbody>
+</table>
