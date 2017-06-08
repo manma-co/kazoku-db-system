@@ -101,16 +101,7 @@ class Admin::MailsController < Admin::AdminController
 【候補日】
 [manma_template_dates]
  
- ＝＝＝＝＝＝返信用フォーマット＝＝＝＝＝＝＝＝
-●受け入れ可能 or 不可
-●受け入れ可能日程：
-●受け入れ可能時間：
-※  家族留学の時間は５時間以上でご検討ください。
-●備考：
-＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
-連絡先： kubo@manma.co（担当：久保）
-
-リンクはこちら
+こちらのURLからご回答ください。
 [manma_request_link]
 
  
