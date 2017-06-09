@@ -10,12 +10,16 @@ class CommonMailer < ActionMailer::Base
   end
 
   # 家庭向けに家族留学希望者がいることを知らせるメール。
-  def request_email_to_family(title, body, users)
+  def request_email_to_family(title, body, users, hash, root_url)
     @users = users
     @body = body
     mails = ''
     @users.each do |user|
-      mails += user.contact.email_pc + ', '
+      mail = user.contact.email_pc
+      mails += mail + ', '
+      # Create hash link with user email
+      link = root_url + 'request/' + hash + '?email=' + mail
+      @body.sub!(/\[manma_request_link\]/, link)
     end
 
     # Insert to DB

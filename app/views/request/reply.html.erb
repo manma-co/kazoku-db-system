@@ -1,0 +1,81 @@
+<div class="container">
+  <h5><%= @user.name %>さん</h5>
+
+  家族留学の問い合わせ内容
+
+  <table>
+
+    <tbody>
+    <tr>
+      <td>名前:&nbsp;</td>
+      <td><%= @log.name %></td>
+    </tr>
+    <tr>
+      <td>所属:&nbsp;</td>
+      <td><%= @log.belongs %></td>
+    </tr>
+    <tr>
+      <td>最寄駅: </td>
+      <td><%= @log.station %></td>
+    </tr>
+    <tr>
+      <td>希望理由: </td>
+      <td><%= @log.motivation %></td>
+    </tr>
+    </tbody>
+  </table>
+
+  <hr>
+
+  <h4>問い合わせに対する返事</h4>
+  <%= form_for(@event) do |f| %>
+
+      <%= f.hidden_field :user_id, :value => @user.id %>
+      <%= f.hidden_field :request_log_id, :value => @log.id %>
+
+      <div class="row">
+        <label for="event_time_select">家族留学実施日</label>
+        <select id="event_time_select">
+          <option value="">選択してください</option>
+          <% @days.each do |d| %>
+              <option value="<%= d.day.strftime('%Y-%m-%d') + ' ' + d.time %>"><%= d.day.strftime('%Y-%m-%d') + ' ' + d.time %></option>
+          <% end %>
+        </select>
+        <!-- TODO: Add date time picker to avoid format error -->
+        <%= f.text_field :event_time %>
+        時間をずらしたい場合は時間の中で変更してください
+      </div>
+
+      <div class="row">
+        <%= f.label '待ち合わせ場所（駅・出口）' %>
+        <%= f.text_field :meeting_place, :placeholder => '東京駅 南中央出口' %>
+      </div>
+
+      <div class="row">
+        <%= f.label '緊急連絡先' %>
+        <%= f.text_field :emergency_contact, :placeholder => '090-1234-1234' %>
+      </div>
+
+      <div class="row">
+        <%= f.label '家族留学をこれまで行ったことはありますか？' %>
+        <small>ない場合は電話で簡単に説明いたします。</small>
+        <%= f.check_box :is_first_time, {}, checked_value = true, unchecked_value = false %>
+      </div>
+
+      <div class="row">
+        <%= f.label '備考' %>
+        <%= f.text_area :information, :placeholder => '備考がある場合はこちらに記入して下さい' %>
+      </div>
+
+      <%= f.submit 'この家族留学の問い合わせに対して確約をする' %>
+
+  <% end %>
+
+</div>
+
+
+<script type="text/javascript" charset="utf-8">
+    $('#event_time_select').on('change', function () {
+        $('#event_date_event_time').val( $(this).val());
+    })
+</script>

@@ -10,13 +10,17 @@ class Admin::MailsController < Admin::AdminController
     construct_dates
     @title = params[:title]
     construct_body
+    store_user_info
+    store_date_n_time construct_dates
   end
 
   def complete
     user_params
+    log, hash = save_request_log
+    save_request_day log
     @body = params[:body]
     @title = params[:title]
-    CommonMailer.request_email_to_family(@title, @body, @users).deliver_now
+    CommonMailer.request_email_to_family(@title, @body, @users, hash, root_url(only_path: false)).deliver_now
   end
 
   def histories
@@ -97,20 +101,13 @@ class Admin::MailsController < Admin::AdminController
 【候補日】
 [manma_template_dates]
  
- ＝＝＝＝＝＝返信用フォーマット＝＝＝＝＝＝＝＝
-●受け入れ可能 or 不可
-●受け入れ可能日程：
-●受け入れ可能時間：
-※  家族留学の時間は５時間以上でご検討ください。
-●備考：
-＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
-連絡先： kubo@manma.co（担当：久保）
-
+こちらのURLからご回答ください。
+[manma_request_link]
 
  
 ＊  注意事項＊
 ・  受け入れてくださる方はこちらのメールに返信という形でお願いいたします。その際にお手数ですが＜受け入れてくださる日程・時間＞を忘れずにご記入ください。
-・  こちらのシステムは返信が最も早かったご家庭に家族留学させていただきます。ご返信いただいても前に他のご家庭から返信が来ている場合はキャンセルとなります。ご了承ください。
+・  複数のご家庭に打診をさせていただいているため、どちらかのご家庭から受け入れ許可をいただいた時点でURLが無効となります。ご了承ください。
  
 
 何かご不明な点がございましたら、kubo@manma(担当：久保)までご連絡ください。

@@ -26,3 +26,4 @@ config/environments/test.rb
 .byebug_history
 .envrc
 .credentials/
+run.sh

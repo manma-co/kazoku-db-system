@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170513083510) do
+ActiveRecord::Schema.define(version: 20170604011839) do
 
   create_table "admins", force: :cascade do |t|
     t.string   "email",              default: "", null: false
@@ -46,6 +46,22 @@ ActiveRecord::Schema.define(version: 20170513083510) do
     t.datetime "time_delivered"
     t.datetime "created_at",     null: false
     t.datetime "updated_at",     null: false
+  end
+
+  create_table "event_dates", force: :cascade do |t|
+    t.date     "hold_date"
+    t.time     "start_time"
+    t.time     "end_time"
+    t.integer  "user_id"
+    t.integer  "request_log_id"
+    t.string   "meeting_place"
+    t.string   "emergency_contact"
+    t.boolean  "is_first_time",     default: false
+    t.text     "information"
+    t.datetime "created_at",                        null: false
+    t.datetime "updated_at",                        null: false
+    t.index ["request_log_id"], name: "index_event_dates_on_request_log_id"
+    t.index ["user_id"], name: "index_event_dates_on_user_id"
   end
 
   create_table "job_domains", force: :cascade do |t|
@@ -96,6 +112,37 @@ ActiveRecord::Schema.define(version: 20170513083510) do
     t.integer  "job_domain_id"
     t.index ["job_domain_id"], name: "index_profile_individuals_on_job_domain_id"
     t.index ["profile_family_id"], name: "index_profile_individuals_on_profile_family_id"
+  end
+
+  create_table "reply_logs", force: :cascade do |t|
+    t.boolean  "result"
+    t.integer  "request_log_id"
+    t.integer  "user_id"
+    t.datetime "created_at",     null: false
+    t.datetime "updated_at",     null: false
+    t.index ["request_log_id"], name: "index_reply_logs_on_request_log_id"
+    t.index ["user_id"], name: "index_reply_logs_on_user_id"
+  end
+
+  create_table "request_days", force: :cascade do |t|
+    t.integer  "request_log_id"
+    t.date     "day"
+    t.string   "time"
+    t.boolean  "decided",        default: false
+    t.datetime "created_at",                     null: false
+    t.datetime "updated_at",                     null: false
+    t.index ["request_log_id"], name: "index_request_days_on_request_log_id"
+  end
+
+  create_table "request_logs", force: :cascade do |t|
+    t.string   "hashed_key"
+    t.string   "name"
+    t.string   "belongs"
+    t.string   "station"
+    t.text     "motivation"
+    t.integer  "status",     default: 0
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
   end
 
   create_table "users", force: :cascade do |t|
