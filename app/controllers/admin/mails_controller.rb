@@ -7,6 +7,7 @@ class Admin::MailsController < Admin::AdminController
 
   def confirm
     user_params
+    session[:email] = params[:email]
     construct_dates
     @title = params[:title]
     construct_body
@@ -17,6 +18,9 @@ class Admin::MailsController < Admin::AdminController
     @body = params[:body]
     @title = params[:title]
     CommonMailer.request_email_to_family(@title, @body, @users).deliver_now
+    email = session[:email]
+    CommonMailer.matching_start(email).deliver_now if email
+    session[:email] = nil
   end
 
   def histories
