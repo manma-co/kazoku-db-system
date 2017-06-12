@@ -9,43 +9,46 @@ class CommonMailer < ActionMailer::Base
     mail(to: @contact.email_pc, subject: '【重要 / 家族留学】マッチングしました')
   end
 
+
   # 家庭向けに家族留学希望者がいることを知らせるメール。
-  def request_email_to_family(title, body, users, hash, root_url)
-    @users = users
-    @body = body
-    mails = ''
-    @users.each do |user|
-      mail = user.contact.email_pc
-      mails += mail + ', '
-      # Create hash link with user email
-      link = root_url + 'request/' + hash + '?email=' + mail
-      @body.sub!(/\[manma_request_link\]/, link)
-    end
+  def request_email_to_family(title, body, user, hash, root_url)
+
+    # Disable memory pointer with dup method.
+    mail_body = body.dup
+
+    mail = user.contact.email_pc
+
+    # Use user to show user name for each email.
+    @user = user
+
+    # Create and insert hash link with user email
+    link = root_url + 'request/' + hash + '?email=' + mail
+    mail_body.sub!(/\[manma_request_link\]/, link)
 
     # Insert to DB
     EmailQueue.create!(
         :sender_address => 'info@manma.co',
-        :to_address => 'info@manma.co',
-        :bcc_address => mails,
+        :to_address => mail,
         :subject => title,
-        :body_text => body,
+        :body_text => mail_body,
         :retry_count => 0,
-        :sent_status => 0,
+        :sent_status => false,
         :email_type => 'request_email_to_family'
     )
-
+    @body = mail_body
     # Development の時はyoshihito.meからとりあえず送る設定。
     # Send Grid を使ってmanma.coからメールを送るようにする。
     if Rails.env == 'development'
-      mail(to: 'info@example.com', bcc: mails, from: 'manma <info@yoshihito.me>', subject: 'テスト送信' + title)
+      mail(to: mail, from: 'manma <info@yoshihito.me>', subject: 'テスト送信' + title)
     else
-      mail(to: 'info@manma.co', bcc: mails, subject: title)
+      mail(to: mail, subject: title)
     end
 
     # Update email queue status
-    queue = EmailQueue.where(bcc_address: mails).order('created_at desc').limit(1)
+    queue = EmailQueue.where(to_address: mail).order('created_at desc').limit(1)
     queue.update(sent_status: true, time_delivered: Time.now)
   end
+
 
   # info@manma.co にメールを送る設定。
   def notify_to_manma(title, body)

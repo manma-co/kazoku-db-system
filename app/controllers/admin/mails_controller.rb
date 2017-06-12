@@ -20,7 +20,11 @@ class Admin::MailsController < Admin::AdminController
     save_request_day log
     @body = params[:body]
     @title = params[:title]
-    CommonMailer.request_email_to_family(@title, @body, @users, hash, root_url(only_path: false)).deliver_now
+
+    @users.each do |user|
+      CommonMailer.request_email_to_family(@title, @body, user, hash, root_url(only_path: false)).deliver_now
+    end
+
   end
 
   def histories
@@ -80,8 +84,6 @@ class Admin::MailsController < Admin::AdminController
   def init_mail
     @title =  '【要返信】家族留学受け入れのお願い'
     @body = <<-EOS
- 
-受け入れ家庭のみなさまへ
  
 こんにちは、manmaです。
 いつも大変お世話になっております。
