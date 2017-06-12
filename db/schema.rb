@@ -40,12 +40,14 @@ ActiveRecord::Schema.define(version: 20170604011839) do
     t.string   "bcc_address"
     t.string   "subject"
     t.text     "body_text"
+    t.integer  "request_log_id"
     t.integer  "retry_count"
     t.boolean  "sent_status"
     t.string   "email_type"
     t.datetime "time_delivered"
     t.datetime "created_at",     null: false
     t.datetime "updated_at",     null: false
+    t.index ["request_log_id"], name: "index_email_queues_on_request_log_id"
   end
 
   create_table "event_dates", force: :cascade do |t|

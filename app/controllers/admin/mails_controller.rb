@@ -22,7 +22,7 @@ class Admin::MailsController < Admin::AdminController
     @title = params[:title]
 
     @users.each do |user|
-      CommonMailer.request_email_to_family(@title, @body, user, hash, root_url(only_path: false)).deliver_now
+      CommonMailer.request_email_to_family(@title, @body, user, hash, root_url(only_path: false), log).deliver_now
     end
 
   end

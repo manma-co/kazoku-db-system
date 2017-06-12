@@ -11,7 +11,7 @@ class CommonMailer < ActionMailer::Base
 
 
   # 家庭向けに家族留学希望者がいることを知らせるメール。
-  def request_email_to_family(title, body, user, hash, root_url)
+  def request_email_to_family(title, body, user, hash, root_url, log)
 
     # Disable memory pointer with dup method.
     mail_body = body.dup
@@ -31,6 +31,7 @@ class CommonMailer < ActionMailer::Base
         :to_address => mail,
         :subject => title,
         :body_text => mail_body,
+        :request_log => log,
         :retry_count => 0,
         :sent_status => false,
         :email_type => 'request_email_to_family'
