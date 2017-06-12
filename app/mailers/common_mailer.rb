@@ -46,18 +46,38 @@ class CommonMailer < ActionMailer::Base
     end
 
     # Update email queue status
-    queue = EmailQueue.where(to_address: mail).order('created_at desc').limit(1)
+    queue = EmailQueue.where(to_address: mail, request_log: log).limit(1)
     queue.update(sent_status: true, time_delivered: Time.now)
   end
 
 
-  # info@manma.co にメールを送る設定。
-  def notify_to_manma(title, body)
-    @body = body
+  # info@manma.co にマッチング成立時に送るメール。
+  # 電話の日付が入る場合もあり
+  def notify_to_manma(tel_time, event)
+    @tel_time = tel_time
+    @event = event unless event.nil?
+
+    title = '【重要】マッチング成立のお知らせ。'
+    title || title += @event.start_time.strftime('%Y年%m月%d日')
+
     if Rails.env == 'development'
       mail(to: 'info@example.com', from: 'manma <info@yoshihito.me>', subject: 'テスト送信' + title)
     else
       mail(to: 'info@manma.co', subject: title)
     end
+
+    # Insert to DB
+    EmailQueue.create!(
+        :sender_address => 'info@manma.co',
+        :to_address => 'info@manma.co',
+        :subject => title,
+        :body_text => '',
+        :request_log => RequestLog.first,
+        :retry_count => 0,
+        :sent_status => true,
+        :email_type => 'notify_to_manma',
+        :time_delivered => Time.now
+    )
+
   end
 end

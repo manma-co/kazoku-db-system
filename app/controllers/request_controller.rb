@@ -61,7 +61,13 @@ class RequestController < ApplicationController
 
       session[:event] = event.id
 
-      # TODO: Send email to manma, family and candidate.
+      # TODO: Send email to manma.
+      CommonMailer.notify_to_manma(params[:tel_time], event).deliver_now
+
+      # TODO: Send email to family.
+
+      # TODO: Send email to candidate.
+
 
       # Save new reply log
       user.reply_log.create!(request_log: log, result: true)

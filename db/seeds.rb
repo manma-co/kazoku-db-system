@@ -89,5 +89,8 @@ dev_accounts.each do |dac|
   )
 end
 
+# リクエストログを参照しない場合のログを用意しておく。
+RequestLog.create!
+
 
 

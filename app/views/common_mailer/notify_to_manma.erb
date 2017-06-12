@@ -1,1 +1,24 @@
-<%= simple_format(@body) %>
+
+<small>こちらは自動配信メールです</small>
+
+<h4>以下の内容でマッチングが成立しました。</h4>
+
+<small>電話面談がある場合は速やかに確認して予定を参加家庭に連絡してください</small>
+
+<!-- TODO: Enhance this later -->
+
+<% unless @event.nil? %>
+<p>イベント内容</p>
+<table>
+  <tbody>
+  <tr>
+    <td>イベント開始日時: </td>
+    <td><%= @event.hold_date.strftime('%Y年%m月%d日') %><%= @event.start_time.strftime('%HH:%MM') %> ~ <%= @event.end_time.strftime('%HH:%MM') %></td>
+  </tr>
+  <tr>
+    <td>集合場所: </td>
+    <td><%= @event.meeting_place %></td>
+  </tr>
+  </tbody>
+</table>
+<% end %>
