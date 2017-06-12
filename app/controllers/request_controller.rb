@@ -10,15 +10,14 @@ class RequestController < ApplicationController
     @days = @log.request_day unless @log.nil?
     contact = Contact.find_by(email_pc: params[:email])
     @user = contact.user if contact
+
     if @user
       # 回答済みの場合はリダイレクト
       reply = ReplyLog.find_by(request_log_id: @log.id, user_id: @user.id)
-      puts "Already responsed..."
       return redirect_to deny_path if reply
 
       # すでにマッチングが成立していたらリダイレクト
       event = EventDate.find_by(request_log_id: @log)
-      puts "Already matched..."
       return redirect_to sorry_path if event
 
     else
@@ -57,6 +56,7 @@ class RequestController < ApplicationController
     event.emergency_contact = event_params[:emergency_contact]
     event.event_time = event_params[:event_time]
     event.information = event_params[:information]
+
     if event.save!
 
       session[:event] = event.id
@@ -67,6 +67,10 @@ class RequestController < ApplicationController
       user.reply_log.create!(request_log: log, result: true)
 
       redirect_to thanks_path
+
+    else
+
+      redirect_to reply_path
     end
 
   end

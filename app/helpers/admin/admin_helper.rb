@@ -21,8 +21,7 @@ module Admin::AdminHelper
         :name       => session[:student_name],
         :belongs    => session[:belongs_to],
         :station    => session[:station],
-        :motivation => session[:motivation],
-        :status     => false
+        :motivation => session[:motivation]
     )
 
     # データの重複を防ぐために一度空にする
