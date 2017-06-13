@@ -25,6 +25,9 @@ class CommonMailer < ActionMailer::Base
     link = root_url + 'request/' + hash + '?email=' + mail
     mail_body.sub!(/\[manma_request_link\]/, link)
 
+    # Replace user name.
+    mail_body.sub!(/\[manma_user_name\]/, @user.name)
+
     # Insert to DB
     EmailQueue.create!(
         :sender_address => 'info@manma.co',
@@ -80,4 +83,14 @@ class CommonMailer < ActionMailer::Base
     )
 
   end
+
+  # マッチング成立時に家庭に向けて送る
+  def notify_to_family_matched(event)
+    @user = User.find(event.user_id).first
+    mail = @user.contact.email_pc
+    title = ''
+
+    mail(to: 'info@manma.co', subject: title)
+  end
+
 end
