@@ -1,5 +1,12 @@
 class CommonMailer < ActionMailer::Base
-  default from: 'manma <info@manma.co>'
+
+  # Development の時はyoshihito.meからとりあえず送る設定。
+  if Rails.env == 'development'
+    default from: 'manma <info@yoshihito.me>'
+  else
+    default from: 'manma <info@manma.co>'
+  end
+
   layout 'mailer'
 
   # マッチング成立時に使う。
@@ -40,13 +47,8 @@ class CommonMailer < ActionMailer::Base
         :email_type => 'request_email_to_family'
     )
     @body = mail_body
-    # Development の時はyoshihito.meからとりあえず送る設定。
     # Send Grid を使ってmanma.coからメールを送るようにする。
-    if Rails.env == 'development'
-      mail(to: mail, from: 'manma <info@yoshihito.me>', subject: 'テスト送信' + title)
-    else
-      mail(to: mail, subject: title)
-    end
+    mail(to: 'info@manma.co', bcc: mails, subject: title)
 
     # Update email queue status
     queue = EmailQueue.where(to_address: mail, request_log: log).limit(1)
@@ -81,7 +83,6 @@ class CommonMailer < ActionMailer::Base
         :email_type => 'notify_to_manma',
         :time_delivered => Time.now
     )
-
   end
 
   # マッチング成立時に家庭に向けて送る
@@ -93,4 +94,7 @@ class CommonMailer < ActionMailer::Base
     mail(to: 'info@manma.co', subject: title)
   end
 
+  def matching_start(email)
+    mail(to: email, subject: '【manma】家族留学の打診を開始いたしました')
+  end
 end

@@ -15,10 +15,18 @@ class CommonMailerPreview < ActionMailer::Preview
     CommonMailer.matched_email_to_family(title, body, users)
   end
 
+
   # http://localhost:3000/rails/mailers/common_mailer/notify_to_manma
   def notify_to_manma
     event = EventDate.first
     tel_time = '2017-07-07 20:00:00'
     CommonMailer.notify_to_manma(tel_time, event)
   end
+
+  def matching_start
+    email = "info@example.com"
+    CommonMailer.matching_start(email)
+  end
+  
+
 end
