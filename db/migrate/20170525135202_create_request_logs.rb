@@ -5,6 +5,8 @@ class CreateRequestLogs < ActiveRecord::Migration[5.0]
       t.string :name
       t.string :belongs
       t.string :station
+      t.string :email
+      t.string :emergency
       t.text :motivation
 
       t.timestamps

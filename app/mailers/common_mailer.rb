@@ -48,7 +48,7 @@ class CommonMailer < ActionMailer::Base
     )
     @body = mail_body
     # Send Grid を使ってmanma.coからメールを送るようにする。
-    mail(to: 'info@manma.co', bcc: mails, subject: title)
+    mail(to: mail, subject: title)
 
     # Update email queue status
     queue = EmailQueue.where(to_address: mail, request_log: log).limit(1)
@@ -88,10 +88,16 @@ class CommonMailer < ActionMailer::Base
   # マッチング成立時に家庭に向けて送る
   def notify_to_family_matched(event)
     @user = User.find(event.user_id).first
+    request_log = RequestLog.find(event.request_log_id).first
     mail = @user.contact.email_pc
-    title = ''
+    title = '【manma】家族留学を受け入れてくださりありがとうございます'
+    @student = {
+        name: request_log.name,
+        belongs: request_log.belongs,
 
-    mail(to: 'info@manma.co', subject: title)
+    }
+
+    mail(to: mail, subject: title)
   end
 
   def matching_start(email)

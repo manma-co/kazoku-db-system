@@ -141,6 +141,8 @@ ActiveRecord::Schema.define(version: 20170604011839) do
     t.string   "name"
     t.string   "belongs"
     t.string   "station"
+    t.string   "email"
+    t.string   "emergency"
     t.text     "motivation"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false

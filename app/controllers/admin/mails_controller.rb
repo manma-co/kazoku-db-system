@@ -8,6 +8,7 @@ class Admin::MailsController < Admin::AdminController
   def confirm
     user_params
     session[:email] = params[:email]
+    session[:emergency] = params[:emergency]
     construct_dates
     @title = params[:title]
     construct_body
@@ -26,9 +27,8 @@ class Admin::MailsController < Admin::AdminController
       CommonMailer.request_email_to_family(@title, @body, user, hash, root_url(only_path: false), log).deliver_now
     end
 
-    email = session[:email]
+    email = log.email
     CommonMailer.matching_start(email).deliver_now if email
-    session[:email] = nil
 
   end
 
