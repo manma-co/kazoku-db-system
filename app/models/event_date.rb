@@ -7,12 +7,11 @@ class EventDate < ApplicationRecord
 
 
   def nil_replace
-    if self.information == ""
-      "特にありません"
-    else
-      self.information
-    end
+    self.information == "" ? "特にありません" : self.information
+  end
 
+  def is_first?
+    self.is_first_time ? "初めて" : "初めてではない"
   end
 
 end

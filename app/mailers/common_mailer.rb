@@ -61,15 +61,12 @@ class CommonMailer < ActionMailer::Base
   def notify_to_manma(tel_time, event)
     @tel_time = tel_time
     @event = event unless event.nil?
+    @user = User.find(event.user_id)
 
     title = '【重要】マッチング成立のお知らせ。'
     title || title += @event.start_time.strftime('%Y年%m月%d日')
 
-    if Rails.env == 'development'
-      mail(to: 'info@example.com', from: 'manma <info@yoshihito.me>', subject: 'テスト送信' + title)
-    else
-      mail(to: 'info@manma.co', subject: title)
-    end
+    mail(to: 'info@manma.co', subject: title)
 
     # Insert to DB
     EmailQueue.create!(
@@ -91,11 +88,8 @@ class CommonMailer < ActionMailer::Base
     request_log = RequestLog.find(event.request_log_id).first
     mail = @user.contact.email_pc
     title = '【manma】家族留学を受け入れてくださりありがとうございます'
-    @student = {
-        name: request_log.name,
-        belongs: request_log.belongs,
-
-    }
+    @student = request_log
+    @event = EventDate.find_by(request_log_id: request_log.id).first
 
     mail(to: mail, subject: title)
   end

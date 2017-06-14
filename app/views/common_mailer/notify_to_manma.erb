@@ -13,12 +13,40 @@
   <tbody>
   <tr>
     <td>イベント開始日時: </td>
-    <td><%= @event.hold_date.strftime('%Y年%m月%d日') %><%= @event.start_time.strftime('%HH:%MM') %> ~ <%= @event.end_time.strftime('%HH:%MM') %></td>
+    <td><%= @event.hold_date.strftime('%Y年%m月%d日') %><%= @event.start_time.strftime('%H:%M') %> ~ <%= @event.end_time.strftime('%H:%M') %></td>
   </tr>
   <tr>
     <td>集合場所: </td>
     <td><%= @event.meeting_place %></td>
   </tr>
+  <tr>
+    <td>家庭情報: </td>
+    <td><%= @user.name %></td>
+  </tr>
+  <tr>
+    <td>家庭連絡先: </td>
+    <td><%= @user.contact.email_pc %></td>
+  </tr>
+  <tr>
+    <td>初めての家族留学か: </td>
+    <td><%= @event.is_first? %></td>
+  </tr>
+  <tr>
+    <td>特記事項: </td>
+    <td><%= @event.information %></td>
+  </tr>
   </tbody>
 </table>
+<% end %>
+<hr>
+<% if @tel_time %>
+    <p>電話可能時間</p>e
+    <table>
+      <tbody>
+      <tr>
+        <td>電話可能候補日: </td>
+        <td><%= @tel_time %></td>
+      </tr>
+      </tbody>
+    </table>
 <% end %>

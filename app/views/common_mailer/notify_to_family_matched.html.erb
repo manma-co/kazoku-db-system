@@ -11,13 +11,13 @@
 
 ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
 
-・参加学生名:
-・参加学生の所属名:
-・参加学生の連絡先:
-・実施日時:
-・実施開始時間:
-・実施終了時間:
-・集合場所:
+・参加学生名: <%= @student.name %>
+・参加学生の所属名: <%= @student.belongs %>
+・参加学生の連絡先: <%= @student.emergency %>
+・実施日時: <%= @event.hold_date %>
+・実施開始時間: <%= @event.start_time %>
+・実施終了時間: <%= @event.end_time %>
+・集合場所: <%= @event.meeting_place %>
 
 ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
 

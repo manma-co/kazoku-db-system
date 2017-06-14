@@ -7,8 +7,6 @@ class Admin::MailsController < Admin::AdminController
 
   def confirm
     user_params
-    session[:email] = params[:email]
-    session[:emergency] = params[:emergency]
     construct_dates
     @title = params[:title]
     construct_body
