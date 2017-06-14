@@ -73,4 +73,9 @@ manma
     CommonMailer.matching_start(email)
   end
 
+  def deny
+    user = User.first
+    CommonMailer.deny(user)
+  end
+
 end

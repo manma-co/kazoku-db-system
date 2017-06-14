@@ -91,9 +91,10 @@ class RequestController < ApplicationController
           result: false,
           request_log_id: params[:log_id]
       )
-      # TODO: check uniqueness
+
       reply.save!
       # TODO: send mail to user.
+      CommonMailer.deny(user).deliver_now
       redirect_to :deny
     end
   end

@@ -113,4 +113,11 @@ class CommonMailer < ActionMailer::Base
   def matching_start(email)
     mail(to: email, subject: '【manma】家族留学の打診を開始いたしました')
   end
+
+  def deny(user)
+    @user = user
+    title = "【manma】家族留学受け入れ可否のご回答をありがとうございました"
+    mail(to: user.contact.email_pc, subject: title)
+  end
+  
 end
