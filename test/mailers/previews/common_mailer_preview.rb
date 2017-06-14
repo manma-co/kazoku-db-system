@@ -62,10 +62,15 @@ manma
     CommonMailer.notify_to_manma(tel_time, event)
   end
 
+  # http://localhost:3000/rails/mailers/common_mailer/notify_to_candidate
+  def notify_to_candidate
+    event = EventDate.first
+    CommonMailer.notify_to_candidate(event)
+  end
+
   def matching_start
     email = "info@example.com"
     CommonMailer.matching_start(email)
   end
-  
 
 end

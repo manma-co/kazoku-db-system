@@ -19,13 +19,13 @@ module Admin::AdminHelper
 
     # Save log data
     @log = RequestLog.create(
-        :hashed_key         => hashed_key,
-        :name               => session[:student_name],
-        :belongs            => session[:belongs_to],
-        :station            => session[:station],
-        :motivation         => session[:motivation],
-        :email              => session[:email],
-        :emergency_contact  => session[:emergency]
+        :hashed_key  => hashed_key,
+        :name        => session[:student_name],
+        :belongs     => session[:belongs_to],
+        :station     => session[:station],
+        :motivation  => session[:motivation],
+        :email       => session[:email],
+        :emergency   => session[:emergency]
     )
 
     # データの重複を防ぐために一度空にする
@@ -33,8 +33,8 @@ module Admin::AdminHelper
     session[:belongs_to]    = nil
     session[:station]       = nil
     session[:motivation]    = nil
-    session[:email]    = nil
-    session[:emergency]    = nil
+    session[:email]         = nil
+    session[:emergency]     = nil
 
     # 日付保存のためにデータを返却
     return @log, hashed_key

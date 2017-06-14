@@ -66,7 +66,12 @@ class CommonMailer < ActionMailer::Base
     title = '【重要】マッチング成立のお知らせ。'
     title || title += @event.start_time.strftime('%Y年%m月%d日')
 
-    mail(to: 'info@manma.co', subject: title)
+    if Rails.env == 'development'
+      mail(to: 'info@yoshihito.me', subject: title)
+    else
+      mail(to: 'info@manma.co', subject: title)
+    end
+
 
     # Insert to DB
     EmailQueue.create!(
@@ -84,16 +89,27 @@ class CommonMailer < ActionMailer::Base
 
   # マッチング成立時に家庭に向けて送る
   def notify_to_family_matched(event)
-    @user = User.find(event.user_id).first
-    request_log = RequestLog.find(event.request_log_id).first
+    @user = User.find(event.user_id)
+    request_log = RequestLog.find(event.request_log_id)
     mail = @user.contact.email_pc
     title = '【manma】家族留学を受け入れてくださりありがとうございます'
     @student = request_log
-    @event = EventDate.find_by(request_log_id: request_log.id).first
+    @event = EventDate.find_by(request_log_id: request_log.id)
 
     mail(to: mail, subject: title)
   end
 
+  # マッチング成立時に参加者に向けて送る
+  def notify_to_candidate(event)
+    @event = event
+    @log = RequestLog.find(event.request_log_id)
+    @user = User.find(event.user_id)
+    title = "【manma】家族留学のマッチングが成立いたしました"
+
+    mail(to: @log.email, subject: title)
+  end
+
+  # マッチング開始時に参加者に向けて送る
   def matching_start(email)
     mail(to: email, subject: '【manma】家族留学の打診を開始いたしました')
   end
