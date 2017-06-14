@@ -98,7 +98,7 @@ class Admin::MailsController < Admin::AdminController
 [manma_user_name]さまのお宅への家族留学を希望されている方がいらっしゃいます。 
 
 下記打診内容をご確認いただき、受け入れ可能な日程がございましたら
-＜受け入れ日程・時間＞を明記の上、こちらのメールにご返信ください。
+下記URLよりご回答をお願いいたします。
 
  
 ○  参加者プロフィール
@@ -110,7 +110,7 @@ class Admin::MailsController < Admin::AdminController
 【候補日】
 [manma_template_dates]
  
-こちらのURLからご回答ください。
+【回答用URL】
 [manma_request_link]
 
  
