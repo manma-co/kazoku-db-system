@@ -38,8 +38,9 @@
   </tbody>
 </table>
 <% end %>
-<hr>
-<% if @tel_time %>
+
+<% if @tel_time[0] != "" %>
+    <hr>
     <p>電話可能時間</p>
     <table>
       <tbody>

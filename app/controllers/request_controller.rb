@@ -93,15 +93,20 @@ class RequestController < ApplicationController
       )
 
       reply.save!
-      # TODO: send mail to user.
+      # Send mail to user.
       CommonMailer.deny(user).deliver_now
       redirect_to :deny
     end
   end
 
   def thanks
-    event_id = session[:event]
-    @event = EventDate.find(event_id)
+    if session[:event]
+      event_id = session[:event]
+      @event = EventDate.find(event_id)
+      session[:event] = nil
+    else
+      redirect_to deny_path
+    end
   end
 
   def sorry

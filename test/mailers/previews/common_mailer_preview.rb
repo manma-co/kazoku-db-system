@@ -58,7 +58,7 @@ manma
   # http://localhost:3000/rails/mailers/common_mailer/notify_to_manma
   def notify_to_manma
     event = EventDate.first
-    tel_time = '2017-07-07 20:00:00 2017-07-10 20:00:00'
+    tel_time = ["2017-07-20 10:00", "", ""]
     CommonMailer.notify_to_manma(tel_time, event)
   end
 

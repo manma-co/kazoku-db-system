@@ -56,7 +56,7 @@ class CommonMailer < ActionMailer::Base
   end
 
 
-  # info@manma.co にマッチング成立時に送るメール。
+  # マッチング成立時にmanmaに送るメール。
   # 電話の日付が入る場合もあり
   def notify_to_manma(tel_time, event)
     @tel_time = tel_time
@@ -66,12 +66,8 @@ class CommonMailer < ActionMailer::Base
     title = '【重要】マッチング成立のお知らせ。'
     title || title += @event.start_time.strftime('%Y年%m月%d日')
 
-    if Rails.env == 'development'
-      mail(to: 'info@yoshihito.me', subject: title)
-    else
-      mail(to: 'info@manma.co', subject: title)
-    end
-
+    # Send a mail
+    mail(to: 'info@manma.co', subject: title)
 
     # Insert to DB
     EmailQueue.create!(
@@ -79,7 +75,7 @@ class CommonMailer < ActionMailer::Base
         :to_address => 'info@manma.co',
         :subject => title,
         :body_text => '',
-        :request_log => RequestLog.first,
+        :request_log => RequestLog.find(@event.request_log_id),
         :retry_count => 0,
         :sent_status => true,
         :email_type => 'notify_to_manma',
@@ -96,7 +92,21 @@ class CommonMailer < ActionMailer::Base
     @student = request_log
     @event = EventDate.find_by(request_log_id: request_log.id)
 
+    # Send a mail
     mail(to: mail, subject: title)
+
+    # Insert to DB
+    EmailQueue.create!(
+        :sender_address => 'info@manma.co',
+        :to_address => mail,
+        :subject => title,
+        :body_text => '',
+        :request_log => request_log,
+        :retry_count => 0,
+        :sent_status => true,
+        :email_type => 'notify_to_family_matched',
+        :time_delivered => Time.now
+    )
   end
 
   # マッチング成立時に参加者に向けて送る
@@ -106,18 +116,61 @@ class CommonMailer < ActionMailer::Base
     @user = User.find(event.user_id)
     title = "【manma】家族留学のマッチングが成立いたしました"
 
+    # Send a mail
     mail(to: @log.email, subject: title)
+
+    # Insert to DB
+    EmailQueue.create!(
+        :sender_address => 'info@manma.co',
+        :to_address => @log.email,
+        :subject => title,
+        :body_text => '',
+        :request_log => @log,
+        :retry_count => 0,
+        :sent_status => true,
+        :email_type => 'notify_to_candidate',
+        :time_delivered => Time.now
+    )
   end
 
   # マッチング開始時に参加者に向けて送る
   def matching_start(email)
+    # Send a mail
     mail(to: email, subject: '【manma】家族留学の打診を開始いたしました')
+
+    # Insert to DB
+    EmailQueue.create!(
+        :sender_address => 'info@manma.co',
+        :to_address => email,
+        :subject => '【manma】家族留学の打診を開始いたしました',
+        :body_text => '',
+        :request_log => RequestLog.first,
+        :retry_count => 0,
+        :sent_status => true,
+        :email_type => 'matching_start',
+        :time_delivered => Time.now
+    )
   end
 
+  # マッチングを断った場合に家庭に送る
   def deny(user)
     @user = user
     title = "【manma】家族留学受け入れ可否のご回答をありがとうございました"
+    # Send a mail
     mail(to: user.contact.email_pc, subject: title)
+
+    # Insert to DB
+    EmailQueue.create!(
+        :sender_address => 'info@manma.co',
+        :to_address => user.contact.email_pc,
+        :subject => '【manma】家族留学受け入れ可否のご回答をありがとうございました',
+        :body_text => '',
+        :request_log => RequestLog.first,
+        :retry_count => 0,
+        :sent_status => true,
+        :email_type => 'deny',
+        :time_delivered => Time.now
+    )
   end
   
 end
