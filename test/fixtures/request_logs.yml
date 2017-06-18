@@ -1,0 +1,17 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  hash: MyString
+  name: MyString
+  belongs: MyString
+  station: MyString
+  reason: MyText
+  status: 
+
+two:
+  hash: MyString
+  name: MyString
+  belongs: MyString
+  station: MyString
+  reason: MyText
+  status: 

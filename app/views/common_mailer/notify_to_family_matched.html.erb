@@ -1,0 +1,57 @@
+
+<p><%= @user.name %>様</p>
+
+
+<p>この度は、家族留学の受け入れにご協力くださり、大変ありがとうございます。</p>
+
+<p>下記の内容で、家族留学の実施が確定いたしました。</p>
+
+<p>実施予定日の10日前に参加学生とお繋ぎさせていただきますので <br>
+いましばらくお待ちください。</p>
+
+<p>＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝</p>
+
+<table>
+  <tbody>
+  <tr>
+    <td>参加学生名: </td>
+    <td><%= @student.name %> さん</td>
+  </tr>
+  <tr>
+    <td>参加学生の所属名: </td>
+    <td><%= @student.belongs %></td>
+  </tr>
+  <tr>
+    <td>参加学生の連絡先: </td>
+    <td><%= @student.emergency %></td>
+  </tr>
+  <tr>
+    <td>実施日時: </td>
+    <td><%= @event.hold_date %></td>
+  </tr>
+  <tr>
+    <td>実施開始時間: </td>
+    <td><%= @event.start_time.strftime("%H時%M分") %></td>
+  </tr>
+  <tr>
+    <td>実施終了時間: </td>
+    <td><%= @event.end_time.strftime("%H時%M分") %></td>
+  </tr>
+  <tr>
+    <td>集合場所: </td>
+    <td><%= @event.meeting_place %></td>
+  </tr>
+  </tbody>
+</table>
+
+<p>＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝</p>
+
+<p>また、お子さんの体調不良等で急な予定の変更がある場合は <br>
+  info@manma.co までご連絡ください。</p>
+
+<p>何かご不明な点がございましたら、お気軽にご連絡ください。</p>
+<p>引き続き、どうぞよろしくお願いいたします。</p>
+
+
+manma
+

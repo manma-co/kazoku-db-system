@@ -7,6 +7,7 @@ class CreateEmailQueues < ActiveRecord::Migration[5.0]
       t.string :bcc_address
       t.string :subject
       t.text :body_text
+      t.belongs_to :request_log
       t.integer :retry_count
       t.boolean :sent_status
       t.string :email_type

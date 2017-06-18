@@ -1,0 +1,61 @@
+
+<p><%= @log.name %>様</p>
+
+<p>この度、家族留学のマッチングが成立いたしましたのでご連絡させていただきます。</p>
+
+<p>キャンセルは原則として不可となります。</p>
+<p>止むを得ない事情でキャンセルされる方は <br>
+  至急 info@manma.co に理由を明記の上、ご連絡ください。</p>
+
+<p>下記の内容で、家族留学を実施させていただきます。</p>
+
+<p>実施予定日の10日前にご家庭とお繋ぎさせていただきます。 <br>
+  スケジュールを確保のうえ、いましばらくお待ち下さい。</p>
+
+<p>＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝</p>
+
+<table>
+  <tbody>
+  <tr>
+    <td>受け入れ家庭のお名前: </td>
+    <td><%= @user.name %></td>
+  </tr>
+  <tr>
+    <td>受け入れ家庭の家族構成: </td>
+    <td><%= @user.job_style_str %></td>
+  </tr>
+  <tr>
+    <td>受け入れ家庭の緊急連絡先: </td>
+    <!-- TODO: Change to emergency contact later. -->
+    <td><%= @user.contact.email_pc %></td>
+  </tr>
+  <tr>
+    <td>実施日時: </td>
+    <td><%= @event.hold_date %></td>
+  </tr>
+  <tr>
+    <td>実施開始時間: </td>
+    <td><%= @event.start_time.strftime("%H時%M分") %></td>
+  </tr>
+  <tr>
+    <td>実施終了時間: </td>
+    <td><%= @event.end_time.strftime("%H時%M分") %></td>
+  </tr>
+  <tr>
+    <td>集合場所: </td>
+    <td><%= @event.meeting_place %></td>
+  </tr>
+  <tr>
+    <td>備考: </td>
+    <td><%= @event.information %></td>
+  </tr>
+  </tbody>
+</table>
+<p>＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝</p>
+
+<p>また、ご質問等ございましたら <br>
+  info@manma.co までご連絡ください。</p>
+
+<p>引き続き、どうぞよろしくお願いいたします。</p>
+
+manma

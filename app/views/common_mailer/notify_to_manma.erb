@@ -1,1 +1,53 @@
-<%= simple_format(@body) %>
+
+<small>こちらは自動配信メールです</small>
+
+<h4>以下の内容でマッチングが成立しました。</h4>
+
+<small>電話面談がある場合は速やかに確認して予定を参加家庭に連絡してください</small>
+
+<!-- TODO: Enhance this later -->
+
+<% unless @event.nil? %>
+<p>イベント内容</p>
+<table>
+  <tbody>
+  <tr>
+    <td>イベント開始日時: </td>
+    <td><%= @event.hold_date.strftime('%Y年%m月%d日') %><%= @event.start_time.strftime('%H:%M') %> ~ <%= @event.end_time.strftime('%H:%M') %></td>
+  </tr>
+  <tr>
+    <td>集合場所: </td>
+    <td><%= @event.meeting_place %></td>
+  </tr>
+  <tr>
+    <td>家庭情報: </td>
+    <td><%= @user.name %></td>
+  </tr>
+  <tr>
+    <td>家庭連絡先: </td>
+    <td><%= @user.contact.email_pc %></td>
+  </tr>
+  <tr>
+    <td>初めての家族留学か: </td>
+    <td><%= @event.is_first? %></td>
+  </tr>
+  <tr>
+    <td>特記事項: </td>
+    <td><%= @event.information %></td>
+  </tr>
+  </tbody>
+</table>
+<% end %>
+
+<% if @tel_time[0] != "" %>
+    <hr>
+    <p>電話可能時間</p>
+    <table>
+      <tbody>
+      <tr>
+        <td>電話可能候補日: </td>
+        <td><%= @tel_time %></td>
+      </tr>
+      </tbody>
+    </table>
+<% end %>
