@@ -16,12 +16,9 @@
 /tmp/*
 !/log/.keep
 !/tmp/.keep
-config/database.yml
-# config/secrets.yml
-#config/environments/production.rb
-config/environments/test.rb
 .idea
 .key
+
 # Ignore Byebug command history file.
 .byebug_history
 .envrc
