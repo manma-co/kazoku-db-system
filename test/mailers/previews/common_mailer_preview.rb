@@ -78,4 +78,10 @@ manma
     CommonMailer.deny(user)
   end
 
+  def reminder_three_days
+    user = User.first
+    log = RequestLog.second
+    CommonMailer.reminder_three_days(user, log)
+  end
+
 end

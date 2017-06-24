@@ -19,7 +19,7 @@ class RequestLog < ApplicationRecord
       # RequestLog の中から EventDate のないものを探す。
       # 且つ3日たち、リマインドメールを送っていない場合
 
-      # TODO: check remind status.
+      # Check remind status.
       if log.event_date == nil && log.created_at + 3.days < Time.now && log.reminder == nil
 
         # リマインドメールを送る家庭を探すために、ReplyLog から何もアクションをしていない家庭を探す。
@@ -30,9 +30,10 @@ class RequestLog < ApplicationRecord
         # つまりは、返信していない家庭の割り出し。
         mail_queues.each do |mail_queue|
           contact = Contact.find_by(email_pc: mail_queue.to_address)
-
           rl = ReplyLog.find_by(request_log_id: log.id, user_id: contact.user_id)
 
+          # Send reminder.
+          CommonMailer.reminder_three_days(contact.user, log).deliver_now if rl.nil?
         end
 
         # Insert to DB to check reminder was send.

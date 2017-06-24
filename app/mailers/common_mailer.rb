@@ -163,7 +163,7 @@ class CommonMailer < ActionMailer::Base
     EmailQueue.create!(
         :sender_address => 'info@manma.co',
         :to_address => user.contact.email_pc,
-        :subject => '【manma】家族留学受け入れ可否のご回答をありがとうございました',
+        :subject => title,
         :body_text => '',
         :request_log => RequestLog.first,
         :retry_count => 0,
@@ -172,5 +172,30 @@ class CommonMailer < ActionMailer::Base
         :time_delivered => Time.now
     )
   end
+  
+  
+  # リマインダーメールの送信に使う
+  def reminder_three_days(user, log)
+
+    @user = user
+    title = "【リマインド】家族留学受け入れのお願い"
+
+    # Send a mail
+    mail(to: user.contact.email_pc, subject: title)
+
+    # Insert to DB
+    EmailQueue.create!(
+        :sender_address => 'info@manma.co',
+        :to_address => user.contact.email_pc,
+        :subject => title,
+        :body_text => '',
+        :request_log => log,
+        :retry_count => 0,
+        :sent_status => true,
+        :email_type => 'reminder_three_days',
+        :time_delivered => Time.now
+    )
+  end
+  
   
 end
