@@ -78,6 +78,7 @@ manma
     CommonMailer.deny(user)
   end
 
+  # http://localhost:3000/rails/mailers/common_mailer/reminder_three_days
   def reminder_three_days
     user = User.first
     log = RequestLog.second

@@ -6,7 +6,7 @@ class RequestLog < ApplicationRecord
   has_one :reminder, dependent: :destroy
 
 
-  def self.three_days_reminder
+  def self.three_days_reminder(root)
     # Find families to send a reminder email.
     # The way how it works is
     # 1. Find request log that has not been approved, using event table.
@@ -20,7 +20,7 @@ class RequestLog < ApplicationRecord
       # 且つ3日たち、リマインドメールを送っていない場合
 
       # Check remind status.
-      if log.event_date == nil && log.created_at + 3.days < Time.now && log.reminder == nil
+      if log.event_date == nil && log.created_at - 3.days < Time.now && log.reminder == nil
 
         # リマインドメールを送る家庭を探すために、ReplyLog から何もアクションをしていない家庭を探す。
         # すべての送信履歴を参照
@@ -33,7 +33,7 @@ class RequestLog < ApplicationRecord
           rl = ReplyLog.find_by(request_log_id: log.id, user_id: contact.user_id)
 
           # Send reminder.
-          CommonMailer.reminder_three_days(contact.user, log).deliver_now if rl.nil?
+          CommonMailer.reminder_three_days(contact.user, log, root).deliver_now if rl.nil?
         end
 
         # Insert to DB to check reminder was send.

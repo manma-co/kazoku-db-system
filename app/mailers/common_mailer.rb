@@ -175,9 +175,12 @@ class CommonMailer < ActionMailer::Base
   
   
   # リマインダーメールの送信に使う
-  def reminder_three_days(user, log)
+  def reminder_three_days(user, log, root)
 
     @user = user
+    @log = log
+    @days = RequestDay.where(request_log: log)
+    @url = root + 'request/' + @log.hashed_key + '?email=' + user.contact.email_pc
     title = "【リマインド】家族留学受け入れのお願い"
 
     # Send a mail
