@@ -78,4 +78,10 @@ manma
     CommonMailer.deny(user)
   end
 
+  # http://localhost:3000/rails/mailers/common_mailer/readjustment_to_candidate
+  def readjustment_to_candidate
+    log = RequestLog.second
+    CommonMailer.readjustment_to_candidate(log)
+  end
+
 end

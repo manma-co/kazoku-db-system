@@ -172,5 +172,29 @@ class CommonMailer < ActionMailer::Base
         :time_delivered => Time.now
     )
   end
-  
+
+  # 再打診候補日程をもらうメール
+  def readjustment_to_candidate(log)
+
+    @log = log
+    title = "【要返信】家族留学の再打診に関しまして"
+
+    # Send a mail
+    mail(to: log.email, subject: title)
+
+    # Insert to DB
+    EmailQueue.create!(
+        :sender_address => 'info@manma.co',
+        :to_address => log.email,
+        :subject => title,
+        :body_text => '',
+        :request_log => log,
+        :retry_count => 0,
+        :sent_status => true,
+        :email_type => 'readjustment_to_candidate',
+        :time_delivered => Time.now
+    )
+
+  end
+
 end
