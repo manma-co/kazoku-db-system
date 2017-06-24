@@ -20,7 +20,7 @@ class RequestLog < ApplicationRecord
       # 且つ3日たち、リマインドメールを送っていない場合
 
       # Check remind status.
-      if log.event_date == nil && log.created_at - 3.days < Time.now && log.reminder == nil
+      if log.event_date == nil && log.created_at + 3.days < Time.now && log.reminder == nil
 
         # リマインドメールを送る家庭を探すために、ReplyLog から何もアクションをしていない家庭を探す。
         # すべての送信履歴を参照
