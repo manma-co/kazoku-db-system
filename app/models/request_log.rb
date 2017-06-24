@@ -3,6 +3,7 @@ class RequestLog < ApplicationRecord
   has_many :reply_log, dependent: :destroy
   has_many :email_queue, dependent: :destroy
   has_one :event_date, dependent: :destroy
+  has_one :reminder, dependent: :destroy
 
 
   def self.three_days_reminder
@@ -11,7 +12,6 @@ class RequestLog < ApplicationRecord
     # 1. Find request log that has not been approved, using event table.
 
     logs = RequestLog.includes(:event_date)
-
     logs.each do |log|
 
       # Check if there is event date.
@@ -20,7 +20,7 @@ class RequestLog < ApplicationRecord
       # 且つ3日たち、リマインドメールを送っていない場合
 
       # TODO: check remind status.
-      if log.event_date == nil && log.created_at + 3.days < Time.now
+      if log.event_date == nil && log.created_at + 3.days < Time.now && log.reminder == nil
 
         # リマインドメールを送る家庭を探すために、ReplyLog から何もアクションをしていない家庭を探す。
         # すべての送信履歴を参照
@@ -34,6 +34,10 @@ class RequestLog < ApplicationRecord
           rl = ReplyLog.find_by(request_log_id: log.id, user_id: contact.user_id)
 
         end
+
+        # Insert to DB to check reminder was send.
+        Reminder.create!(request_log: log)
+
       end
     end
   end
