@@ -88,8 +88,6 @@ class Admin::MailsController < Admin::AdminController
     @title =  '【要返信】家族留学受け入れのお願い'
     @body = <<-EOS
  
-※本メールはBccでお送りしております
-
 
 こんにちは、manmaです。
 いつも大変お世話になっております。

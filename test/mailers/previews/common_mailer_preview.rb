@@ -11,8 +11,6 @@ class CommonMailerPreview < ActionMailer::Preview
   def request_email_to_family
     title = '【要返信】家族留学受け入れのお願い'
     body = <<-EOS
- 
-※本メールはBccでお送りしております
 
 
 こんにちは、manmaです。
