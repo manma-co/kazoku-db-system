@@ -85,7 +85,7 @@ class Admin::MailsController < Admin::AdminController
 
   # 本文のテンプレートで初期化する
   def init_mail
-    @title =  '【要返信】家族留学受け入れのお願い'
+    @title =  '【要確認】家族留学受け入れのお願い'
     @body = <<-EOS
  
 
