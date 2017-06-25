@@ -25,6 +25,12 @@
       </td>
     </tr>
     <tr>
+      <td class="title">携帯電話番号</td>
+      <td class="contents">
+        <%= @family.contact&.phone_number %>
+      </td>
+    </tr>
+    <tr>
       <td class="title">ご住所</td>
       <td class="contents">
         <%= @family.location&.address %>
@@ -154,7 +160,7 @@
     </tr>
     <tr>
       <td class="title">お母様及びお父様の転職のご経験の有無</td>
-      <td class="contents"><%= @family.profile_family&.has_job_change_experience  %></td>
+      <td class="contents"><%= @family.profile_family&.has_job_change_experience %></td>
     </tr>
     </tbody>
   </table>
