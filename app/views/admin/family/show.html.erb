@@ -56,20 +56,20 @@
       <td class="contents"><%= @mother&.hometown %></td>
     </tr>
     <tr>
+      <td class="title">ご結婚された年齢</td>
+      <td class="contents"><%= @family.profile_family&.married_mother_age %></td>
+    </tr>
+    <tr>
+      <td class="title">お母様が第一子をご出産された年齢</td>
+      <td class="contents"><%= @family.profile_family&.first_childbirth_mother_age %></td>
+    </tr>
+    <tr>
       <td class="title">職業</td>
       <td class="contents"><%= @mother&.job_domain&.domain %></td>
     </tr>
     <tr>
       <td class="title">勤務先</td>
       <td class="contents"><%= @mother&.company %></td>
-    </tr>
-    <tr>
-      <td class="title">ご結婚された年齢</td>
-      <td class="contents"><%= @family.profile_family&.married_mother_age %></td>
-    </tr>
-    <tr>
-      <td class="title">第一子をご出産された年齢</td>
-      <td class="contents"><%= @family.profile_family&.first_childbirth_mother_age %></td>
     </tr>
     <tr>
       <td class="title">キャリア変遷</td>
@@ -91,6 +91,10 @@
     <tr>
       <td class="title">出身地</td>
       <td class="contents"><%= @father&.hometown %></td>
+    </tr>
+    <tr>
+      <td class="title">ご結婚された年齢</td>
+      <td class="contents"><%= @family.profile_family&.married_mother_age %></td>
     </tr>
     <tr>
       <td class="title">職業</td>
