@@ -21,6 +21,8 @@ class Admin::SpreadSheetsController < Admin::AdminController
 
     # スプレッドシートの情報取得
     response = Google::SpreadSheetFetchService.do(credentials)
+
+    # スプレッドシート情報の保存
     Google::SpreadSheetStoreService.do(response, is_debug: false)
 
     redirect_to admin_family_index_path
