@@ -10,10 +10,11 @@ module Google
 
     APPLICATION_NAME = 'Write from manma\'s spread sheet'
 
-    # スプレッドシートに書き込み
+    # スプレッドシートに書き込みをする
     # @param [authorize] authorize 認証情報
-    # @param [family_abroad_request] 家族留学情報
-    def self.do(authorize, family_abroad_request)
+    # @param [row] 書き込み情報 2重配列で表現すること
+    # 例: [["hoge", "fuga"], ["piyo", "mag"]] 空行にhoge、隣の列にfugaが挿入される。次の空行にpiyo、隣の列にmagが挿入される
+    def self.do(authorize, row)
       # Initialize the API
       service = Google::Apis::SheetsV4::SheetsService.new
       service.client_options.application_name = APPLICATION_NAME
@@ -28,6 +29,6 @@ module Google
       # 参考: ValueInputOption(https://developers.google.com/sheets/api/reference/rest/v4/ValueInputOption)
       value_input_options = 'USER_ENTERED'
       service.append_spreadsheet_value(spreadsheet_id, range, value, value_input_option: value_input_options)
-
+    end
   end
 end

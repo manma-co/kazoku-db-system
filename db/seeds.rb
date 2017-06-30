@@ -48,21 +48,21 @@ locations = [
 locations.each_with_index do |location, i|
   user = User.create(name: "no_name_#{i+1}", kana: 'no_name', gender: 0, is_family: true)
   Location.create(user_id: user.id, address: location)
-  Contact.create(user_id: user.id, email_pc: "abc#{i+1}@pc.com", email_phone: "abc#{i+1}@phone.com")
+  Contact.create(user_id: user.id, email_pc: "abc#{i+1}@pc.com", email_phone: "abc#{i+1}@phone.com", phone_number: '000-0000')
 
   profile_family = ProfileFamily.create(
       user_id: user.id, job_style: 1, number_of_children: 1, is_photo_ok: 1, is_report_ok: 1, is_male_ok: 1,
       has_time_shortening_experience: '母親のみ', has_childcare_leave_experience: '母親のみ',
-      has_job_change_experience: '父親のみ', married_mother_age: '30', first_childbirth_mother_age: '32',
+      has_job_change_experience: '父親のみ', married_mother_age: '30', married_father_age: '30', first_childbirth_mother_age: '32',
       child_birthday: '2016-02-03', opinion_or_question: '家族留学楽しみにしております！'
   )
   ProfileIndividual.create(
-      birthday: "Sun, 1 Dec 2011 00:00:00 +0000", hometown: '静岡', role: 'mother', company: 'manma' ,career: '産休後、仕事に復帰',
+      birthday: "Sun, 1 Dec 2011 00:00:00 +0000", hometown: '静岡', role: 'mother', company: 'manma', career: '産休後、仕事に復帰',
       has_experience_abroad: '大学時代に1年間アメリカ留学を経験', profile_family_id: profile_family.id,
       job_domain_id: 1
   )
   ProfileIndividual.create(
-      birthday: "Sun, 1 Dec 2011 00:00:00 +0000", hometown: '静岡', role: 'father', company: 'manma' ,career: '大手インフラ系のSIerとして３年間勤務後、manmaに転職',
+      birthday: "Sun, 1 Dec 2011 00:00:00 +0000", hometown: '静岡', role: 'father', company: 'manma', career: '大手インフラ系のSIerとして３年間勤務後、manmaに転職',
       has_experience_abroad: '大学時代に2年間ドイツ留学を経験', profile_family_id: profile_family.id,
       job_domain_id: 1
   )
@@ -75,15 +75,15 @@ dev_accounts.each do |dac|
   Contact.create(user_id: user.id, email_pc: dac)
   profile_family = ProfileFamily.create(user_id: user.id, job_style: 1, number_of_children: 1, is_photo_ok: 1, is_report_ok: 1, is_male_ok: 1,
                                         has_time_shortening_experience: '母親のみ', has_childcare_leave_experience: '母親のみ',
-                                        has_job_change_experience: '父親のみ', married_mother_age: '30', first_childbirth_mother_age: '32',
+                                        has_job_change_experience: '父親のみ', married_mother_age: '30', married_father_age: '30', first_childbirth_mother_age: '32',
                                         child_birthday: '2016-02-03', opinion_or_question: '家族留学楽しみにしております！')
   ProfileIndividual.create(
-      birthday: "Sun, 1 Dec 2011 00:00:00 +0000", hometown: '静岡', role: 'mother', company: 'manma' ,career: '産休後、仕事に復帰',
+      birthday: "Sun, 1 Dec 2011 00:00:00 +0000", hometown: '静岡', role: 'mother', company: 'manma', career: '産休後、仕事に復帰',
       has_experience_abroad: '大学時代に1年間アメリカ留学を経験', profile_family_id: profile_family.id,
       job_domain_id: 1
   )
   ProfileIndividual.create(
-      birthday: "Sun, 1 Dec 2011 00:00:00 +0000", hometown: '静岡', role: 'father', company: 'manma' ,career: '大手インフラ系のSIerとして３年間勤務後、manmaに転職',
+      birthday: "Sun, 1 Dec 2011 00:00:00 +0000", hometown: '静岡', role: 'father', company: 'manma', career: '大手インフラ系のSIerとして３年間勤務後、manmaに転職',
       has_experience_abroad: '大学時代に2年間ドイツ留学を経験', profile_family_id: profile_family.id,
       job_domain_id: 1
   )

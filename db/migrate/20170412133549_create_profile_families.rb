@@ -10,6 +10,7 @@ class CreateProfileFamilies < ActiveRecord::Migration[5.0]
       t.string :has_childcare_leave_experience
       t.string :has_job_change_experience
       t.string :married_mother_age
+      t.string :married_father_age
       t.string :first_childbirth_mother_age
       t.date :child_birthday
       t.string :opinion_or_question

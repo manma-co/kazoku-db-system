@@ -29,6 +29,7 @@ module Google
           user_id: user.id,
           email_pc: r[Settings.sheet.email_pc],
           email_phone: r[Settings.sheet.email_phone],
+          phone_number: r[Settings.sheet.phone_number]
         }
         contact = Contact.where(contact_query).first
         contact ||= Contact.create(contact_query)
@@ -95,6 +96,7 @@ module Google
           has_childcare_leave_experience: r[Settings.sheet.has_childcare_leave_experience],
           has_job_change_experience: r[Settings.sheet.has_job_change_experience],
           married_mother_age: r[Settings.sheet.married_mother_age],
+          married_father_age: r[Settings.sheet.married_father_age],
           first_childbirth_mother_age: r[Settings.sheet.first_childbirth_mother_age],
           child_birthday: r[Settings.sheet.child_birthday]
         }

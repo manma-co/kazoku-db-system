@@ -25,6 +25,12 @@
       </td>
     </tr>
     <tr>
+      <td class="title">携帯電話番号</td>
+      <td class="contents">
+        <%= @family.contact&.phone_number %>
+      </td>
+    </tr>
+    <tr>
       <td class="title">ご住所</td>
       <td class="contents">
         <%= @family.location&.address %>
@@ -56,20 +62,20 @@
       <td class="contents"><%= @mother&.hometown %></td>
     </tr>
     <tr>
+      <td class="title">ご結婚された年齢</td>
+      <td class="contents"><%= @family.profile_family&.married_mother_age %></td>
+    </tr>
+    <tr>
+      <td class="title">お母様が第一子をご出産された年齢</td>
+      <td class="contents"><%= @family.profile_family&.first_childbirth_mother_age %></td>
+    </tr>
+    <tr>
       <td class="title">職業</td>
       <td class="contents"><%= @mother&.job_domain&.domain %></td>
     </tr>
     <tr>
       <td class="title">勤務先</td>
       <td class="contents"><%= @mother&.company %></td>
-    </tr>
-    <tr>
-      <td class="title">ご結婚された年齢</td>
-      <td class="contents"><%= @family.profile_family&.married_mother_age %></td>
-    </tr>
-    <tr>
-      <td class="title">第一子をご出産された年齢</td>
-      <td class="contents"><%= @family.profile_family&.first_childbirth_mother_age %></td>
     </tr>
     <tr>
       <td class="title">キャリア変遷</td>
@@ -91,6 +97,10 @@
     <tr>
       <td class="title">出身地</td>
       <td class="contents"><%= @father&.hometown %></td>
+    </tr>
+    <tr>
+      <td class="title">ご結婚された年齢</td>
+      <td class="contents"><%= @family.profile_family&.married_father_age %></td>
     </tr>
     <tr>
       <td class="title">職業</td>
@@ -150,7 +160,7 @@
     </tr>
     <tr>
       <td class="title">お母様及びお父様の転職のご経験の有無</td>
-      <td class="contents"><%= @family.profile_family&.has_job_change_experience  %></td>
+      <td class="contents"><%= @family.profile_family&.has_job_change_experience %></td>
     </tr>
     </tbody>
   </table>
