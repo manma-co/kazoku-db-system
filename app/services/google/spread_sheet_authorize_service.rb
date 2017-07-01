@@ -18,7 +18,9 @@ module Google
       }
     }
 
-    # return credentials 認証情報
+    # @params request
+    # @params user_id Unique ID for authorize
+    # @return [authorizer, credentials] [認証情報, 認証済み情報]
     def self.do(request, user_id)
       # ライブラリを参考にjsonを再読込
       auth_config = MultiJson.load(AUTH_CONFIG.to_json)
@@ -31,7 +33,8 @@ module Google
 
       token_store = Google::Auth::Stores::FileTokenStore.new(file: credential_path)
       authorizer = Google::Auth::WebUserAuthorizer.new(client_id, SCOPE, token_store, '/admin/spread_sheets/oauth2callback')
-      authorizer.get_credentials(user_id, request)
+      credentials = authorizer.get_credentials(user_id, request)
+      [authorizer, credentials]
     end
   end
 end
