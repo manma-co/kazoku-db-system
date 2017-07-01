@@ -1,3 +1,14 @@
-// Place all the styles related to the admin/admin controller here.
-// They will automatically be included in application.css.
-// You can use Sass (SCSS) here: http://sass-lang.com/
+/* Place all the styles related to the admin/admin controller here.
+ * They will automatically be included in application.css.
+ * You can use Sass (SCSS) here: http://sass-lang.com/
+ *
+ *= require_tree .
+ *= require_self
+ *= require material_icons
+ */
+
+@import "materialize/components/color";
+
+$primary-color: color("orange", "lighten-1") !default;
+$secondary-color: color("orange", "base") !default;
+@import 'materialize';
