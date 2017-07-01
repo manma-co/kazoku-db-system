@@ -1,6 +1,6 @@
 class RequestController < ApplicationController
 
-  layout 'public'
+  layout 'request/confirm'
 
   def confirm
     @log = RequestLog.find_by(hashed_key: params[:id])

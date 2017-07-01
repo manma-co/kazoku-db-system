@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>manma 確認画面</title>
+  <%= csrf_meta_tags %>
+
+  <%= stylesheet_link_tag 'request/request', media: 'all', 'data-turbolinks-track' => 'reload' %>
+  <%= stylesheet_link_tag 'custom', :media => 'all' %>
+  <%= javascript_include_tag 'request', 'data-turbolinks-track' => 'reload' %>
+</head>
+<body class="">
+<header>
+
+</header>
+
+<div class="container" style="font-family: YuGothic">
+
+  <h3>こんにちは、<%= @user.name %>さん</h3>
+
+  <h3>家族留学の申し込み内容は以下の通りです。</h3>
+
+  <table class="table table-bordered table-striped table-responsive" style="font-size: 25px;">
+
+    <tbody>
+    <tr>
+      <th>名前:&nbsp;</th>
+      <td><%= @log.name %></td>
+    </tr>
+    <tr>
+      <th>所属:&nbsp;</th>
+      <td><%= @log.belongs %></td>
+    </tr>
+    <% @days.each_with_index do |day, i| %>
+        <tr>
+          <th>参加希望日(<%= i + 1 %>):&nbsp;</th>
+          <td><%= day.day %></td>
+        </tr>
+    <% end %>
+    <tr>
+      <th>最寄駅:</th>
+      <td><%= @log.station %></td>
+    </tr>
+    <tr>
+      <th>希望理由:</th>
+      <td><%= @log.motivation %></td>
+    </tr>
+    </tbody>
+  </table>
+  <h3>家族留学を受け入れますか？（家族留学実施日は参加希望日の時間を変えることも可能です。）</h3>
+  <%= link_to '受け入れる', reply_path(params[:id], email: params[:email]), :class => 'btn btn-primary btn-lg active btn-block' %>
+  <%= link_to '今回は辞退する', deny_path(log_id: @log.id, email: params[:email]), :class => 'btn btn-lg btn-default btn-block' %>
+</div>
+</body>

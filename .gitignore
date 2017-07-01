@@ -24,3 +24,4 @@
 .envrc
 .credentials/
 run.sh
+vendor/bundler
