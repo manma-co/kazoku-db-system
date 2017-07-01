@@ -5,4 +5,8 @@ module ApplicationHelper
   def formatted_date(date)
     date&.strftime('%Y年%m月%d日')
   end
+
+  def default_host_url
+    "https://manma-system.herokuapp.com/"
+  end
 end

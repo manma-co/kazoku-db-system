@@ -10,9 +10,10 @@ class Admin::SpreadSheetsController < Admin::AdminController
 
   # スプレッドシートにアクセスするための認証を行う
   def authorize
-    user_id = current_admin.id
+    # user_id = current_admin.id
+    user_id = ENV['SPREAD_SHEET_AUTH_UNIQUE_ID']
 
-    credentials = Google::SpreadSheetAuthorizeService.do(request, user_id)
+    authorizer, credentials = Google::SpreadSheetAuthorizeService.do(request, user_id)
 
     if credentials.nil?
       # redirect_to(...) and return としないとDoubleRenderErrorがスローされるので注意
