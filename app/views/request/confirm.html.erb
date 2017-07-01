@@ -32,7 +32,7 @@
     </tbody>
   </table>
   <p class="fs23">家族留学を受け入れますか？（家族留学実施日の時間変更は可能です）</p>
-  <%= link_to '受け入れる', reply_path(params[:id], email: params[:email]), :class => 'btn btn-lg bg-pink btn-block' %>
+  <%= link_to '受け入れる', reply_path(params[:id], email: params[:email]), :class => 'btn btn-lg btn-pink btn-block' %>
   <%= link_to '今回は辞退する', deny_path(log_id: @log.id, email: params[:email]), :class => 'btn btn-lg btn-default btn-block' %>
 </div>
 
