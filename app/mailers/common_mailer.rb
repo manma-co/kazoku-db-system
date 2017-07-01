@@ -63,7 +63,7 @@ class CommonMailer < ActionMailer::Base
     @event = event unless event.nil?
     @user = User.find(event.user_id)
 
-    title = '【重要】マッチング成立のお知らせ。'
+    title = '【重要】マッチング成立のお知らせ'
     title || title += @event.start_time.strftime('%Y年%m月%d日')
 
     # Send a mail

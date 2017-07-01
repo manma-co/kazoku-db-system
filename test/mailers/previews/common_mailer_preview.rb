@@ -9,10 +9,8 @@ class CommonMailerPreview < ActionMailer::Preview
 
   # http://localhost:3000/rails/mailers/common_mailer/request_email_to_family
   def request_email_to_family
-    title = '【要返信】家族留学受け入れのお願い'
+    title = '【要確認】家族留学受け入れのお願い'
     body = <<-EOS
- 
-※本メールはBccでお送りしております
 
 
 こんにちは、manmaです。
