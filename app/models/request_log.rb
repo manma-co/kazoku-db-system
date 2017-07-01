@@ -11,7 +11,9 @@ class RequestLog < ApplicationRecord
     logs.each do |log|
       # イベントが成立していなくて、10以上たったリクエストを探す。
       # Email queue を利用して、すでに送信しているかどうかをチェックする。
+      # TODO: email_typeはconstantsに移せると○
       queue = EmailQueue.find_by(request_log: log, email_type: "readjustment_to_candidate")
+      # TODO: ちょっとロジックが複雑なので処理をわけたほうがよさそう
       if log.event_date == nil && log.created_at + 7.days < Time.now && queue.nil?
         # 参加希望者に対して再打診をするかどうかのメールを送信
         CommonMailer.readjustment_to_candidate(log).deliver_now if log.id > 1
@@ -38,6 +40,7 @@ class RequestLog < ApplicationRecord
 
         # リマインドメールを送る家庭を探すために、ReplyLog から何もアクションをしていない家庭を探す。
         # すべての送信履歴を参照
+        # TODO: email_typeはconstantsに移せると○
         mail_queues = EmailQueue.where(request_log_id: log.id, email_type: "request_email_to_family").select(:to_address)
 
         # 返信履歴（ReplyLog）の中に、送信履歴（EmailQueue）から割り出した家庭が存在していないものを取り出す。
