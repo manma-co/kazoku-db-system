@@ -1,23 +1,41 @@
+/* padding */
 .pd10 {
   padding: 10px;
 }
+.pt200{
+  padding-top: 200px;
+}
 
+/* margin */
 .mt30 {
   margin-top: 30px;
 }
-
 .mb100 {
   margin-bottom: 100px;
 }
 
+/* text-align */
+.text-center {
+  text-align: center;
+}
+
+/* font */
 .fs23 {
   font-size: 23px;
 }
-
+.fs50 {
+  font-size: 50px;
+}
 .YuGothic {
   font-family: YuGothic;
 }
 
+/* background-color */
 .bg-pink {
   background-color: pink;
+}
+
+.row {
+  font-size: 15px;
+  padding: 10px;
 }
