@@ -6,3 +6,33 @@
 */
 @import "bootstrap-sprockets";
 @import "bootstrap";
+
+.bg-pink {
+  color: white;
+  background-color: pink;
+  border: pink;
+}
+
+#table-info {
+  width: 100%;
+  font-size: 25px;
+  border-spacing: 10px;
+  margin-bottom: 50px;
+
+  th {
+    width: 200px;
+    text-align: center;
+    font-weight: normal;
+  }
+
+}
+
+#footer {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  height: 80px;
+  background-color: pink;
+  padding: 10px;
+  margin-top: 100px;
+}
