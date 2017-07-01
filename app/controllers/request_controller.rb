@@ -24,7 +24,6 @@ class RequestController < ApplicationController
       # ユーザーが存在しなかったらリダイレクト
       redirect_to deny_path
     end
-
   end
 
   def reply
@@ -35,7 +34,6 @@ class RequestController < ApplicationController
   end
 
   def event_create
-
     # Parse date and time
     selected_date = event_params[:event_time]
     day = selected_date.split(' ')[0]
@@ -58,7 +56,6 @@ class RequestController < ApplicationController
     event.information = event_params[:information]
 
     if event.save!
-
       session[:event] = event.id
 
       # Send email to manma.
@@ -73,13 +70,32 @@ class RequestController < ApplicationController
       # Save new reply log
       user.reply_log.create!(request_log: log, result: true)
 
+      # Write data to spread sheet
+      row = [
+        DateTime.current.strftime('%Y/%m/%d %H:%M:%S'),
+        'manma-system',
+        user.name,  # 家庭代表者氏名
+        event.emergency_contact,  # 家庭連絡先
+        'はい',     # 受け入れるか？
+        log.name,   # 家族留学者氏名
+        log.emergency,  # 家族留学者連絡先
+        '',
+        '',
+        '',
+        '',
+        '', # 受け入れ家庭の家族構成
+        event.hold_date.strftime('%Y/%m/%d'), # 実施日時
+        event.start_time.strftime('%H:%M:%S'),
+        event.end_time.strftime('%H:%M:%S'),
+        event.meeting_place
+      ]
+      authorize, credentials = Google::SpreadSheetAuthorizeService.do(request, ENV['SPREAD_SHEET_AUTH_UNIQUE_ID'])
+      Google::SpreadSheetWriteService.do(credentials, row)
+
       redirect_to thanks_path
-
     else
-
       redirect_to reply_path
     end
-
   end
 
   def deny

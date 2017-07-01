@@ -20,11 +20,15 @@ module Google
       service.client_options.application_name = APPLICATION_NAME
       service.authorization = authorize
 
+      # TODO: 書き込み先スプレッドシート
       spreadsheet_id = '1Mj7LlJjNwnUGpXisGEsuMJPKWZKpBSSada4KQsZP9bw'
       sheet_name = '家族留学'
       range = "#{sheet_name}"
       value = Google::Apis::SheetsV4::ValueRange.new
-      value.values = [[ DateTime.current.strftime('%Y/%m/%d %H:%M:%S'), "お名前情報"]]
+
+      # 電話番号の先頭の0が消えてしまう問題は、spread sheetの書式設定の変更で解決する
+      # 参考: http://lionspec.seesaa.net/article/395984881.html
+      value.values = [row]
 
       # 参考: ValueInputOption(https://developers.google.com/sheets/api/reference/rest/v4/ValueInputOption)
       value_input_options = 'USER_ENTERED'
