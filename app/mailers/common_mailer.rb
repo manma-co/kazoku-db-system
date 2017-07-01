@@ -163,7 +163,7 @@ class CommonMailer < ActionMailer::Base
     EmailQueue.create!(
         :sender_address => 'info@manma.co',
         :to_address => user.contact.email_pc,
-        :subject => '【manma】家族留学受け入れ可否のご回答をありがとうございました',
+        :subject => title,
         :body_text => '',
         :request_log => RequestLog.first,
         :retry_count => 0,
@@ -172,5 +172,59 @@ class CommonMailer < ActionMailer::Base
         :time_delivered => Time.now
     )
   end
-  
+
+  # 再打診候補日程をもらうメール
+  def readjustment_to_candidate(log)
+
+    @log = log
+    title = "【要返信】家族留学の再打診に関しまして"
+
+    # Send a mail
+    mail(to: log.email, subject: title)
+
+
+    # Insert to DB
+    EmailQueue.create!(
+        :sender_address => 'info@manma.co',
+        :to_address => log.email,
+        :subject => title,
+        :body_text => '',
+        :request_log => log,
+        :retry_count => 0,
+        :sent_status => true,
+        :email_type => 'readjustment_to_candidate',
+        :time_delivered => Time.now
+    )
+  end
+
+  include ApplicationHelper
+
+  # リマインダーメールの送信に使う
+  def reminder_three_days(user, log)
+
+    root = default_host_url
+    @user = user
+    @log = log
+    @days = RequestDay.where(request_log: log)
+    @url = root + 'request/' + @log.hashed_key + '?email=' + user.contact.email_pc
+    title = "【リマインド】家族留学受け入れのお願い"
+
+    # Send a mail
+    mail(to: user.contact.email_pc, subject: title)
+
+    # Insert to DB
+    EmailQueue.create!(
+        :sender_address => 'info@manma.co',
+        :to_address => user.contact.email_pc,
+        :subject => title,
+        :body_text => '',
+        :request_log => log,
+        :retry_count => 0,
+        :sent_status => true,
+        :email_type => 'reminder_three_days',
+        :time_delivered => Time.now
+    )
+
+  end
+
 end
