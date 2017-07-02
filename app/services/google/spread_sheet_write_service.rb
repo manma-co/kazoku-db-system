@@ -20,8 +20,14 @@ module Google
       service.client_options.application_name = APPLICATION_NAME
       service.authorization = authorize
 
-      # TODO: 書き込み先スプレッドシート
-      spreadsheet_id = '1Mj7LlJjNwnUGpXisGEsuMJPKWZKpBSSada4KQsZP9bw'
+      case ENV['RAILS_ENV']
+        when 'development', 'test'
+          # テスト用SpreadSheet
+          spreadsheet_id = '1Mj7LlJjNwnUGpXisGEsuMJPKWZKpBSSada4KQsZP9bw'
+        when 'production'
+          # 本番用SpreadSheet
+          spreadsheet_id = ENV['SPREAD_SHEETS_FOR_WRITE_ID']
+      end
       sheet_name = '家族留学'
       range = "#{sheet_name}"
       value = Google::Apis::SheetsV4::ValueRange.new
