@@ -71,6 +71,7 @@ class RequestController < ApplicationController
       user.reply_log.create!(request_log: log, result: true)
 
       # Write data to spread sheet
+      # TODO: ロジックを別の場所に移した方がよい
       row = [
         DateTime.current.strftime('%Y/%m/%d %H:%M:%S'),
         'manma-system',
@@ -90,7 +91,8 @@ class RequestController < ApplicationController
         event.end_time.strftime('%H:%M:%S'),
         event.meeting_place
       ]
-      authorize, credentials = Google::SpreadSheetAuthorizeService.do(request, ENV['SPREAD_SHEET_AUTH_UNIQUE_ID'])
+
+      authorizer, credentials = Google::SpreadSheetAuthorizeFromFileService.do(ENV['SPREAD_SHEET_AUTH_UNIQUE_ID'])
       Google::SpreadSheetWriteService.do(credentials, row)
 
       redirect_to thanks_path
