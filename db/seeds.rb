@@ -8,7 +8,7 @@
 
 emails = %w(yoshihito522@gmail.com takashiba@to-on.com)
 emails += %w(shino@cps.im.dendai.ac.jp ricken0203@gmail.com)
-emails += %w(info.manma@gmail.com niori.hinae@gmail.com hino.ikura@gmail.com)
+emails += %w(info.manma@gmail.com hinae.niori@gmail.com hino.ikura@gmail.com)
 
 emails.each do |email|
   Admin.find_or_create_by(email: email)
