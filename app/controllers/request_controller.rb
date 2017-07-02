@@ -2,6 +2,8 @@ class RequestController < ApplicationController
 
   layout 'public'
 
+  # request/:id
+  # メールに添付されているURLを謳歌した場合に実行される
   def confirm
     @log = RequestLog.find_by(hashed_key: params[:id])
     # Check exist
