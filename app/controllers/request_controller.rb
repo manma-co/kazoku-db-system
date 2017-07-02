@@ -75,6 +75,7 @@ class RequestController < ApplicationController
         DateTime.current.strftime('%Y/%m/%d %H:%M:%S'),
         'manma-system',
         user.name,  # 家庭代表者氏名
+
         event.emergency_contact,  # 家庭連絡先
         'はい',     # 受け入れるか？
         log.name,   # 家族留学者氏名
