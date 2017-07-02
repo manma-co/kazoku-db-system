@@ -46,7 +46,7 @@
           </select>
           <!-- TODO: Add date time picker to avoid format error -->
           <%= f.text_field :event_time, :size => "43", :placeholder => '選択した実施予定日における希望時間を記入', :required => true %>
-          <p>※実施予定日で指定された時間の中で記入してください</p>
+          <p>※実施予定日で指定された時間の中で５時間以上の長さで記入してください</p>
         </div>
       </div>
 
@@ -56,6 +56,9 @@
         </div>
         <div>
           <%= f.text_field :meeting_place, :placeholder => '東京駅 南中央出口', :required => true %>
+        </div>
+        <div>
+          <small>※できるだけ詳しく記入してください。</small>
         </div>
       </div>
 
@@ -69,14 +72,14 @@
       </div>
 
       <div class="row">
-        <%= f.label 'これまでに家族留学に行った経験はありますか？' %>
+        <%= f.label 'これまでに家族留学を受け入れた経験はありますか？' %>
         <%= f.check_box :is_first_time, {}, checked_value = true, unchecked_value = false %>
         <small>※初めての方には電話で簡単に説明いたします。</small>
       </div>
 
       <div class="row" id="ask_tel_time">
         <div>
-          <%= f.label '上記質問で家族留学の経験がない方への質問です。電話面談が可能な日を３日分教えてください' %>
+          <%= f.label '家族留学の受け入れが初めての方への質問です。電話面談（10分程度）が可能な候補日時を3つ教えてください。' %>
         </div>
         <div>
           <% 3.times do %>
@@ -94,7 +97,7 @@
         </div>
       </div>
       <div>
-        <%= f.submit 'この家族留学の問い合わせに対して確約をする', :class => 'btn btn-lg btn-pink btn-block' %>
+        <%= f.submit '家族留学の受け入れを確定する', :class => 'btn btn-lg btn-pink btn-block' %>
       </div>
   <% end %>
 </div>
