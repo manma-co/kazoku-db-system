@@ -26,8 +26,7 @@ module Google
           spreadsheet_id = '1Mj7LlJjNwnUGpXisGEsuMJPKWZKpBSSada4KQsZP9bw'
         when 'production'
           # 本番用SpreadSheet
-          spreadsheet_id = '1Mj7LlJjNwnUGpXisGEsuMJPKWZKpBSSada4KQsZP9bw'
-          # spreadsheet_id = ENV['SPREAD_SHEETS_FOR_WRITE_ID']
+          spreadsheet_id = ENV['SPREAD_SHEETS_FOR_WRITE_ID']
       end
       sheet_name = '家族留学'
       range = "#{sheet_name}"
