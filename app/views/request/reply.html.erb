@@ -77,9 +77,9 @@
         </div>
         <div class="">
           <%= f.radio_button :is_first_time, {}, :id => "yes", :checked => false, :onclick => "chkradio(this)" %>
-          <%= f.label 'あり' %>
+          <%= f.label :is_first_time, 'あり' %>
           <%= f.radio_button :is_first_time, {}, :id => "no", :checked => true, :onclick => "chkradio(this)" %>
-          <%= f.label 'なし' %>
+          <%= f.label :is_first_time, 'なし' %>
         </div>
         <div>
           <small>※初めての方には電話で簡単に説明いたします。</small>
