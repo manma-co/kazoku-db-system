@@ -76,9 +76,9 @@
           <%= f.label '家族留学を受け入れた経験' %>
         </div>
         <div class="">
-          <%= f.radio_button :is_first_time, {}, :id => "yes", :checked => false, :onclick=>"chkradio(this)" %>
+          <%= f.radio_button :is_first_time, {}, :id => "yes", :checked => false, :onclick => "chkradio(this)" %>
           <%= f.label 'あり' %>
-          <%= f.radio_button :is_first_time, {}, :id => "no", :checked => true, :onclick=>"chkradio(this)" %>
+          <%= f.radio_button :is_first_time, {}, :id => "no", :checked => true, :onclick => "chkradio(this)" %>
           <%= f.label 'なし' %>
         </div>
         <div>
@@ -114,14 +114,11 @@
   <% end %>
 </div>
 
+<script type="text/javascript" charset="utf-8">
+    $('#event_time_select').on('change', function () {
+        $('#event_date_event_time').val($(this).val());
+    });
 
-<style type="text/css">
-  {
-    visibility: hidden;
-  }
-</style>
-
-<script language="JavaScript">
     function chkradio(obj) {
         var objID = obj.getAttributeNode('id').nodeValue;
         var chkID = document.getElementById('ask_tel_time');
@@ -144,5 +141,4 @@
 
     window.onload = chkradio_load;
 
-d
 </script>
