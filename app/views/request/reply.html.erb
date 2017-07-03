@@ -57,12 +57,12 @@
       </div>
 
       <div class="row">
-        <%= f.label '家族留学をこれまで行ったことはありますか？' %>
+        <%= f.label '家族留学は初めてですか？' %>
         <small>ない場合は電話で簡単に説明いたします。</small>
         <%= f.check_box :is_first_time, {}, checked_value = true, unchecked_value = false %>
       </div>
 
-      <div class="row" id="ask_tel_time">
+      <div class="row" id="ask_tel_time" style="display: none;">
         <%= f.label '上記質問で家族留学をまだ行っていない方への質問です。電話面談が可能な日を３日分教えてください' %>
         <% 3.times do %>
             <%= text_field_tag 'tel_time[]', '', :placeholder => '8/2 10:00-11:30' %>
