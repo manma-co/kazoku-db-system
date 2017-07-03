@@ -5,11 +5,11 @@ class RequestLog < ApplicationRecord
   has_one :event_date, dependent: :destroy
   has_one :reminder, dependent: :destroy
 
-  # 10日間経ったかを確認する
-  def self.ten_days_over
+  # 7日間経ったかを確認する
+  def self.seven_days_over
     logs = RequestLog.includes(:event_date)
     logs.each do |log|
-      # イベントが成立していなくて、10以上たったリクエストを探す。
+      # イベントが成立していなくて、7日以上たったリクエストを探す。
       # Email queue を利用して、すでに送信しているかどうかをチェックする。
       # TODO: email_typeはconstantsに移せると○
       queue = EmailQueue.find_by(request_log: log, email_type: "readjustment_to_candidate")
