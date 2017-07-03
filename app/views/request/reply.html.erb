@@ -1,9 +1,9 @@
-<div class="container mb100 YuGothic">
-  <h5><%= @user.name %>さん</h5>
+<div class="container pt20 mb100 YuGothic">
+  <h4><%= @user.name %>さん</h4>
 
-  家族留学の問い合わせ内容
+  <p>家族留学の問い合わせ内容</p>
 
-  <table id="table-small" class="table table-bordered table-striped">
+  <table id="table-info" class="table table-bordered table-striped">
 
     <tbody>
     <tr>
@@ -27,7 +27,7 @@
 
   <hr>
 
-  <h3>家族留学受け入れの際に必要な情報</h3>
+  <h3>受け入れの際に必要な情報</h3>
   <%= form_for(@event) do |f| %>
 
       <%= f.hidden_field :user_id, :value => @user.id %>
@@ -38,15 +38,15 @@
           <label for="event_time_select">家族留学の実施予定日</label>
         </div>
         <div>
-          <select id="event_time_select">
+          <select id="event_time_select" class="form-control mb1">
             <option value="">選択してください</option>
             <% @days.each do |d| %>
                 <option value="<%= d.day.strftime('%Y-%m-%d') + ' ' + d.time %>"><%= d.day.strftime('%Y-%m-%d') + ' ' + d.time %></option>
             <% end %>
           </select>
           <!-- TODO: Add date time picker to avoid format error -->
-          <%= f.text_field :event_time, :size => "43", :placeholder => '選択した実施予定日における希望時間を記入', :required => true %>
-          <p>※実施予定日で指定された時間の中で５時間以上の長さで記入してください</p>
+          <%= f.text_field :event_time, :size => "43", :placeholder => '選択した実施予定日における希望時間を記入', :class => 'form-control', :required => true %>
+          <small>※希望時間は5時間以上で記入してください</small>
         </div>
       </div>
 
@@ -55,7 +55,7 @@
           <%= f.label '待ち合わせ場所（駅・出口）' %>
         </div>
         <div>
-          <%= f.text_field :meeting_place, :placeholder => '東京駅 南中央出口', :required => true %>
+          <%= f.text_field :meeting_place, :placeholder => '東京駅 南中央出口', :required => true, :class => 'form-control' %>
         </div>
         <div>
           <small>※できるだけ詳しく記入してください。</small>
@@ -67,24 +67,36 @@
           <%= f.label '緊急連絡先'+' ' %>
         </div>
         <div>
-          <%= f.text_field :emergency_contact, :placeholder => '090-1234-1234', :required => true %>
+          <%= f.text_field :emergency_contact, :placeholder => '090-1234-1234', :required => true, :class => 'form-control' %>
         </div>
       </div>
 
       <div class="row">
-        <%= f.label 'これまでに家族留学を受け入れた経験はありますか？' %>
-        <%= f.check_box :is_first_time, {}, checked_value = true, unchecked_value = false %>
-        <small>※初めての方には電話で簡単に説明いたします。</small>
-      </div>
-
-      <div class="row" id="ask_tel_time">
         <div>
-          <%= f.label '家族留学の受け入れが初めての方への質問です。電話面談（10分程度）が可能な候補日時を3つ教えてください。' %>
+          <%= f.label '家族留学を受け入れた経験' %>
+        </div>
+        <div class="">
+          <%= f.radio_button :is_first_time, {}, :checked => false %>
+          <%= f.label 'あり' %>
+          <%= f.radio_button :is_first_time, {}, :checked => false %>
+          <%= f.label 'なし' %>
         </div>
         <div>
-          <% 3.times do %>
-              <%= text_field_tag 'tel_time[]' %>
-          <% end %>
+          <small>※初めての方には電話で簡単に説明いたします。</small>
+        </div>
+      </div>
+
+      <div id="ask_tel_time" class="row">
+        <span class="bold">家族留学の受け入れが初めての方への質問です。</span>
+        <%= f.label '電話面談（10分）が可能な候補日時を3つ教えてください。' %>
+        <div class="pd1">
+          <%= text_field_tag 'tel_time[]', '', :placeholder => '候補日時1', :class => 'form-control' %>
+        </div>
+        <div class="pd1">
+          <%= text_field_tag 'tel_time[]', '', :placeholder => '候補日時2', :class => 'form-control' %>
+        </div>
+        <div class="pd1">
+          <%= text_field_tag 'tel_time[]', '', :placeholder => '候補日時3', :class => 'form-control' %>
         </div>
       </div>
 
@@ -93,7 +105,7 @@
           <%= f.label '備考' %>
         </div>
         <div>
-          <%= f.text_area :information, :size => "100", :placeholder => '備考がある場合はこちらに記入してください' %>
+          <%= f.text_area :information, :size => "42", :placeholder => '備考がある場合はこちらに記入してください', :class => 'form-control' %>
         </div>
       </div>
       <div>
@@ -101,14 +113,3 @@
       </div>
   <% end %>
 </div>
-
-
-<script type="text/javascript" charset="utf-8">
-    $('#event_time_select').on('change', function () {
-        $('#event_date_event_time').val($(this).val());
-    });
-
-    $('#event_date_is_first_time').on('click', function () {
-        $('#ask_tel_time').toggle();
-    });
-</script>
