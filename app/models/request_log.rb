@@ -16,7 +16,10 @@ class RequestLog < ApplicationRecord
       # TODO: ちょっとロジックが複雑なので処理をわけたほうがよさそう
       if log.event_date == nil && log.created_at + 7.days < Time.now && queue.nil?
         # 参加希望者に対して再打診をするかどうかのメールを送信
-        CommonMailer.readjustment_to_candidate(log).deliver_now if log.id > 1
+        if log.id > 1
+          CommonMailer.readjustment_to_candidate(log).deliver_now
+          CommonMailer.readjustment_to_manma(log).deliver_now
+        end
       end
     end
   end
