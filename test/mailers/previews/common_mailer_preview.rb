@@ -76,6 +76,11 @@ manma
     CommonMailer.deny(user)
   end
 
+  def notify_to_family_matched
+    event = EventDate.first
+    CommonMailer.notify_to_family_matched(event)
+  end
+
 
   # http://localhost:3000/rails/mailers/common_mailer/readjustment_to_candidate
   def readjustment_to_candidate
