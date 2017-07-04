@@ -87,9 +87,9 @@
         </div>
       </div>
 
-      <div id="ask_tel_time" class="row" style="display: none;">
+      <div id="ask_tel_time" class="row">
         <span class="bold">上記の質問で家族留学をまだ行っていないの方への質問です。</span>
-        <%= f.label '電話面談（10分）が可能な日を3日分教えてください。' %>
+        <%= f.label 'お電話が繋がりやすい曜日と時間帯を３つほどご記入ください' %>
         <% 3.times do %>
           <div class="pd1">
             <%= text_field_tag 'tel_time[]', '', :placeholder => '8/2 10:00-11:30', :class => 'form-control' %>
