@@ -7,8 +7,8 @@ task :three_days_reminder_task => :environment do
   puts "done."
 end
 
-task :ten_days_over_task => :environment do
-  puts "Run ten_days_over funtion for families..."
-  RequestLog.ten_days_over
+task :seven_days_over_task => :environment do
+  puts "Run seven_days_over funtion for families..."
+  RequestLog.seven_days_over
   puts "done."
 end
