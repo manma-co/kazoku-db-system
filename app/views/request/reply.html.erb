@@ -33,7 +33,7 @@
       <%= f.hidden_field :user_id, :value => @user.id %>
       <%= f.hidden_field :request_log_id, :value => @log.id %>
 
-      <div class="row">
+      <div class="manma-form-item">
         <div>
           <label for="event_time_select">家族留学の実施予定日</label>
         </div>
@@ -50,7 +50,7 @@
         </div>
       </div>
 
-      <div class="row">
+      <div class="manma-form-item">
         <div>
           <%= f.label '待ち合わせ場所（駅・出口）' %>
         </div>
@@ -62,7 +62,7 @@
         </div>
       </div>
 
-      <div class="row">
+      <div class="manma-form-item">
         <div>
           <%= f.label '緊急連絡先'+' ' %>
         </div>
@@ -71,33 +71,33 @@
         </div>
       </div>
 
-      <div class="row">
+      <div class="manma-form-item">
         <div>
           <%= f.label '家族留学は初めてですか？' %>
           <small>ない場合は電話で簡単に説明いたします。</small>
         </div>
         <div class="">
           <%= f.radio_button :is_first_time, {}, :id => "yes", :checked => false, :onclick => "chkradio(this)" %>
-          <%= f.label :is_first_time, 'あり' %>
+          <%= f.label :is_first_time, 'はい' %>
           <%= f.radio_button :is_first_time, {}, :id => "no", :checked => true, :onclick => "chkradio(this)" %>
-          <%= f.label :is_first_time, 'なし' %>
+          <%= f.label :is_first_time, 'いいえ' %>
         </div>
         <div>
           <small>※初めての方には電話で簡単に説明いたします。</small>
         </div>
       </div>
 
-      <div id="ask_tel_time" class="row">
+      <div id="ask_tel_time" class="manma-form-item">
         <span class="bold">上記の質問で家族留学をまだ行っていないの方への質問です。</span>
         <%= f.label 'お電話が繋がりやすい曜日と時間帯を３つほどご記入ください' %>
         <% 3.times do %>
-          <div class="pd1">
-            <%= text_field_tag 'tel_time[]', '', :placeholder => '8/2 10:00-11:30', :class => 'form-control' %>
-          </div>
+            <div class="pd1">
+              <%= text_field_tag 'tel_time[]', '', :placeholder => '8/2 10:00-11:30', :class => 'form-control' %>
+            </div>
         <% end %>
       </div>
 
-      <div class="row">
+      <div class="manma-form-item">
         <div>
           <%= f.label '備考' %>
         </div>
@@ -105,37 +105,36 @@
           <%= f.text_area :information, :size => "42", :placeholder => '備考がある場合はこちらに記入してください', :class => 'form-control' %>
         </div>
       </div>
-      <div>
+      <div class="manma-form-item">
         <%= f.submit '家族留学の受け入れを確定する', :class => 'btn btn-lg btn-pink btn-block' %>
       </div>
   <% end %>
 </div>
 
 <script type="text/javascript" charset="utf-8">
-    $('#event_time_select').on('change', function () {
-        $('#event_date_event_time').val($(this).val());
-    });
+  $('#event_time_select').on('change', function () {
+    $('#event_date_event_time').val($(this).val());
+  });
 
-    function chkradio(obj) {
-        var objID = obj.getAttributeNode('id').nodeValue;
-        var chkID = document.getElementById('ask_tel_time');
-        if (objID == 'no') {
-            chkID.style.visibility = 'visible';
-          /*候補日時の入力欄表示*/
-        }
-        else {
-            chkID.style.visibility = 'hidden';
-          /*非表示*/
-        }
+  function chkradio(obj) {
+    var objID = obj.getAttributeNode('id').nodeValue;
+    var chkID = document.getElementById('ask_tel_time');
+    if (objID == 'no') {
+      chkID.style.visibility = 'visible';
+      /*候補日時の入力欄表示*/
     }
-    function chkradio_load() {
-        var chkID = document.getElementById('ask_tel_time');
-        var input = document.getElementById('no');
-        if (input.checked == true) {
-            chkID.style.visibility = 'visible';
-        }
+    else {
+      chkID.style.visibility = 'hidden';
+      /*非表示*/
     }
+  }
+  function chkradio_load() {
+    var chkID = document.getElementById('ask_tel_time');
+    var input = document.getElementById('no');
+    if (input.checked == true) {
+      chkID.style.visibility = 'visible';
+    }
+  }
 
-    window.onload = chkradio_load;
-
+  window.onload = chkradio_load;
 </script>
