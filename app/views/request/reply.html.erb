@@ -119,7 +119,7 @@
   function chkradio(obj) {
     var objID = obj.getAttributeNode('id').nodeValue;
     var chkID = document.getElementById('ask_tel_time');
-    if (objID == 'no') {
+    if (objID == 'yes') {
       chkID.style.visibility = 'visible';
       /*候補日時の入力欄表示*/
     }
@@ -132,7 +132,7 @@
     var chkID = document.getElementById('ask_tel_time');
     var input = document.getElementById('no');
     if (input.checked == true) {
-      chkID.style.visibility = 'visible';
+      chkID.style.visibility = 'hidden';
     }
   }
 
