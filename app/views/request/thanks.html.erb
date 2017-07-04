@@ -1,26 +1,28 @@
-<h3>家族留学のご参加ありがとうございました。</h3>
+<div class="container mt30 pt20 fs15 YuGothic text-center">
+  <p>家族留学を受け入れていただき、ありがとうございます。</p>
+</div>
 
-
-<table>
+<h4 class="text-center">ご確認内容</h4>
+<table id="table-info" class="table table-bordered table-striped">
   <tbody>
   <tr>
-    <td>日程: </td>
+    <th>日程</th>
     <td><%= @event.hold_date %></td>
   </tr>
   <tr>
-    <td>開始時間: </td>
+    <th>開始時間</th>
     <td><%= @event.start_time.strftime("%H時%M分") %></td>
   </tr>
   <tr>
-    <td>終了時間: </td>
+    <th>終了時間</th>
     <td><%= @event.end_time.strftime("%H時%M分") %></td>
   </tr>
   <tr>
-    <td>待ち合わせ場所</td>
+    <th>待ち合わせ場所</th>
     <td><%= @event.meeting_place %></td>
   </tr>
   <tr>
-    <td>備考</td>
+    <th>備考</th>
     <td><%= @event.nil_replace %></td>
   </tr>
   </tbody>

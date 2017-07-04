@@ -1,25 +1,25 @@
-<div class="container">
-  <h5><%= @user.name %>さん</h5>
+<div class="container pt20 mb100 YuGothic">
+  <h4><%= @user.name %>さん</h4>
 
-  家族留学の問い合わせ内容
+  <p>家族留学の問い合わせ内容</p>
 
-  <table>
+  <table id="table-info" class="table table-bordered table-striped">
 
     <tbody>
     <tr>
-      <td>名前:&nbsp;</td>
+      <th>名前</th>
       <td><%= @log.name %></td>
     </tr>
     <tr>
-      <td>所属:&nbsp;</td>
+      <th>所属</th>
       <td><%= @log.belongs %></td>
     </tr>
     <tr>
-      <td>最寄駅: </td>
+      <th>最寄駅</th>
       <td><%= @log.station %></td>
     </tr>
     <tr>
-      <td>希望理由: </td>
+      <th>希望理由</th>
       <td><%= @log.motivation %></td>
     </tr>
     </tbody>
@@ -27,66 +27,114 @@
 
   <hr>
 
-  <h4>問い合わせに対する返事</h4>
+  <h3>受け入れの際に必要な情報</h3>
   <%= form_for(@event) do |f| %>
 
       <%= f.hidden_field :user_id, :value => @user.id %>
       <%= f.hidden_field :request_log_id, :value => @log.id %>
 
-      <div class="row">
-        <label for="event_time_select">家族留学実施日</label>
-        <select id="event_time_select">
-          <option value="">選択してください</option>
-          <% @days.each do |d| %>
-              <option value="<%= d.day.strftime('%Y-%m-%d') + ' ' + d.time %>"><%= d.day.strftime('%Y-%m-%d') + ' ' + d.time %></option>
-          <% end %>
-        </select>
-        <!-- TODO: Add date time picker to avoid format error -->
-        <%= f.text_field :event_time, :required => true %>
-        時間をずらしたい場合は時間の中で変更してください
+      <div class="manma-form-item">
+        <div>
+          <label for="event_time_select">家族留学の実施予定日</label>
+        </div>
+        <div>
+          <select id="event_time_select" class="form-control mb1">
+            <option value="">選択してください</option>
+            <% @days.each do |d| %>
+                <option value="<%= d.day.strftime('%Y-%m-%d') + ' ' + d.time %>"><%= d.day.strftime('%Y-%m-%d') + ' ' + d.time %></option>
+            <% end %>
+          </select>
+          <!-- TODO: Add date time picker to avoid format error -->
+          <%= f.text_field :event_time, :size => "43", :placeholder => '選択した実施予定日における希望時間を記入', :class => 'form-control', :required => true %>
+          <small>※希望時間は5時間以上で記入してください</small>
+        </div>
       </div>
 
-      <div class="row">
-        <%= f.label '待ち合わせ場所（駅・出口）' %>
-        <%= f.text_field :meeting_place, :placeholder => '東京駅 南中央出口', :required => true %>
+      <div class="manma-form-item">
+        <div>
+          <%= f.label '待ち合わせ場所（駅・出口）' %>
+        </div>
+        <div>
+          <%= f.text_field :meeting_place, :placeholder => '東京駅 南中央出口', :required => true, :class => 'form-control' %>
+        </div>
+        <div>
+          <small>※できるだけ詳しく記入してください。</small>
+        </div>
       </div>
 
-      <div class="row">
-        <%= f.label '緊急連絡先' %>
-        <%= f.text_field :emergency_contact, :placeholder => '090-1234-1234', :required => true %>
+      <div class="manma-form-item">
+        <div>
+          <%= f.label '緊急連絡先'+' ' %>
+        </div>
+        <div>
+          <%= f.text_field :emergency_contact, :placeholder => '090-1234-1234', :required => true, :class => 'form-control' %>
+        </div>
       </div>
 
-      <div class="row">
-        <%= f.label '家族留学は初めてですか？' %>
-        <small>ない場合は電話で簡単に説明いたします。</small>
-        <%= f.check_box :is_first_time, {}, checked_value = true, unchecked_value = false %>
+      <div class="manma-form-item">
+        <div>
+          <%= f.label '家族留学は初めてですか？' %>
+          <small>ない場合は電話で簡単に説明いたします。</small>
+        </div>
+        <div class="">
+          <%= f.radio_button :is_first_time, {}, :id => "yes", :checked => false, :onclick => "chkradio(this)" %>
+          <%= f.label :is_first_time, 'はい' %>
+          <%= f.radio_button :is_first_time, {}, :id => "no", :checked => true, :onclick => "chkradio(this)" %>
+          <%= f.label :is_first_time, 'いいえ' %>
+        </div>
+        <div>
+          <small>※初めての方には電話で簡単に説明いたします。</small>
+        </div>
       </div>
 
-      <div class="row" id="ask_tel_time">
+      <div id="ask_tel_time" class="manma-form-item">
+        <span class="bold">上記の質問で家族留学をまだ行っていないの方への質問です。</span>
         <%= f.label 'お電話が繋がりやすい曜日と時間帯を３つほどご記入ください' %>
         <% 3.times do %>
-            <%= text_field_tag 'tel_time[]', '', :placeholder => '8/2 10:00-11:30' %>
+            <div class="pd1">
+              <%= text_field_tag 'tel_time[]', '', :placeholder => '8/2 10:00-11:30', :class => 'form-control' %>
+            </div>
         <% end %>
       </div>
 
-      <div class="row">
-        <%= f.label '備考' %>
-        <%= f.text_area :information, :placeholder => '備考がある場合はこちらに記入して下さい' %>
+      <div class="manma-form-item">
+        <div>
+          <%= f.label '備考' %>
+        </div>
+        <div>
+          <%= f.text_area :information, :size => "42", :placeholder => '備考がある場合はこちらに記入してください', :class => 'form-control' %>
+        </div>
       </div>
-
-      <%= f.submit 'この家族留学の問い合わせに対して確約をする' %>
-
+      <div class="manma-form-item">
+        <%= f.submit '家族留学の受け入れを確定する', :class => 'btn btn-lg btn-pink btn-block' %>
+      </div>
   <% end %>
-
 </div>
 
-
 <script type="text/javascript" charset="utf-8">
-    $('#event_time_select').on('change', function () {
-        $('#event_date_event_time').val( $(this).val());
-    });
+  $('#event_time_select').on('change', function () {
+    $('#event_date_event_time').val($(this).val());
+  });
 
-    $('#event_date_is_first_time').on('click', function () {
-        $('#ask_tel_time').toggle();
-    });
+  function chkradio(obj) {
+    var objID = obj.getAttributeNode('id').nodeValue;
+    var chkID = document.getElementById('ask_tel_time');
+    if (objID == 'no') {
+      chkID.style.visibility = 'visible';
+      /*候補日時の入力欄表示*/
+    }
+    else {
+      chkID.style.visibility = 'hidden';
+      /*非表示*/
+    }
+  }
+  function chkradio_load() {
+    var chkID = document.getElementById('ask_tel_time');
+    var input = document.getElementById('no');
+    if (input.checked == true) {
+      chkID.style.visibility = 'visible';
+    }
+  }
+
+  window.onload = chkradio_load;
 </script>

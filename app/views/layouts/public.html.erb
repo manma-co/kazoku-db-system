@@ -1,17 +1,26 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>家族留学</title>
+  <title>manma | 確認画面</title>
   <%= csrf_meta_tags %>
-  <%#= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => 'reload' %>
-  <%= javascript_include_tag 'application', 'data-turbolinks-track' => 'reload' %>
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
+  <%= stylesheet_link_tag 'request/request', media: 'all', 'data-turbolinks-track' => 'reload' %>
+  <%= stylesheet_link_tag 'custom', :media => 'all' %>
+  <%= javascript_include_tag 'request', 'data-turbolinks-track' => 'reload' %>
 </head>
 
 <body>
+<header class="bg-pink pd10">
+  <%= image_tag("logo.png", :width => "300") %>
+</header>
 <main>
   <div class="container">
     <%= yield %>
   </div>
 </main>
+<div id="footer">
+  <p>© 2014 - <%= Date.today.strftime('%Y') %> manma inc.</p>
+</div>
 </body>
 </html>
+
