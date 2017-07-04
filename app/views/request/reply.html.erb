@@ -73,7 +73,8 @@
 
       <div class="row">
         <div>
-          <%= f.label '家族留学を受け入れた経験' %>
+          <%= f.label '家族留学は初めてですか？' %>
+          <small>ない場合は電話で簡単に説明いたします。</small>
         </div>
         <div class="">
           <%= f.radio_button :is_first_time, {}, :id => "yes", :checked => false, :onclick => "chkradio(this)" %>
@@ -86,18 +87,14 @@
         </div>
       </div>
 
-      <div id="ask_tel_time" class="row">
-        <span class="bold">家族留学の受け入れが初めての方への質問です。</span>
-        <%= f.label '電話面談（10分）が可能な候補日時を3つ教えてください。' %>
-        <div class="pd1">
-          <%= text_field_tag 'tel_time[]', '', :placeholder => '候補日時1', :class => 'form-control' %>
-        </div>
-        <div class="pd1">
-          <%= text_field_tag 'tel_time[]', '', :placeholder => '候補日時2', :class => 'form-control' %>
-        </div>
-        <div class="pd1">
-          <%= text_field_tag 'tel_time[]', '', :placeholder => '候補日時3', :class => 'form-control' %>
-        </div>
+      <div id="ask_tel_time" class="row" style="display: none;">
+        <span class="bold">上記の質問で家族留学をまだ行っていないの方への質問です。</span>
+        <%= f.label '電話面談（10分）が可能な日を3日分教えてください。' %>
+        <% 3.times do %>
+          <div class="pd1">
+            <%= text_field_tag 'tel_time[]', '', :placeholder => '8/2 10:00-11:30', :class => 'form-control' %>
+          </div>
+        <% end %>
       </div>
 
       <div class="row">

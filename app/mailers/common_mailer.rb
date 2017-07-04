@@ -182,7 +182,6 @@ class CommonMailer < ActionMailer::Base
     # Send a mail
     mail(to: log.email, subject: title)
 
-
     # Insert to DB
     EmailQueue.create!(
         :sender_address => 'info@manma.co',
@@ -193,6 +192,31 @@ class CommonMailer < ActionMailer::Base
         :retry_count => 0,
         :sent_status => true,
         :email_type => 'readjustment_to_candidate',
+        :time_delivered => Time.now
+    )
+
+  end
+
+
+  # 再打診メールを info@manma.co にもお知らせする。
+  def readjustment_to_manma(log)
+
+    @log = log
+    title = "自動送信 →【要返信】家族留学の再打診に関しまして"
+
+    # Send to manma
+    mail(to: 'yoshihito522@gmail.com', subject: title)
+
+    # Insert to DB
+    EmailQueue.create!(
+        :sender_address => 'info@manma.co',
+        :to_address => 'info@manma.co',
+        :subject => title,
+        :body_text => '',
+        :request_log => log,
+        :retry_count => 0,
+        :sent_status => true,
+        :email_type => 'readjustment_to_manma',
         :time_delivered => Time.now
     )
   end
