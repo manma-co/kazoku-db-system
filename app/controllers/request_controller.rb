@@ -93,9 +93,7 @@ class RequestController < ApplicationController
         event.end_time.strftime('%H:%M:%S'),
         event.meeting_place
       ]
-
-      authorizer, credentials = Google::SpreadSheetAuthorizeFromFileService.do(ENV['SPREAD_SHEET_AUTH_UNIQUE_ID'])
-      Google::SpreadSheetWriteService.do(credentials, row)
+      Google::AuthorizeWithWriteByServiceAccount.do(row)
 
       redirect_to thanks_path
     else

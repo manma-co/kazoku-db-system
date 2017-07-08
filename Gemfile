@@ -51,6 +51,7 @@ gem 'material_icons'
 
 # Google関連のAPIにアクセスするため
 gem 'google-api-client', '~> 0.11'
+gem 'google_drive'
 
 # constをymlで定義する
 gem 'settingslogic'
