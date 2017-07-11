@@ -73,27 +73,7 @@ class RequestController < ApplicationController
       user.reply_log.create!(request_log: log, result: true)
 
       # Write data to spread sheet
-      # TODO: ロジックを別の場所に移した方がよい
-      row = [
-        DateTime.current.strftime('%Y/%m/%d %H:%M:%S'),
-        'manma-system',
-        user.name,  # 家庭代表者氏名
-
-        event.emergency_contact,  # 家庭連絡先
-        'はい',     # 受け入れるか？
-        log.name,   # 家族留学者氏名
-        log.emergency,  # 家族留学者連絡先
-        '',
-        '',
-        '',
-        '',
-        '', # 受け入れ家庭の家族構成
-        event.hold_date.strftime('%Y/%m/%d'), # 実施日時
-        event.start_time.strftime('%H:%M:%S'),
-        event.end_time.strftime('%H:%M:%S'),
-        event.meeting_place
-      ]
-      Google::AuthorizeWithWriteByServiceAccount.do(row)
+      Google::AuthorizeWithWriteByServiceAccount.do(row(user, event, log))
 
       redirect_to thanks_path
     else
@@ -106,9 +86,9 @@ class RequestController < ApplicationController
     if params[:email] && params[:log_id]
       user = Contact.find_by(email_pc: params[:email]).user
       reply = ReplyLog.new(
-          user: user,
-          result: false,
-          request_log_id: params[:log_id]
+        user: user,
+        result: false,
+        request_log_id: params[:log_id]
       )
 
       reply.save!
@@ -135,14 +115,38 @@ class RequestController < ApplicationController
 
   def event_params
     params.require(:event_date).permit(
-                                   :user_id,
-                                   :request_log_id,
-                                   :meeting_place,
-                                   :emergency_contact,
-                                   :is_first_time,
-                                   :information,
-                                   :event_time
+      :user_id,
+      :request_log_id,
+      :meeting_place,
+      :emergency_contact,
+      :is_first_time,
+      :information,
+      :event_time
     )
+  end
+
+  def row(user, event, log)
+    participant_names = log.name.split(',')
+    participant_emails = log.email.split(',')
+    [
+      DateTime.current.strftime('%Y/%m/%d %H:%M:%S'),
+      'manma-system',
+      user.name, # 家庭代表者氏名
+
+      event.emergency_contact, # 家庭連絡先
+      'はい', # 受け入れるか？
+      participant_names[0],  # 家族留学参加者氏名1
+      participant_emails[0], # 家族留学者連絡先email1
+      participant_names[1],  # 家族留学参加者氏名2
+      participant_emails[1], # 家族留学者連絡先email2
+      participant_names[2],  # 家族留学参加者氏名2
+      participant_emails[2], # 家族留学者連絡先email2
+      '', # 受け入れ家庭の家族構成
+      event.hold_date.strftime('%Y/%m/%d'), # 実施日時
+      event.start_time.strftime('%H:%M:%S'),
+      event.end_time.strftime('%H:%M:%S'),
+      event.meeting_place
+    ]
   end
 
 end

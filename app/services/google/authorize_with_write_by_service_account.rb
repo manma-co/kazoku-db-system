@@ -17,8 +17,8 @@ module Google
       # 配列を展開して、Spreadsheetのデータ未挿入行かつ先頭列からデータを挿入
       # データが挿入されている行の次の行に挿入したいため +1 をする
       insert_row_index = ws.num_rows + 1
-      array.each_with_index do |a, index|
-        ws[insert_row_index, index + 1] = a
+      array.each_with_index do |e, index|
+        ws[insert_row_index, index + 1] = e
       end
       ws.save
 
