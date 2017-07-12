@@ -76,6 +76,7 @@ manma
     CommonMailer.deny(user)
   end
 
+  # http://localhost:3000/rails/mailers/common_mailer/notify_to_family_matched
   def notify_to_family_matched
     event = EventDate.first
     CommonMailer.notify_to_family_matched(event)
