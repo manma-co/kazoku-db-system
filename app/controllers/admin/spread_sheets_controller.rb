@@ -27,7 +27,7 @@ class Admin::SpreadSheetsController < Admin::AdminController
   end
 
   # スプレッドシートにアクセス認証後、参加者情報を取得する
-  def fetch_student
+  def fetch_participant
     user_id = ENV['SPREAD_SHEET_AUTH_UNIQUE_ID']
     authorizer, credentials = Google::SpreadSheetAuthorizeService.do(request, user_id)
     if credentials.nil?
@@ -36,7 +36,10 @@ class Admin::SpreadSheetsController < Admin::AdminController
     end
 
     # スプレッドシートの情報取得(参加者向け)
-    response = Google::SpreadSheetFetchService.fetch_student(credentials)
+    response = Google::SpreadSheetFetchService.fetch_participant(credentials)
+
+    # スプレッドシート情報の保存(参加者向け)
+    Google::SpreadSheetStoreService.store_participant(response, is_debug: false)
 
     redirect_to admin_family_index_path
   end

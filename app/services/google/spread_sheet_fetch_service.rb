@@ -10,7 +10,7 @@ module Google
 
     APPLICATION_NAME = 'Fetch from manma\'s spread sheet'
 
-    # スプレッドシート情報の取得
+    # スプレッドシート情報の取得(家庭向け)
     # response.value でスプレッドシートから取得したデータを全てを配列で取得することが可能
     # @param [authorize] authorize 認証情報
     # @return [response] response スプレッドシートから取得した情報
@@ -30,13 +30,17 @@ module Google
       response
     end
 
-    def self.fetch_student(authorize)
+    # スプレッドシート情報の取得(参加者向け)
+    # response.value でスプレッドシートから取得したデータを全てを配列で取得することが可能
+    # @param [authorize] authorize 認証情報
+    # @return [response] response スプレッドシートから取得した情報
+    def self.fetch_participant(authorize)
       service = Google::Apis::SheetsV4::SheetsService.new
       service.client_options.application_name = APPLICATION_NAME
       service.authorization = authorize
 
-      # 学生情報スプレッドシートID
-      spread_sheet_id = ENV['PARTICIPANT_SPERAD_SHEET_ID']
+      # 参加者情報スプレッドシートID
+      spread_sheet_id = ENV['PARTICIPANT_SPREAD_SHEET_ID']
       sheet_name = 'manmaシステム利用'
 
       range = "#{sheet_name}!A2:AD"
