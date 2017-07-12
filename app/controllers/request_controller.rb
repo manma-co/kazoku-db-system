@@ -21,7 +21,7 @@ class RequestController < ApplicationController
       return redirect_to deny_path if reply
 
       # 7日経っていたら回答URLを閉鎖
-      return redirect_to deny_path if EmailQueue.find_by(request_log_id: @log.id, email_type: 'readjustment_to_candidate')
+      return redirect_to deny_path if EmailQueue.find_by(request_log_id: @log.id, email_type: Settings.email_type.readjustment)
 
       # すでにマッチングが成立していたらリダイレクト
       event = EventDate.find_by(request_log_id: @log)
