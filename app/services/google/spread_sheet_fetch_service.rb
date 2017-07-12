@@ -14,7 +14,7 @@ module Google
     # response.value でスプレッドシートから取得したデータを全てを配列で取得することが可能
     # @param [authorize] authorize 認証情報
     # @return [response] response スプレッドシートから取得した情報
-    def self.do(authorize)
+    def self.fetch_family(authorize)
       # Initialize the API
       service = Google::Apis::SheetsV4::SheetsService.new
       service.client_options.application_name = APPLICATION_NAME
@@ -23,6 +23,22 @@ module Google
       # 家庭情報スプレッドシートID
       spreadsheet_id = ENV['SPREAD_SHEET_ID']
       sheet_name = 'フォームの回答 1'
+      range = "#{sheet_name}!A2:AD"
+      response = service.get_spreadsheet_values(spreadsheet_id, range)
+      puts 'No data found.' if response.values.empty?
+
+      response
+    end
+
+    def self.fetch_student(authorize)
+      service = Google::Apis::SheetsV4::SheetsService.new
+      service.client_options.application_name = APPLICATION_NAME
+      service.authorization = authorize
+
+      # 学生情報スプレッドシートID
+      spread_sheet_id = ENV['PARTICIPANT_SPERAD_SHEET_ID']
+      sheet_name = 'manmaシステム利用'
+
       range = "#{sheet_name}!A2:AD"
       response = service.get_spreadsheet_values(spreadsheet_id, range)
       puts 'No data found.' if response.values.empty?
