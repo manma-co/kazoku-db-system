@@ -3,4 +3,6 @@
 // You can use CoffeeScript in this file: http://coffeescript.org/
 //= require jquery
 //= require jquery_ujs
+//= require sweetalert2
+//= require sweet-alert2-rails
 //= require jquery.turbolinks
