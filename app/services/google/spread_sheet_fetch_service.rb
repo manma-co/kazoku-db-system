@@ -40,7 +40,7 @@ module Google
       service.authorization = authorize
 
       # 参加者情報スプレッドシートID
-      spread_sheet_id = ENV['PARTICIPANT_SPREAD_SHEET_ID']
+      spreadsheet_id = ENV['PARTICIPANT_SPREAD_SHEET_ID']
       sheet_name = 'manmaシステム利用'
 
       range = "#{sheet_name}!A2:AD"

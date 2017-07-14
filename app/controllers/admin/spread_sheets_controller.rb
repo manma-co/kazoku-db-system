@@ -41,7 +41,7 @@ class Admin::SpreadSheetsController < Admin::AdminController
     # スプレッドシート情報の保存(参加者向け)
     Google::SpreadSheetStoreService.store_participant(response, is_debug: false)
 
-    redirect_to admin_family_index_path
+    redirect_to admin_participants_path
   end
 
   # 認証情報が保存されていなければGoogleアカウントの認証が行われる
