@@ -1,0 +1,21 @@
+<% if admin_signed_in? %>
+    ログイン中: <%= current_admin.email %>
+<% end %>
+<p>右上のボタンから打診メールの作成が可能です。</p>
+
+<%= button_to('スプレッドシートから参加者登録情報を取得', admin_spread_sheets_fetch_participant_path, method: :get, class: 'btn waves-effect waves-light') %>
+
+<h2>参加登録者一覧</h2>
+<table border="1" role="grid">
+  <tbody>
+  <% @participant_list.each_with_index do |p, index| %>
+      <tr role="row" class="odd">
+        <td><%= index + 1 %></td>
+        <td><%= p.name %></td>
+        <td><%= p.kana %></td>
+        <td><%= p.email %></td>
+        <td><%= p.belong %></td>
+      </tr>
+  <% end %>
+  </tbody>
+</table>

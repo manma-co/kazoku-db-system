@@ -5,6 +5,7 @@ Rails.application.routes.draw do
   namespace :admin do
     get '/' => redirect("admin/family")
     resources :family
+    resources :participants, only: [:index, :show]
 
     resources :locations, :only => [:index, :create]
     get 'locations/search'
@@ -15,7 +16,8 @@ Rails.application.routes.draw do
 
     get 'mails/histories'
     get 'mails/history/:id', to: 'mails#history', as: 'mails_history'
-    get 'spread_sheets/authorize'
+    get 'spread_sheets/fetch_family'
+    get 'spread_sheets/fetch_participant'
     get 'spread_sheets/oauth2callback'
   end
 

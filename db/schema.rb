@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170624034755) do
+ActiveRecord::Schema.define(version: 20170712232522) do
 
   create_table "admins", force: :cascade do |t|
     t.string   "email",              default: "", null: false
@@ -81,6 +81,16 @@ ActiveRecord::Schema.define(version: 20170624034755) do
     t.datetime "updated_at",                          null: false
     t.integer  "user_id"
     t.index ["user_id"], name: "index_locations_on_user_id"
+  end
+
+  create_table "participants", force: :cascade do |t|
+    t.string   "name"
+    t.string   "kana"
+    t.string   "belong"
+    t.string   "email"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["email"], name: "index_participants_on_email", unique: true
   end
 
   create_table "profile_families", force: :cascade do |t|
