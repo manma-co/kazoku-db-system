@@ -44,7 +44,7 @@ class CommonMailer < ActionMailer::Base
         :request_log => log,
         :retry_count => 0,
         :sent_status => false,
-        :email_type => 'request_email_to_family'
+        :email_type => Settings.email_type.request
     )
     @body = mail_body
     # Send Grid を使ってmanma.coからメールを送るようにする。
@@ -191,7 +191,7 @@ class CommonMailer < ActionMailer::Base
         :request_log => log,
         :retry_count => 0,
         :sent_status => true,
-        :email_type => 'readjustment_to_candidate',
+        :email_type => Settings.email_type.readjustment,
         :time_delivered => Time.now
     )
 

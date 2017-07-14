@@ -11,15 +11,22 @@ class RequestLog < ApplicationRecord
     logs.each do |log|
       # イベントが成立していなくて、7日以上たったリクエストを探す。
       # Email queue を利用して、すでに送信しているかどうかをチェックする。
-      # TODO: email_typeはconstantsに移せると○
-      queue = EmailQueue.find_by(request_log: log, email_type: "readjustment_to_candidate")
-      # TODO: ちょっとロジックが複雑なので処理をわけたほうがよさそう
-      if log.event_date == nil && log.created_at + 7.days < Time.now && queue.nil?
-        # 参加希望者に対して再打診をするかどうかのメールを送信
-        if log.id > 1
-          CommonMailer.readjustment_to_candidate(log).deliver_now
-          CommonMailer.readjustment_to_manma(log).deliver_now
-        end
+      queue = EmailQueue.find_by(
+        request_log: log,
+        email_type: Settings.email_type.reajustment
+      )
+      # Event Data が存在していたら return
+      return if log.event_date != nil
+      # 7日経っていなかったら return
+      return if log.created_at + 7.days >= Time.now
+      # メールを送信しているかを確認
+      # 送信していなかったらメールを送信
+      return unless queue.nil?
+
+      # 参加希望者に対して再打診をするかどうかのメールを送信
+      if log.id > 1
+        CommonMailer.readjustment_to_candidate(log).deliver_now
+        CommonMailer.readjustment_to_manma(log).deliver_now
       end
     end
   end
@@ -43,8 +50,7 @@ class RequestLog < ApplicationRecord
 
         # リマインドメールを送る家庭を探すために、ReplyLog から何もアクションをしていない家庭を探す。
         # すべての送信履歴を参照
-        # TODO: email_typeはconstantsに移せると○
-        mail_queues = EmailQueue.where(request_log_id: log.id, email_type: "request_email_to_family").select(:to_address)
+        mail_queues = EmailQueue.where(request_log_id: log.id, email_type: Settings.email_type.request).select(:to_address)
 
         # 返信履歴（ReplyLog）の中に、送信履歴（EmailQueue）から割り出した家庭が存在していないものを取り出す。
         # つまりは、返信していない家庭の割り出し。
@@ -58,7 +64,6 @@ class RequestLog < ApplicationRecord
 
         # Insert to DB to check reminder was send.
         Reminder.create!(request_log: log)
-
       end
     end
   end
