@@ -12,3 +12,9 @@ task :seven_days_over_task => :environment do
   RequestLog.seven_days_over
   puts "done."
 end
+
+task :monthly_news_letter => :environment do
+  puts "Run monthly news letter funtion..."
+  NewsLetter.send_news_letter
+  puts "done."
+end
