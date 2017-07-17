@@ -1,2 +1,9 @@
-<h1>Admin::NewsLetter#new</h1>
-<p>Find me in app/views/admin/news_letter/new.html.erb</p>
+
+<h4>ニュースレターの作成</h4>
+<p>このフォームから参加者のみに対してのニュースレターと <br>
+  家庭に一斉送信するメールを作成できます。 </p>
+
+
+<%= form_for @news_letter, url: admin_news_letter_index_path do |f| %>
+    <%= render 'shared/error_message', object: f.object %>
+<% end %>
