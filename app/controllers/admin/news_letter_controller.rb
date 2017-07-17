@@ -41,7 +41,8 @@ class Admin::NewsLetterController < Admin::AdminController
         :send_to,
         :content,
         :sent_at,
-        :is_save
+        :is_save,
+        :is_monthly,
     )
   end
 

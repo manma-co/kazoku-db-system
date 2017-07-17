@@ -90,6 +90,7 @@ ActiveRecord::Schema.define(version: 20170717014159) do
     t.string   "send_to"
     t.boolean  "is_sent"
     t.boolean  "is_save"
+    t.boolean  "is_monthly"
     t.datetime "created_at",   null: false
     t.datetime "updated_at",   null: false
   end
