@@ -1,5 +1,12 @@
 class NewsLetterMailer < ApplicationMailer
 
+  # Development の時はyoshihito.meからとりあえず送る設定。
+  if Rails.env == 'development'
+    default from: 'manma <info@yoshihito.me>'
+  else
+    default from: 'manma <info@manma.co>'
+  end
+
   add_template_helper(TextHelper)
 
   # ニュースレターを送信する

@@ -40,22 +40,28 @@ class NewsLetter < ApplicationRecord
   def self.monthly_news_letter
 
     # 送信すべきニュースレターが存在するかをチェックする
-    # news_letter = NewsLetter.monthly_news
-    news_letter = NewsLetter.where('distribution <= ? AND is_save = ? AND is_sent = ?', Time.now, false, false).where('is_monthly = ? ', true).where('send_to = ?', 'participant')
+    news_letter = NewsLetter.
+        where('distribution <= ? AND is_save = ? AND is_sent = ?', Time.now, false, false).
+        where('is_monthly = ? ', true).
+        where('send_to = ?', 'participant').first
+    # nil check
+    return if news_letter.nil?
 
     # すべての参加者情報を取得する
     # TODO: 受信設定に応じて取得するユーザーを変更する。
     users = Participant.all
-    bcc_address = []
+    bcc_address = ""
     users.each do |user|
-      bcc_address.push(user.email)
+      bcc_address += user.email + ", "
     end
 
+    p "bcc_address: #{bcc_address}"
+    p "content: #{news_letter.content}"
     # メールを送信する
     NewsLetterMailer.send_news_letter(news_letter, bcc_address)
 
     # 送信済みにする
-    news_letter.update("is_sent = true")
+    news_letter.update(is_sent: true)
   end
 
 
@@ -64,14 +70,20 @@ class NewsLetter < ApplicationRecord
   def self.send_news_letter
 
     # 送信すべきニュースレターが存在するかをチェックする
-    news_letter = NewsLetter.news_letter
+    news_letter = NewsLetter.
+        where('distribution <= ? AND is_save = ? AND is_sent = ?', Time.now, false, false).
+        where('is_monthly = ? ', false).
+        where('send_to = ?', 'family').first
+
+    # nil check
+    return if news_letter.nil?
 
     # すべての参加者情報を取得する
     # TODO: 受信設定に応じて取得するユーザーを変更する。
     users = User.all
-    bcc_address = []
+    bcc_address = ""
     users.each do |user|
-      bcc_address.push(user.contact.email_pc)
+      bcc_address += user.contact.email_pc + ", "
     end
 
     # メールを送信する

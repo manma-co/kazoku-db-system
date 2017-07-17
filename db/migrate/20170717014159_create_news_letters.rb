@@ -5,9 +5,9 @@ class CreateNewsLetters < ActiveRecord::Migration[5.0]
       t.text :content
       t.datetime :distribution
       t.string :send_to
-      t.boolean :is_sent
-      t.boolean :is_save
-      t.boolean :is_monthly
+      t.boolean :is_sent, default: false
+      t.boolean :is_save, default: false
+      t.boolean :is_monthly, default: false
 
       t.timestamps
     end

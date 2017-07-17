@@ -88,11 +88,11 @@ ActiveRecord::Schema.define(version: 20170717014159) do
     t.text     "content"
     t.datetime "distribution"
     t.string   "send_to"
-    t.boolean  "is_sent"
-    t.boolean  "is_save"
-    t.boolean  "is_monthly"
-    t.datetime "created_at",   null: false
-    t.datetime "updated_at",   null: false
+    t.boolean  "is_sent",      default: false
+    t.boolean  "is_save",      default: false
+    t.boolean  "is_monthly",   default: false
+    t.datetime "created_at",                   null: false
+    t.datetime "updated_at",                   null: false
   end
 
   create_table "participants", force: :cascade do |t|
