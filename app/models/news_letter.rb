@@ -1,0 +1,2 @@
+class NewsLetter < ApplicationRecord
+end

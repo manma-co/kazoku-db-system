@@ -19,6 +19,8 @@ Rails.application.routes.draw do
     get 'spread_sheets/fetch_family'
     get 'spread_sheets/fetch_participant'
     get 'spread_sheets/oauth2callback'
+
+    resources :news_letter
   end
 
   namespace :api, {format: 'json'} do
