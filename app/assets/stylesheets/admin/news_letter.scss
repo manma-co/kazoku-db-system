@@ -10,3 +10,9 @@
 #news_letter select {
   display: block;
 }
+
+#news_letter input.checkbox {
+  position: relative;
+  opacity: 1;
+  left: 0;
+}
