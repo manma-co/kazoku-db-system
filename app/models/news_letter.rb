@@ -10,17 +10,17 @@ class NewsLetter < ApplicationRecord
 
   # 月一回送信かのチェック
   scope :monthly_news, -> {
-    find_by(is_monthly: true)
+    where('is_monthly = ? ', true)
   }
 
   # 家庭向け
   scope :to_family, -> {
-    find_by(send_to: 'family')
+    where('send_to = ?', 'family')
   }
 
   # 参加者向け
   scope :to_participant, -> {
-    find_by(send_to: 'participant')
+    where('send_to = ?', 'participant')
   }
 
 
@@ -37,10 +37,11 @@ class NewsLetter < ApplicationRecord
 
   # メール送信のスケジュールタスクを実行する機能
   # 月に1回学生会員にメールを送信
-  def monthly_news_letter
+  def self.monthly_news_letter
 
     # 送信すべきニュースレターが存在するかをチェックする
-    news_letter = NewsLetter.monthly_news
+    # news_letter = NewsLetter.monthly_news
+    news_letter = NewsLetter.where('distribution <= ? AND is_save = ? AND is_sent = ?', Time.now, false, false).where('is_monthly = ? ', true).where('send_to = ?', 'participant')
 
     # すべての参加者情報を取得する
     # TODO: 受信設定に応じて取得するユーザーを変更する。
@@ -60,7 +61,7 @@ class NewsLetter < ApplicationRecord
 
   # メール送信のスケジュールタスクを実行する機能
   # 家庭にメールを一斉送信
-  def send_news_letter
+  def self.send_news_letter
 
     # 送信すべきニュースレターが存在するかをチェックする
     news_letter = NewsLetter.news_letter
