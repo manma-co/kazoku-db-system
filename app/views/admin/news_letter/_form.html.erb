@@ -1,0 +1,19 @@
+<table>
+  <tr>
+    <td><%= f.label :subject, '件名: ' %></td>
+    <td><%= f.text_field :subject %></td>
+  </tr>
+  <!-- TODO: add date picker -->
+  <tr>
+    <td><%= f.label :distribution, '送信日時: ' %></td>
+    <td><%= f.text_field :distribution, class: '' %></td>
+  </tr>
+  <tr>
+    <td><%= f.label :send_to, '送信先: ' %></td>
+    <td><%= f.select :send_to, {'参加者' => 'participant', '家庭' => 'family'}, :prompt => "選択してください"%></td>
+  </tr>
+  <tr>
+    <td><%= f.label :content, '本文: ' %></td>
+    <td><%= f.text_area :content, rows: 10, class: 'h-300' %></td>
+  </tr>
+</table>

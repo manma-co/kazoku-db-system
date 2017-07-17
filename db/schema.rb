@@ -27,8 +27,9 @@ ActiveRecord::Schema.define(version: 20170717014159) do
   create_table "contacts", force: :cascade do |t|
     t.string   "email_pc"
     t.string   "email_phone"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
+    t.string   "phone_number"
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
     t.integer  "user_id"
     t.index ["user_id"], name: "index_contacts_on_user_id"
   end
@@ -88,6 +89,7 @@ ActiveRecord::Schema.define(version: 20170717014159) do
     t.datetime "distribution"
     t.string   "send_to"
     t.boolean  "is_sent"
+    t.boolean  "is_save"
     t.datetime "created_at",   null: false
     t.datetime "updated_at",   null: false
   end
@@ -112,6 +114,7 @@ ActiveRecord::Schema.define(version: 20170717014159) do
     t.string   "has_childcare_leave_experience"
     t.string   "has_job_change_experience"
     t.string   "married_mother_age"
+    t.string   "married_father_age"
     t.string   "first_childbirth_mother_age"
     t.date     "child_birthday"
     t.string   "opinion_or_question"

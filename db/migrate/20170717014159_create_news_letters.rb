@@ -6,6 +6,7 @@ class CreateNewsLetters < ActiveRecord::Migration[5.0]
       t.datetime :distribution
       t.string :send_to
       t.boolean :is_sent
+      t.boolean :is_save
 
       t.timestamps
     end
