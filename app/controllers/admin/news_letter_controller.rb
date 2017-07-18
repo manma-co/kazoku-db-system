@@ -59,6 +59,10 @@ class Admin::NewsLetterController < Admin::AdminController
         where('send_to = ?', 'family')
   end
 
+  def preview
+    @body = news_letter_params[:content]
+  end
+
   private
 
   def set_news_letter

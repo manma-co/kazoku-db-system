@@ -20,7 +20,14 @@
     <td><%= f.label :content, '本文: ' %></td>
     <td>
       <small>マークダウンで記入できます。<%= link_to 'マークダウンとは', 'http://www.canpath.jp/markdown', :target => '_blank' %></small>
-      <%= f.text_area :content, rows: 10, class: 'h-300', required: true %>
+      <ul class="tab_wrap clearfix">
+        <li class="active tab1"><%= link_to '入力', '#', class: 'back-to-input' %></li>
+        <li class="tab2"><%= link_to 'プレビュー', '#', class: 'preview' %></li>
+      </ul>
+      <div class="text-input">
+        <%= f.text_area :content, rows: 10, class: 'h-300', required: true %>
+      </div>
+      <div class="text-preview"></div>
     </td>
   </tr>
   <tr>
