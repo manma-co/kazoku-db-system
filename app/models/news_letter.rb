@@ -41,7 +41,7 @@ class NewsLetter < ApplicationRecord
 
     # 送信すべきニュースレターが存在するかをチェックする
     news_letter = NewsLetter.
-        where('distribution <= ? AND is_save = ? AND is_sent = ?', Time.now, false, false).
+        where('distribution <= ? AND is_save = ?', Time.now, false).
         where('is_monthly = ? ', true).
         where('send_to = ?', 'participant').first
     # nil check
@@ -55,10 +55,8 @@ class NewsLetter < ApplicationRecord
       bcc_address += user.email + ", "
     end
 
-    p "bcc_address: #{bcc_address}"
-    p "content: #{news_letter.content}"
     # メールを送信する
-    NewsLetterMailer.send_news_letter(news_letter, bcc_address)
+    NewsLetterMailer.send_news_letter(news_letter, bcc_address).deliver_now
 
     # 送信済みにする
     news_letter.update(is_sent: true)
@@ -87,7 +85,7 @@ class NewsLetter < ApplicationRecord
     end
 
     # メールを送信する
-    NewsLetterMailer.send_news_letter(news_letter, bcc_address)
+    NewsLetterMailer.send_news_letter(news_letter, bcc_address).deliver_now
 
     # 送信済みにする
     news_letter.update("is_sent = true")
