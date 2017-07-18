@@ -9,6 +9,13 @@ class Admin::NewsLetterController < Admin::AdminController
         where('distribution <= ? AND is_save = ?', Time.now, false).
         where('is_monthly = ? ', true).
         where('send_to = ?', 'participant').first
+
+    @news_letter = NewsLetter.
+        where('distribution <= ? AND is_save = ? AND is_sent = ?', Time.now, false, false).
+        where('is_monthly = ? ', false).
+        where('send_to = ?', 'family').first
+
+    @news_saved = NewsLetter.where(is_save: true)
   end
 
   def show
@@ -39,6 +46,18 @@ class Admin::NewsLetterController < Admin::AdminController
     end
   end
 
+
+  def history
+    @monthly_news_letter = NewsLetter.
+        where('distribution <= ? AND is_save = ?', Time.now, false).
+        where('is_monthly = ? ', true).
+        where('send_to = ?', 'participant')
+
+    @news_letter = NewsLetter.
+        where('distribution <= ? AND is_save = ? AND is_sent = ?', Time.now, false, true).
+        where('is_monthly = ? ', false).
+        where('send_to = ?', 'family')
+  end
 
   private
 

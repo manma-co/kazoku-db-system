@@ -20,6 +20,7 @@ Rails.application.routes.draw do
     get 'spread_sheets/fetch_participant'
     get 'spread_sheets/oauth2callback'
 
+    get 'news_letters/history', to: 'news_letter#history', as: 'news_history'
     resources :news_letter
   end
 

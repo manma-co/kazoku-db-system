@@ -10,11 +10,18 @@
   </tr>
   <tr>
     <td><%= f.label :send_to, '送信先: ' %></td>
-    <td><%= f.select :send_to, {'参加者' => 'participant', '家庭' => 'family'}, { :include_blank => '-- 選択してください --' }, required: true %></td>
+    <td>
+      <%= f.select :send_to, {'参加者' => 'participant', '家庭' => 'family'}, { :include_blank => '-- 選択してください --' }, required: true %>
+      <small>参加者を選択した場合、月１メールにチェックを入れないと、通常のメーリングリストのように送られます。</small><br>
+      <small>家庭を選択した場合は月１メールにチェックを入れないでください。</small>
+    </td>
   </tr>
   <tr>
     <td><%= f.label :content, '本文: ' %></td>
-    <td><%= f.text_area :content, rows: 10, class: 'h-300', required: true %></td>
+    <td>
+      <small>マークダウンで記入できます。<%= link_to 'マークダウンとは', 'http://www.canpath.jp/markdown', :target => '_blank' %></small>
+      <%= f.text_area :content, rows: 10, class: 'h-300', required: true %>
+    </td>
   </tr>
   <tr>
     <td><%= f.label :is_save, '下書き: ' %></td>

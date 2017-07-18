@@ -3,6 +3,7 @@ class NewsLetter < ApplicationRecord
   validates :content, presence: true
 
 
+  # TODO: scope がうまく使えないので調査
   # 送信可能なメールを探す（保存ではないもの）
   scope :can_be_sent, -> {
     where('distribution <= ? AND is_save = ? AND is_sent = ?', Time.now, false, false)
@@ -64,31 +65,38 @@ class NewsLetter < ApplicationRecord
 
 
   # メール送信のスケジュールタスクを実行する機能
-  # 家庭にメールを一斉送信
+  # メールを一斉送信
   def self.send_news_letter
 
     # 送信すべきニュースレターが存在するかをチェックする
     news_letter = NewsLetter.
         where('distribution <= ? AND is_save = ? AND is_sent = ?', Time.now, false, false).
-        where('is_monthly = ? ', false).
-        where('send_to = ?', 'family').first
+        where('is_monthly = ? ', false).first
 
     # nil check
     return if news_letter.nil?
 
     # すべての参加者情報を取得する
+    # メールの送信先に応じてメールアドレスの取得先を変更する。
     # TODO: 受信設定に応じて取得するユーザーを変更する。
-    users = User.all
     bcc_address = ""
-    users.each do |user|
-      bcc_address += user.contact.email_pc + ", "
+    if news_letter.send_to == 'family'
+      users = User.all
+      users.each do |user|
+        bcc_address += user.contact.email_pc + ", "
+      end
+    else
+      participants = Participant.all
+      participants.each do |participant|
+        bcc_address += participant.email + ", "
+      end
     end
 
     # メールを送信する
     NewsLetterMailer.send_news_letter(news_letter, bcc_address).deliver_now
 
     # 送信済みにする
-    news_letter.update("is_sent = true")
+    news_letter.update(is_sent: true)
   end
 
 end
