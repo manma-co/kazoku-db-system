@@ -1,1 +1,23 @@
+
+<h5>メール配信リストです。</h5>
+
+<h6>月１メール配信予定リスト</h6>
+<table>
+  <thead>
+  <tr>
+    <th>タイトル</th>
+    <th>次回配信日</th>
+    <th colspan="2">アクション</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr>
+    <td><%= @monthly_news_letter.subject %></td>
+    <td><%= Time.now.next_month.beginning_of_month.strftime('%m月%d日') %></td>
+    <td><%= link_to '詳細', admin_news_letter_path(@monthly_news_letter) %></td>
+    <td><%= link_to '編集', edit_admin_news_letter_path(@monthly_news_letter) %></td>
+  </tr>
+  </tbody>
+</table>
+
 <%= link_to '新規作成', new_admin_news_letter_path, class: 'btn btn-default' %>
