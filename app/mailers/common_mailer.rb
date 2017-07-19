@@ -167,12 +167,14 @@ class CommonMailer < ActionMailer::Base
     # Send a mail
     mail(to: user.contact.email_pc, subject: title)
 
+    body = MailerBody.deny(@user)
+
     # Insert to DB
     EmailQueue.create!(
         :sender_address => 'info@manma.co',
         :to_address => user.contact.email_pc,
         :subject => title,
-        :body_text => '',
+        :body_text => body,
         :request_log => RequestLog.first,
         :retry_count => 0,
         :sent_status => true,
@@ -190,12 +192,14 @@ class CommonMailer < ActionMailer::Base
     # Send a mail
     mail(to: log.email, subject: title)
 
+    body = MailerBody.readjustment_to_candidate(@log)
+
     # Insert to DB
     EmailQueue.create!(
         :sender_address => 'info@manma.co',
         :to_address => log.email,
         :subject => title,
-        :body_text => '',
+        :body_text => body,
         :request_log => log,
         :retry_count => 0,
         :sent_status => true,
