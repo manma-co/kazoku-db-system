@@ -69,12 +69,14 @@ class CommonMailer < ActionMailer::Base
     # Send a mail
     mail(to: 'info@manma.co', subject: title)
 
+    body = MailerBody.notify_to_manma(@tel_time, @event, @user)
+
     # Insert to DB
     EmailQueue.create!(
         :sender_address => 'info@manma.co',
         :to_address => 'info@manma.co',
         :subject => title,
-        :body_text => '',
+        :body_text => body,
         :request_log => RequestLog.find(@event.request_log_id),
         :retry_count => 0,
         :sent_status => true,
@@ -138,12 +140,14 @@ class CommonMailer < ActionMailer::Base
     # Send a mail
     mail(to: email, subject: '【manma】家族留学の打診を開始いたしました')
 
+    body = MailerBody.matching_start
+
     # Insert to DB
     EmailQueue.create!(
         :sender_address => 'info@manma.co',
         :to_address => email,
         :subject => '【manma】家族留学の打診を開始いたしました',
-        :body_text => '',
+        :body_text => body,
         :request_log => RequestLog.first,
         :retry_count => 0,
         :sent_status => true,
