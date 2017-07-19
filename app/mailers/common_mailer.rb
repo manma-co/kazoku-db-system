@@ -219,12 +219,14 @@ class CommonMailer < ActionMailer::Base
     # Send to manma
     mail(to: 'yoshihito522@gmail.com', subject: title)
 
+    body = MailerBody.readjustment_to_manma(@log)
+
     # Insert to DB
     EmailQueue.create!(
         :sender_address => 'info@manma.co',
         :to_address => 'info@manma.co',
         :subject => title,
-        :body_text => '',
+        :body_text => body,
         :request_log => log,
         :retry_count => 0,
         :sent_status => true,
@@ -248,12 +250,14 @@ class CommonMailer < ActionMailer::Base
     # Send a mail
     mail(to: user.contact.email_pc, subject: title)
 
+    body = MailerBody.reminder_three_days(@user, @log, @days, @url)
+
     # Insert to DB
     EmailQueue.create!(
         :sender_address => 'info@manma.co',
         :to_address => user.contact.email_pc,
         :subject => title,
-        :body_text => '',
+        :body_text => body,
         :request_log => log,
         :retry_count => 0,
         :sent_status => true,
