@@ -102,4 +102,11 @@ manma
     CommonMailer.reminder_three_days(user, log)
   end
 
+  # http://localhost:3000/rails/mailers/common_mailer/send_news_letter
+  def send_news_letter
+    user = User.first
+    news_letter = NewsLetter.first
+    NewsLetterMailer.send_news_letter(news_letter, user)
+  end
+
 end

@@ -1,0 +1,41 @@
+<table>
+  <tr>
+    <td><%= f.label :subject, '件名: ' %></td>
+    <td><%= f.text_field :subject, required: true %></td>
+  </tr>
+  <!-- TODO: add date picker -->
+  <tr>
+    <td><%= f.label :distribution, '送信日時: ' %></td>
+    <td><%= f.text_field :distribution, required: true %></td>
+  </tr>
+  <tr>
+    <td><%= f.label :send_to, '送信先: ' %></td>
+    <td>
+      <%= f.select :send_to, {'参加者' => 'participant', '家庭' => 'family'}, { :include_blank => '-- 選択してください --' }, required: true %>
+      <small>参加者を選択した場合、月１メールにチェックを入れないと、通常のメーリングリストのように送られます。</small><br>
+      <small>家庭を選択した場合は月１メールにチェックを入れないでください。</small>
+    </td>
+  </tr>
+  <tr>
+    <td><%= f.label :content, '本文: ' %></td>
+    <td>
+      <small>マークダウンで記入できます。<%= link_to 'マークダウンとは', 'http://www.canpath.jp/markdown', :target => '_blank' %></small>
+      <ul class="tab_wrap clearfix">
+        <li class="active tab1"><%= link_to '入力', '#', class: 'back-to-input' %></li>
+        <li class="tab2"><%= link_to 'プレビュー', '#', class: 'preview' %></li>
+      </ul>
+      <div class="text-input">
+        <%= f.text_area :content, rows: 10, class: 'h-300', required: true %>
+      </div>
+      <div class="text-preview"></div>
+    </td>
+  </tr>
+  <tr>
+    <td><%= f.label :is_save, '下書き: ' %></td>
+    <td><%= f.check_box :is_save, class: 'checkbox' %></td>
+  </tr>
+  <tr>
+    <td><%= f.label :is_monthly, '月１メール: ' %></td>
+    <td><%= f.check_box :is_monthly, class: 'checkbox' %></td>
+  </tr>
+</table>

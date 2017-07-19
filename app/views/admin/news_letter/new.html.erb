@@ -1,0 +1,13 @@
+
+<h4>ニュースレターの作成</h4>
+<p>このフォームから参加者のみに対してのニュースレターと <br>
+  家庭に一斉送信するメールを作成できます。 </p>
+
+
+<%= form_for @news_letter, url: admin_news_letter_index_path do |f| %>
+    <div id="news_letter">
+      <%= render 'shared/error_message', object: f.object %>
+      <%= render 'form', f:f %>
+      <%= f.submit '作成する', class: 'btn btn-primary' %>
+    </div>
+<% end %>

@@ -1,0 +1,86 @@
+
+<div id="mailing_lists">
+  <%= link_to '新規作成', new_admin_news_letter_path, class: 'btn btn-default' %>
+  <div class="mailing_list">
+    <h5>メール配信予定リストです。</h5>
+    <%= link_to '過去のメールリストはこちら', admin_news_history_path %>
+
+    <h6>月１メール配信予定リスト</h6>
+    <% if @monthly_news_letter %>
+        <table>
+          <thead>
+          <tr>
+            <th>タイトル</th>
+            <th>次回配信日</th>
+            <th colspan="2">アクション</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr>
+            <td><%= @monthly_news_letter.subject %></td>
+            <td><%= Time.now.next_month.beginning_of_month.strftime('%m月%d日') %></td>
+            <td><%= link_to '詳細', admin_news_letter_path(@monthly_news_letter) %></td>
+            <td><%= link_to '編集', edit_admin_news_letter_path(@monthly_news_letter) %></td>
+          </tr>
+          </tbody>
+        </table>
+    <% else %>
+        <p class="text-center">現在表示できるメールはありません。</p>
+    <% end %>
+  </div>
+
+  <div class="mailing_list">
+    <h6>家庭向けメール配信予定リスト</h6>
+
+    <% if @news_letter %>
+        <table>
+          <thead>
+          <tr>
+            <th>タイトル</th>
+            <th>配信予定日</th>
+            <th colspan="2">アクション</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr>
+            <td><%= @news_letter.subject %></td>
+            <td><%= @news_letter.distribution.strftime('%m月%d日') %></td>
+            <td><%= link_to '詳細', admin_news_letter_path(@news_letter) %></td>
+            <td><%= link_to '編集', edit_admin_news_letter_path(@news_letter) %></td>
+          </tr>
+          </tbody>
+        </table>
+    <% else %>
+        <p class="text-center">現在表示できるメールはありません。</p>
+    <% end %>
+  </div>
+
+  <div class="mailing_list">
+    <h6>下書きメール一覧</h6>
+
+    <% if @news_saved %>
+        <table>
+          <thead>
+          <tr>
+            <th>タイトル</th>
+            <th>配信予定日</th>
+            <th colspan="2">アクション</th>
+          </tr>
+          </thead>
+          <tbody>
+          <% @news_saved.each do |news| %>
+              <tr>
+                <td><%= news.subject %></td>
+                <td><%= news.distribution.strftime('%m月%d日') %></td>
+                <td><%= link_to '詳細', admin_news_letter_path(news) %></td>
+                <td><%= link_to '編集', edit_admin_news_letter_path(news) %></td>
+              </tr>
+          <% end %>
+          </tbody>
+        </table>
+    <% else %>
+        <p class="text-center">現在表示できるメールはありません。</p>
+    <% end %>
+  </div>
+
+</div>

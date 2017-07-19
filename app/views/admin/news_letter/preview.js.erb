@@ -1,0 +1,10 @@
+<% if @body %>
+var html = '<%= j markdown(@body) %>';
+<% end %>
+
+console.log("clicked");
+const val = $('#news_letter_content').val();
+$('.text-preview').html(html);
+$('.text-input').hide();
+$('.tab_wrap li').removeClass('active');
+$('.tab_wrap li.tab2').addClass('active');

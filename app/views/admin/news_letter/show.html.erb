@@ -1,0 +1,28 @@
+<h5>メーリングリスト詳細</h5>
+
+<table>
+  <tbody>
+  <tr>
+    <td>タイトル</td>
+    <td><%= @news_letter.subject %></td>
+  </tr>
+  <tr>
+    <td>本文</td>
+    <td><%= markdown(@news_letter.content) %></td>
+  </tr>
+  <tr>
+    <td>送信先</td>
+    <td><%= @news_letter.send_to %></td>
+  </tr>
+  <tr>
+    <td>作成日</td>
+    <td><%= @news_letter.created_at.strftime('%Y/%m/%d %H:%M:%S') %></td>
+  </tr>
+  <tr>
+    <td>最終更新日</td>
+    <td><%= @news_letter.updated_at.strftime('%Y/%m/%d %H:%M:%S') %></td>
+  </tr>
+  </tbody>
+</table>
+
+<%= link_to '編集', edit_admin_news_letter_path(@news_letter), :class => 'btn btn-primary' %>

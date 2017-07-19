@@ -12,3 +12,17 @@ task :seven_days_over_task => :environment do
   RequestLog.seven_days_over
   puts "done."
 end
+
+# 月に1回学生会員にメールを送信
+task :monthly_news_letter => :environment do
+  puts "Run monthly news letter funtion..."
+  NewsLetter.monthly_news_letter
+  puts "done."
+end
+
+# 家庭にメールを一斉送信
+task :news_letter => :environment do
+  puts "Run news letter funtion..."
+  NewsLetter.send_news_letter
+  puts "done."
+end

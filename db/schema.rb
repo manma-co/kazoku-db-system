@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170712232522) do
+ActiveRecord::Schema.define(version: 20170717014159) do
 
   create_table "admins", force: :cascade do |t|
     t.string   "email",              default: "", null: false
@@ -81,6 +81,18 @@ ActiveRecord::Schema.define(version: 20170712232522) do
     t.datetime "updated_at",                          null: false
     t.integer  "user_id"
     t.index ["user_id"], name: "index_locations_on_user_id"
+  end
+
+  create_table "news_letters", force: :cascade do |t|
+    t.string   "subject"
+    t.text     "content"
+    t.datetime "distribution"
+    t.string   "send_to"
+    t.boolean  "is_sent",      default: false
+    t.boolean  "is_save",      default: false
+    t.boolean  "is_monthly",   default: false
+    t.datetime "created_at",                   null: false
+    t.datetime "updated_at",                   null: false
   end
 
   create_table "participants", force: :cascade do |t|
