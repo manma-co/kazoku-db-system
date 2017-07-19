@@ -69,12 +69,14 @@ class CommonMailer < ActionMailer::Base
     # Send a mail
     mail(to: 'info@manma.co', subject: title)
 
+    body = MailerBody.notify_to_manma(@tel_time, @event, @user)
+
     # Insert to DB
     EmailQueue.create!(
         :sender_address => 'info@manma.co',
         :to_address => 'info@manma.co',
         :subject => title,
-        :body_text => '',
+        :body_text => body,
         :request_log => RequestLog.find(@event.request_log_id),
         :retry_count => 0,
         :sent_status => true,
@@ -95,12 +97,14 @@ class CommonMailer < ActionMailer::Base
     # Send a mail
     mail(to: mail, subject: title)
 
+    body = MailerBody.notify_to_family_matched(@user, @student, @event)
+
     # Insert to DB
     EmailQueue.create!(
         :sender_address => 'info@manma.co',
         :to_address => mail,
         :subject => title,
-        :body_text => '',
+        :body_text => body,
         :request_log => request_log,
         :retry_count => 0,
         :sent_status => true,
@@ -119,12 +123,14 @@ class CommonMailer < ActionMailer::Base
     # Send a mail
     mail(to: @log.email, subject: title)
 
+    body = MailerBody.notify_to_candidate(@event, @log, @user)
+
     # Insert to DB
     EmailQueue.create!(
         :sender_address => 'info@manma.co',
         :to_address => @log.email,
         :subject => title,
-        :body_text => '',
+        :body_text => body,
         :request_log => @log,
         :retry_count => 0,
         :sent_status => true,
@@ -138,12 +144,14 @@ class CommonMailer < ActionMailer::Base
     # Send a mail
     mail(to: email, subject: '【manma】家族留学の打診を開始いたしました')
 
+    body = MailerBody.matching_start
+
     # Insert to DB
     EmailQueue.create!(
         :sender_address => 'info@manma.co',
         :to_address => email,
         :subject => '【manma】家族留学の打診を開始いたしました',
-        :body_text => '',
+        :body_text => body,
         :request_log => RequestLog.first,
         :retry_count => 0,
         :sent_status => true,
@@ -159,12 +167,14 @@ class CommonMailer < ActionMailer::Base
     # Send a mail
     mail(to: user.contact.email_pc, subject: title)
 
+    body = MailerBody.deny(@user)
+
     # Insert to DB
     EmailQueue.create!(
         :sender_address => 'info@manma.co',
         :to_address => user.contact.email_pc,
         :subject => title,
-        :body_text => '',
+        :body_text => body,
         :request_log => RequestLog.first,
         :retry_count => 0,
         :sent_status => true,
@@ -182,12 +192,14 @@ class CommonMailer < ActionMailer::Base
     # Send a mail
     mail(to: log.email, subject: title)
 
+    body = MailerBody.readjustment_to_candidate(@log)
+
     # Insert to DB
     EmailQueue.create!(
         :sender_address => 'info@manma.co',
         :to_address => log.email,
         :subject => title,
-        :body_text => '',
+        :body_text => body,
         :request_log => log,
         :retry_count => 0,
         :sent_status => true,
@@ -207,12 +219,14 @@ class CommonMailer < ActionMailer::Base
     # Send to manma
     mail(to: 'yoshihito522@gmail.com', subject: title)
 
+    body = MailerBody.readjustment_to_manma(@log)
+
     # Insert to DB
     EmailQueue.create!(
         :sender_address => 'info@manma.co',
         :to_address => 'info@manma.co',
         :subject => title,
-        :body_text => '',
+        :body_text => body,
         :request_log => log,
         :retry_count => 0,
         :sent_status => true,
@@ -236,12 +250,14 @@ class CommonMailer < ActionMailer::Base
     # Send a mail
     mail(to: user.contact.email_pc, subject: title)
 
+    body = MailerBody.reminder_three_days(@user, @log, @days, @url)
+
     # Insert to DB
     EmailQueue.create!(
         :sender_address => 'info@manma.co',
         :to_address => user.contact.email_pc,
         :subject => title,
-        :body_text => '',
+        :body_text => body,
         :request_log => log,
         :retry_count => 0,
         :sent_status => true,

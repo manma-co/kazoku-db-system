@@ -1,6 +1,6 @@
 defaults: &defaults
   email_type:
-    reajustment: 'readjustment_to_candidate'
+    readjustment: 'readjustment_to_candidate'
     request: 'request_email_to_family'
   # スプレッドシート上のカラム番号 A=0, B=1, C=2...と対応している
   sheet:
