@@ -18,4 +18,12 @@ class Admin::OmniauthCallbacksController < Devise::OmniauthCallbacksController
   def failure
     redirect_to root_path
   end
+
+  def login
+    if admin_signed_in?
+      redirect_to admin_family_index_path
+    else
+      redirect_to admin_google_oauth2_omniauth_authorize_path
+    end
+  end
 end
