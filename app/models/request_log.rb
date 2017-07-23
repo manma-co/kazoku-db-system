@@ -13,7 +13,7 @@ class RequestLog < ApplicationRecord
       # Email queue を利用して、すでに送信しているかどうかをチェックする。
       queue = EmailQueue.find_by(
         request_log: log,
-        email_type: Settings.email_type.reajustment
+        email_type: Settings.email_type.readjustment
       )
       # Event Data が存在していたら return
       return if log.event_date != nil
