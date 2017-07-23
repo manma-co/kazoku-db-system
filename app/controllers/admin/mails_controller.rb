@@ -31,7 +31,7 @@ class Admin::MailsController < Admin::AdminController
   end
 
   def histories
-    @sent_mails = EmailQueue.all
+    @sent_mails = EmailQueue.order('time_delivered desc').all
   end
 
   def history
