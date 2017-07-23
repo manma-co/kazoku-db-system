@@ -1,6 +1,7 @@
 class NewsLetter < ApplicationRecord
   validates :subject, presence: true
   validates :content, presence: true
+  validates :distribution, presence: true
 
 
   # TODO: scope がうまく使えないので調査

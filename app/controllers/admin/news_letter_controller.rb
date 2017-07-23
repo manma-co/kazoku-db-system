@@ -28,8 +28,13 @@ class Admin::NewsLetterController < Admin::AdminController
   def create
     @news_letter = NewsLetter.new(news_letter_params)
     set_right_time
-    if @news_letter.save
-      redirect_to admin_news_letter_index_path
+
+    respond_to do |format|
+      if @news_letter.save
+        format.html { redirect_to admin_news_letter_index_path, notice: 'News letter was successfully created.' }
+      else
+        format.html { render :new }
+      end
     end
   end
 
