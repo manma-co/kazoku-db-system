@@ -68,7 +68,7 @@ locations.each_with_index do |location, i|
   )
 end
 
-dev_accounts = %w(shino@cps.im.dendai.ac.jp harimanmon@gmail.com ricken0203@gmail.com)
+dev_accounts = %w(shino@cps.im.dendai.ac.jp harimanmon@gmail.com ricken0203@gmail.com yoshihito522@gmail.com)
 dev_accounts.each do |dac|
   user = User.create(name: 'test', kana: 'test', gender: 0, is_family: true)
   Location.create(user_id: user.id, address: locations[0])
