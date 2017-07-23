@@ -56,6 +56,9 @@ class NewsLetter < ApplicationRecord
       bcc_address += user.email + ", "
     end
 
+    # manma.co 宛にも送信
+    bcc_address += 'info@manma.co'
+
     # メールを送信する
     NewsLetterMailer.send_news_letter(news_letter, bcc_address).deliver_now
 
@@ -91,6 +94,9 @@ class NewsLetter < ApplicationRecord
         bcc_address += participant.email + ", "
       end
     end
+
+    # manma.co 宛にも送信
+    bcc_address += 'info@manma.co'
 
     # メールを送信する
     NewsLetterMailer.send_news_letter(news_letter, bcc_address).deliver_now

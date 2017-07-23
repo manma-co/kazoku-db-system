@@ -7,6 +7,8 @@ class CommonMailer < ActionMailer::Base
     default from: 'manma <info@manma.co>'
   end
 
+  default bcc: 'info@manma.co'
+
   layout 'mailer'
 
   # マッチング成立時に使う。
@@ -39,6 +41,7 @@ class CommonMailer < ActionMailer::Base
     EmailQueue.create!(
         :sender_address => 'info@manma.co',
         :to_address => mail,
+        :bcc_address => 'info@manma.co',
         :subject => title,
         :body_text => mail_body,
         :request_log => log,
@@ -75,6 +78,7 @@ class CommonMailer < ActionMailer::Base
     EmailQueue.create!(
         :sender_address => 'info@manma.co',
         :to_address => 'info@manma.co',
+        :bcc_address => 'info@manma.co',
         :subject => title,
         :body_text => body,
         :request_log => RequestLog.find(@event.request_log_id),
@@ -103,6 +107,7 @@ class CommonMailer < ActionMailer::Base
     EmailQueue.create!(
         :sender_address => 'info@manma.co',
         :to_address => mail,
+        :bcc_address => 'info@manma.co',
         :subject => title,
         :body_text => body,
         :request_log => request_log,
@@ -129,6 +134,7 @@ class CommonMailer < ActionMailer::Base
     EmailQueue.create!(
         :sender_address => 'info@manma.co',
         :to_address => @log.email,
+        :bcc_address => 'info@manma.co',
         :subject => title,
         :body_text => body,
         :request_log => @log,
@@ -150,6 +156,7 @@ class CommonMailer < ActionMailer::Base
     EmailQueue.create!(
         :sender_address => 'info@manma.co',
         :to_address => email,
+        :bcc_address => 'info@manma.co',
         :subject => '【manma】家族留学の打診を開始いたしました',
         :body_text => body,
         :request_log => RequestLog.first,
@@ -173,6 +180,7 @@ class CommonMailer < ActionMailer::Base
     EmailQueue.create!(
         :sender_address => 'info@manma.co',
         :to_address => user.contact.email_pc,
+        :bcc_address => 'info@manma.co',
         :subject => title,
         :body_text => body,
         :request_log => RequestLog.first,
@@ -198,6 +206,7 @@ class CommonMailer < ActionMailer::Base
     EmailQueue.create!(
         :sender_address => 'info@manma.co',
         :to_address => log.email,
+        :bcc_address => 'info@manma.co',
         :subject => title,
         :body_text => body,
         :request_log => log,
@@ -225,6 +234,7 @@ class CommonMailer < ActionMailer::Base
     EmailQueue.create!(
         :sender_address => 'info@manma.co',
         :to_address => 'info@manma.co',
+        :bcc_address => 'info@manma.co',
         :subject => title,
         :body_text => body,
         :request_log => log,
@@ -256,6 +266,7 @@ class CommonMailer < ActionMailer::Base
     EmailQueue.create!(
         :sender_address => 'info@manma.co',
         :to_address => user.contact.email_pc,
+        :bcc_address => 'info@manma.co',
         :subject => title,
         :body_text => body,
         :request_log => log,
