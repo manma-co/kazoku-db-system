@@ -6,7 +6,10 @@
   <!-- TODO: add date picker -->
   <tr>
     <td><%= f.label :distribution, '送信日時: ' %></td>
-    <td><%= f.text_field :distribution, required: true %></td>
+    <td>
+      <%= f.text_field :distribution, required: true %>
+      <small>参加者向け月１メールには今日の日付を入力してください。</small>
+    </td>
   </tr>
   <tr>
     <td><%= f.label :send_to, '送信先: ' %></td>
