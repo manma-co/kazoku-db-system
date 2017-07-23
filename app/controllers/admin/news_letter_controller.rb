@@ -6,7 +6,7 @@ class Admin::NewsLetterController < Admin::AdminController
 
   def index
     @monthly_news_letter = NewsLetter.
-        where('distribution <= ? AND is_save = ?', Time.now, false).
+        where('is_save = ?', false).
         where('is_monthly = ? ', true).
         where('send_to = ?', 'participant').first
 
@@ -49,7 +49,7 @@ class Admin::NewsLetterController < Admin::AdminController
 
   def history
     @monthly_news_letter = NewsLetter.
-        where('distribution <= ? AND is_save = ?', Time.now, false).
+        where('is_save = ?', false).
         where('is_monthly = ? ', true).
         where('send_to = ?', 'participant')
 
