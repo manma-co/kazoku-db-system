@@ -88,17 +88,37 @@ class RequestController < ApplicationController
 
   def deny
     # Save reply log to DB
-    if params[:email] && params[:log_id]
+    log_id = params[:log_id]
+    if params[:email] && log_id
       user = Contact.find_by(email_pc: params[:email]).user
       reply = ReplyLog.new(
         user: user,
         result: false,
-        request_log_id: params[:log_id]
+        request_log_id: log_id
       )
 
       reply.save!
-      # Send mail to user.
+      # Send mail to family.
       CommonMailer.deny(user).deliver_now
+
+      # Check if this reply is last requested family.
+      # 何件リクエストしたかを取得
+      request_emails = EmailQueue.where(
+          email_type: Settings.email_type.request,
+          request_log_id: log_id,
+          sent_status: true
+      )
+      request_count = request_emails.count
+
+      # すでに送信している件数がリクエスト件数に達しているか確認
+      reply_count = ReplyLog.where(request_log_id: log_id).count
+
+      if reply_count >= request_count
+        # 再打診候補を参加者に送信する。
+        log = RequestLog.find(log_id)
+        CommonMailer.readjustment_to_candidate(log).deliver_now
+      end
+
       redirect_to :deny
     end
   end
