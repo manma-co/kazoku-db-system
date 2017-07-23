@@ -28,7 +28,7 @@ module Google
           # 本番用SpreadSheet
           spreadsheet_id = ENV['SPREAD_SHEETS_FOR_WRITE_ID']
       end
-      sheet_name = '家族留学'
+      sheet_name = 'フォームの回答'
       range = "#{sheet_name}"
       value = Google::Apis::SheetsV4::ValueRange.new
 
