@@ -73,6 +73,7 @@
               </div>
             </div>
             <!-- TODO: Add date time picker to avoid format error -->
+            <%= f.label '以下の日程で家族留学を実施します' %>
             <%= f.text_field :event_time, :size => "43", :placeholder => '選択した実施予定日における希望時間を記入', :class => 'form-control', :required => true, :readonly => true %>
 
             <small>※希望時間は5時間以上で記入してください</small>
@@ -181,6 +182,10 @@
     $event_start_hour.append(option);
     $event_finish_hour.append(option);
 
+    // 終了時刻は末尾の要素を選択しておく
+    var $finish_hour_options = $('#event_finish_hour option')
+    $finish_hour_options[$finish_hour_options.length - 1].selected = true
+    
     // 開始時間の分を代入しておく
     var dom = "";
     for (var i=0; i<6; i++) {
