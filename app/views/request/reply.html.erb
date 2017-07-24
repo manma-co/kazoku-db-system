@@ -44,9 +44,40 @@
                 <option value="<%= d.day.strftime('%Y-%m-%d') + ' ' + d.time %>"><%= d.day.strftime('%Y-%m-%d') + ' ' + d.time %></option>
             <% end %>
           </select>
-          <!-- TODO: Add date time picker to avoid format error -->
-          <%= f.text_field :event_time, :size => "43", :placeholder => '選択した実施予定日における希望時間を記入', :class => 'form-control', :required => true %>
-          <small>※希望時間は5時間以上で記入してください</small>
+
+          <div id="event_date_range" style="display: none;">
+            <div class="form-inline">
+              <div class="form-group">
+                <label for="event_start_hour">開始時刻</label>
+                <select id="event_start_hour" class="form-control">
+                  <!-- Dynamically add dom -->
+                </select>
+                時
+                <select id="event_start_minute" class="form-control" title="event start minute">
+                  <!-- Dynamically add dom -->
+                </select>
+                分
+              </div>
+            </div>
+            <div class="form-inline">
+              <div class="form-group">
+                <label for="event_finish_hour">終了時刻</label>
+                <select id="event_finish_hour" class="form-control">
+                  <!-- Dynamically add dom -->
+                </select>
+                時
+                <select id="event_finish_minute" class="form-control" title="event finish minute">
+                  <!-- Dynamically add dom -->
+                </select>
+                分
+              </div>
+            </div>
+            <!-- TODO: Add date time picker to avoid format error -->
+            <%= f.label '以下の日程で家族留学を実施します' %>
+            <%= f.text_field :event_time, :size => "43", :placeholder => '選択した実施予定日における希望時間を記入', :class => 'form-control', :required => true, :readonly => true %>
+
+            <small>※希望時間は5時間以上で記入してください</small>
+          </div>
         </div>
       </div>
 
@@ -113,13 +144,81 @@
 
 <script type="text/javascript" charset="utf-8">
   $('#event_time_select').on('change', function () {
-    $('#event_date_event_time').val($(this).val());
+
+    var $event_date_range = $('#event_date_range');
+
+    // value の取得と値が存在するかをチェックする
+    var value = $(this).val();
+    if (value === "") {
+        $event_date_range.css({
+            "display": "none"
+        });
+        return;
+    }
+    // 開始時刻と終了時刻用のselectを表示する
+    $event_date_range.css({
+      "display": "block"
+    });
+
+    // 選択された値を挿入する。
+    $('#event_date_event_time').val(value);
+
+    var datetime = $(this).val();
+    var datetimeArray = datetime.split(" ");
+    var date = datetimeArray[0];
+
+    // 開始時刻の時間を取得
+    var option = "";
+    var start_time_hour = datetimeArray[1].split(":")[0];
+    var end_time_hour = datetimeArray[3].split(":")[0];
+    for (var k=start_time_hour; k<=end_time_hour; k++) {
+        option += '<option value="'+ k +'">';
+        option += k.toString();
+        option += '</option>';
+    }
+    var $event_start_hour = $('#event_start_hour');
+    var $event_finish_hour = $('#event_finish_hour');
+    // Add to view
+    $event_start_hour.append(option);
+    $event_finish_hour.append(option);
+
+    // 終了時刻は末尾の要素を選択しておく
+    var $finish_hour_options = $('#event_finish_hour option')
+    $finish_hour_options[$finish_hour_options.length - 1].selected = true
+    
+    // 開始時間の分を代入しておく
+    var dom = "";
+    for (var i=0; i<6; i++) {
+        dom += '<option value="'+ i +'0">';
+        dom += i + "0";
+        dom += '</option>';
+    }
+    // Add to view
+    var $event_start_minute = $('#event_start_minute');
+    var $event_finish_minute = $('#event_finish_minute');
+    $event_start_minute.append(dom);
+    $event_finish_minute.append(dom);
+
+    // 値が変わったら変更を表示する
+    $(document).on('change',
+        '#event_start_hour, #event_start_minute, #event_finish_hour, #event_finish_minute',
+        function () {
+            var start_hour = $event_start_hour.val();
+            var start_minute = $event_start_minute.val();
+            var finish_hour = $event_finish_hour.val();
+            var finish_minute = $event_finish_minute.val();
+            var $event_date_event_time = $('input#event_date_event_time');
+            $event_date_event_time.val(
+                date + ' ' + start_hour + ':' + start_minute + ' ~ ' + finish_hour + ':' + finish_minute
+            )
+    })
+
   });
 
   function chkradio(obj) {
     var objID = obj.getAttributeNode('id').nodeValue;
     var chkID = document.getElementById('ask_tel_time');
-    if (objID == 'yes') {
+    if (objID === 'yes') {
       chkID.style.visibility = 'visible';
       /*候補日時の入力欄表示*/
     }
@@ -131,7 +230,7 @@
   function chkradio_load() {
     var chkID = document.getElementById('ask_tel_time');
     var input = document.getElementById('no');
-    if (input.checked == true) {
+    if (input.checked) {
       chkID.style.visibility = 'hidden';
     }
   }
