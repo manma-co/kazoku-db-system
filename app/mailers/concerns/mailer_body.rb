@@ -91,8 +91,8 @@ https://docs.google.com/presentation/d/1B-dcCUa0PdxKyU5xlP8rvFf87oNM6BQoQEBsCD0F
 ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
 
 参加者名: [student_name] さん
-参参加者の所属名: [student_belongs]
- 参加者の連絡先: [student_emergency] 
+参加者の所属名: [student_belongs]
+参加者の連絡先: [student_emergency] 
 実施日時: [event_hold_date]
 実施開始時間: [event_start_time]
 実施終了時間: [event_end_time]
