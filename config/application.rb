@@ -16,3 +16,11 @@ module ManmaSystem
     config.active_record.time_zone_aware_types = [:datetime]
   end
 end
+
+# Sentry io: error reporting setting.
+# TO see more info or additional more options.
+# See here: https://docs.sentry.io/clients/ruby/config/
+Raven.configure do |config|
+  config.dsn = 'https://442c94c03cf4479abef3c993a1e3a652:cc29f160535647cba9ec43064f0750c5@sentry.io/197206'
+  # config.environments = %w[ production ]
+end
