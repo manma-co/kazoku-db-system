@@ -11,7 +11,7 @@ class Admin::NewsLetterController < Admin::AdminController
         where('send_to = ?', 'participant').first
 
     @news_letter = NewsLetter.
-        where('distribution <= ? AND is_save = ? AND is_sent = ?', Time.now, false, false).
+        where('distribution >= ? AND is_save = ? AND is_sent = ?', Time.now, false, false).
         where('is_monthly = ? ', false).
         where('send_to = ?', 'family').first
 
@@ -27,7 +27,7 @@ class Admin::NewsLetterController < Admin::AdminController
 
   def create
     @news_letter = NewsLetter.new(news_letter_params)
-    set_right_time
+    @news_letter.is_monthly ? set_as_next_month : set_right_time
 
     respond_to do |format|
       if @news_letter.save
@@ -79,6 +79,10 @@ class Admin::NewsLetterController < Admin::AdminController
       Time.zone = "Asia/Tokyo"
       @news_letter.distribution = Time.zone.parse(news_letter_params[:distribution]).utc
     end
+  end
+
+  def set_as_next_month
+    @news_letter.distribution = Time.zone.parse(Time.now.next_month.beginning_of_month.strftime("%Y/%m/%d")).utc
   end
 
   def news_letter_params

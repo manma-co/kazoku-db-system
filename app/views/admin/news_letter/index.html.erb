@@ -18,7 +18,7 @@
           <tbody>
           <tr>
             <td><%= @monthly_news_letter.subject %></td>
-            <td><%= Time.now.next_month.beginning_of_month.strftime('%m月%d日') %></td>
+            <td><%= @monthly_news_letter.distribution.strftime('%m月%d日') %></td>
             <td><%= link_to '詳細', admin_news_letter_path(@monthly_news_letter) %></td>
             <td><%= link_to '編集', edit_admin_news_letter_path(@monthly_news_letter) %></td>
           </tr>
