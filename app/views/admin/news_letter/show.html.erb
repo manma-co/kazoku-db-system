@@ -3,6 +3,10 @@
 <table>
   <tbody>
   <tr>
+    <td>Id</td>
+    <td id="news_id"><%= @news_letter.id %></td>
+  </tr>
+  <tr>
     <td>タイトル</td>
     <td><%= @news_letter.subject %></td>
   </tr>
@@ -25,4 +29,41 @@
   </tbody>
 </table>
 
+<div class="row">
+  <input class="col m6" type="email" placeholder="info@manma.co" id="mail_address" value="takashiba@to-on.com">
+  <a class="btn-flat col m6 text-center" id="test_mail">送信</a>
+</div>
+
 <%= link_to '編集', edit_admin_news_letter_path(@news_letter), :class => 'btn btn-primary' %>
+
+
+<script type="application/javascript">
+  $('#test_mail').on('click', function () {
+
+      var $this = $(this);
+      $this.addClass('disabled');
+
+      var address = $('#mail_address').val();
+      // validation
+      if (!validateEmail(address)) {
+          return;
+      }
+      var id = $('#news_id').text();
+      $.ajax({
+          url: "/api/v1/news_letter",
+          type: "POST",
+          data: {
+              "address": address,
+              "news_id": id
+          }
+      })
+          .always(function (resp) {
+              $this.removeClass('disabled');
+          });
+  });
+
+  function validateEmail(email) {
+      var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+      return re.test(email);
+  }
+</script>

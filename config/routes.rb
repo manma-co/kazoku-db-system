@@ -31,6 +31,9 @@ Rails.application.routes.draw do
       namespace :family do
         post "/", :action => 'create'
       end
+      namespace :news_letter do
+        post "/", :action => 'test_mail'
+      end
     end
   end
 
