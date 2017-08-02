@@ -45,6 +45,7 @@ class NewsLetter < ApplicationRecord
     news_letter = NewsLetter.
         where('is_save = ?', false).
         where('is_monthly = ? ', true).
+        where('distribution <= ?', Time.now).
         where('send_to = ?', 'participant').first
     # nil check
     return if news_letter.nil?
@@ -63,8 +64,13 @@ class NewsLetter < ApplicationRecord
     # メールを送信する
     NewsLetterMailer.send_news_letter(news_letter, bcc_address).deliver_now
 
+    # 配信予定日を翌月にする。
     # 送信済みにする
-    news_letter.update(is_sent: true)
+    news_letter.update(
+        is_sent: true,
+        distribution: news_letter.distribution.next_month
+    )
+
   end
 
 
