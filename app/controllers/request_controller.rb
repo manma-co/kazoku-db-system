@@ -157,8 +157,7 @@ class RequestController < ApplicationController
       DateTime.current.strftime('%Y/%m/%d %H:%M:%S'),
       'manma-system',
       user.name, # 家庭代表者氏名
-
-      event.emergency_contact, # 家庭連絡先
+      user.contact.email_pc, # 家族代表者メールアドレス
       'はい', # 受け入れるか？
       participant_names[0],  # 家族留学参加者氏名1
       participant_emails[0], # 家族留学者連絡先email1
@@ -166,7 +165,7 @@ class RequestController < ApplicationController
       participant_emails[1], # 家族留学者連絡先email2
       participant_names[2],  # 家族留学参加者氏名2
       participant_emails[2], # 家族留学者連絡先email2
-      '', # 受け入れ家庭の家族構成
+      '', # TODO: 受け入れ家庭の家族構成（必要なら情報取得）
       event.hold_date.strftime('%Y/%m/%d'), # 実施日時
       event.start_time.strftime('%H:%M:%S'),
       event.end_time.strftime('%H:%M:%S'),
