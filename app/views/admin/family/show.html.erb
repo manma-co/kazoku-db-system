@@ -1,9 +1,10 @@
-<h4><%= "#{@family.name}様のプロフィール" %></h4>
+<div class="family-name">
+  <h4><%= "#{@family.name}様のプロフィール" %></h4>
+</div>
 <br>
 <div class="family-profile">
   <div class="title-familypage-box">
     <h5>基本情報</h5>
-  </div>
   <table class="info-list">
     <tbody>
     <tr>
@@ -44,11 +45,11 @@
     </tr>
     </tbody>
   </table>
+  </div>
   <br>
 
   <div class="title-familypage-box">
     <h5>お母さま</h5>
-  </div>
   <table class="info-list">
     <tbody>
     <tr>
@@ -66,7 +67,7 @@
       <td class="contents"><%= @family.profile_family&.married_mother_age %></td>
     </tr>
     <tr>
-      <td class="title">お母様が第一子をご出産された年齢</td>
+      <td class="title">お母さまが第一子をご出産された年齢</td>
       <td class="contents"><%= @family.profile_family&.first_childbirth_mother_age %></td>
     </tr>
     <tr>
@@ -83,11 +84,11 @@
     </tr>
     </tbody>
   </table>
+  </div>
   <br>
 
   <div class="title-familypage-box">
     <h5>お父さま</h5>
-  </div>
   <table class="info-list">
     <tbody>
     <tr>
@@ -116,11 +117,11 @@
     </tr>
     </tbody>
   </table>
+  </div>
   <br>
 
   <div class="title-familypage-box">
     <h5>お子さま</h5>
-  </div>
   <table class="info-list">
     <tbody>
     <tr>
@@ -135,60 +136,60 @@
     </tr>
     </tbody>
   </table>
+  </div>
   <br>
 
   <div class="title-familypage-box">
     <h5>ご経験</h5>
-  </div>
   <table class="info-list">
     <tbody>
     <tr>
-      <td class="title">お母様の海外留学及び勤務のご経験の有無</td>
+      <td class="title">お母さまの海外留学、勤務のご経験の有無</td>
       <td class="contents"><%= @mother&.has_experience_abroad %></td>
     </tr>
     <tr>
-      <td class="title">お父様の海外留学及び勤務のご経験の有無</td>
+      <td class="title">お父さまの海外留学、勤務のご経験の有無</td>
       <td class="contents"><%= @father&.has_experience_abroad %></td>
     </tr>
     <tr>
-      <td class="title">お母様及びお父様の時短勤務のご経験の有無</td>
+      <td class="title">お母さま、お父さまの時短勤務のご経験の有無</td>
       <td class="contents"><%= @family.profile_family&.has_time_shortening_experience %></td>
     </tr>
     <tr>
-      <td class="title">お母様及びお父様の育休のご経験の有無</td>
+      <td class="title">お母さま、お父さまの育休のご経験の有無</td>
       <td class="contents"><%= @family.profile_family&.has_childcare_leave_experience %></td>
     </tr>
     <tr>
-      <td class="title">お母様及びお父様の転職のご経験の有無</td>
+      <td class="title">お母さま、お父さまの転職のご経験の有無</td>
       <td class="contents"><%= @family.profile_family&.has_job_change_experience %></td>
     </tr>
     </tbody>
   </table>
+  </div>
   <br>
 
 
   <div class="title-familypage-box">
     <h5>使用許可</h5>
-  </div>
   <table class="info-list">
     <tbody>
     <% #TODO family_helperにモジュールを実装する %>
     <tr>
-      <td class="title">写真をmanma HPやFacebookで使用してよいか</td>
+      <td class="title">写真をHPやFacebookで使用可能？</td>
       <td class="contents"><%= is_photo_ok_str(@family.profile_family&.is_photo_ok) %></td>
     </tr>
     <tr>
-      <td class="title">レポートをmanma HPやFacebookで使用してもよいか</td>
+      <td class="title">レポートをHPやFacebookで使用可能？</td>
       <td class="contents"><%= is_report_ok_str(@family.profile_family&.is_report_ok) %></td>
     </tr>
     </tbody>
   </table>
+  </div>
   <br>
 
 
   <div class="title-familypage-box">
     <h5>受け入れ可能な参加者について</h5>
-  </div>
   <table class="info-list">
     <tbody>
     <tr>
@@ -199,12 +200,12 @@
     </tr>
     </tbody>
   </table>
+  </div>
   <br>
 
 
   <div class="title-familypage-box">
     <h5>その他、ご意見/ご質問など</h5>
-  </div>
   <table class="info-list">
     <tbody>
     <tr>
@@ -212,6 +213,7 @@
     </tr>
     </tbody>
   </table>
+  </div>
   <br>
 
 </div>
