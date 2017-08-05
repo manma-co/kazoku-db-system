@@ -2,6 +2,24 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
+.family-profile {
+  font-size: 20px;
+}
+
 .title {
   width: 400px;
+}
+
+.title-familypage-box {
+  border: dashed 2px #FF8C00;
+  padding: 1.0em;
+  text-align: center;
+  h5 {
+    color: #FF8C00;
+    margin-bottom: 20px;
+  }
+}
+
+.info-list {
+  color: #666666;
 }
