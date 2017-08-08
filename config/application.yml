@@ -2,6 +2,13 @@ defaults: &defaults
   email_type:
     readjustment: 'readjustment_to_candidate'
     request: 'request_email_to_family'
+    manma: 'notify_to_manma'
+    family_matched: 'notify_to_family_matched'
+    candidate: 'notify_to_candidate'
+    readjustment_to_manma: 'readjustment_to_manma'
+    three_days: 'reminder_three_days'
+    matching_start: 'matching_start'
+    deny: 'deny'
   # スプレッドシート上のカラム番号 A=0, B=1, C=2...と対応している
   sheet:
     timestamp: 0

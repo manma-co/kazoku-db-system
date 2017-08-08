@@ -7,8 +7,6 @@ class NewsLetterMailer < ApplicationMailer
     default from: 'manma <info@manma.co>'
   end
 
-  default bcc: 'info@manma.co'
-
   add_template_helper(TextHelper)
 
   # ニュースレターを送信する

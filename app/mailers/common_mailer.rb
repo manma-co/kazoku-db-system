@@ -1,4 +1,4 @@
-class CommonMailer < ActionMailer::Base
+class CommonMailer < ApplicationMailer
 
   # Development の時はyoshihito.meからとりあえず送る設定。
   if Rails.env == 'development'
@@ -6,10 +6,6 @@ class CommonMailer < ActionMailer::Base
   else
     default from: 'manma <info@manma.co>'
   end
-
-  default bcc: 'info@manma.co'
-
-  layout 'mailer'
 
   # マッチング成立時に使う。
   def matched_email(contact)
@@ -54,7 +50,13 @@ class CommonMailer < ActionMailer::Base
     mail(to: mail, subject: title)
 
     # Update email queue status
-    queue = EmailQueue.where(to_address: mail, request_log: log).limit(1)
+    queue = EmailQueue.where(
+        to_address: mail,
+        request_log: log,
+        subject: title,
+        sent_status: false,
+        email_type: Settings.email_type.request
+    ).limit(1)
     queue.update(sent_status: true, time_delivered: Time.now)
   end
 
@@ -69,10 +71,8 @@ class CommonMailer < ActionMailer::Base
     title = '【重要】マッチング成立のお知らせ'
     title || title += @event.start_time.strftime('%Y年%m月%d日')
 
-    # Send a mail
-    mail(to: 'info@manma.co', subject: title)
-
     body = MailerBody.notify_to_manma(@tel_time, @event, @user)
+    log = RequestLog.find(@event.request_log_id)
 
     # Insert to DB
     EmailQueue.create!(
@@ -81,12 +81,25 @@ class CommonMailer < ActionMailer::Base
         :bcc_address => 'info@manma.co',
         :subject => title,
         :body_text => body,
-        :request_log => RequestLog.find(@event.request_log_id),
+        :request_log => log,
         :retry_count => 0,
-        :sent_status => true,
-        :email_type => 'notify_to_manma',
-        :time_delivered => Time.now
+        :sent_status => false,
+        :email_type => Settings.email_type.manma
     )
+
+    # Send a mail
+    mail(to: 'info@manma.co', subject: title)
+
+    # Update email queue status
+    queue = EmailQueue.where(
+        to_address: 'info@manma.co',
+        request_log: log,
+        subject: title,
+        sent_status: false,
+        email_type: Settings.email_type.manma
+    ).order('id desc').limit(1)
+    queue.update(sent_status: true, time_delivered: Time.now)
+
   end
 
   # マッチング成立時に家庭に向けて送る
@@ -97,9 +110,6 @@ class CommonMailer < ActionMailer::Base
     title = '【manma】家族留学を受け入れてくださりありがとうございます'
     @student = request_log
     @event = EventDate.find_by(request_log_id: request_log.id)
-
-    # Send a mail
-    mail(to: mail, subject: title)
 
     body = MailerBody.notify_to_family_matched(@user, @student, @event)
 
@@ -112,10 +122,23 @@ class CommonMailer < ActionMailer::Base
         :body_text => body,
         :request_log => request_log,
         :retry_count => 0,
-        :sent_status => true,
-        :email_type => 'notify_to_family_matched',
-        :time_delivered => Time.now
+        :sent_status => false,
+        :email_type => Settings.email_type.family_matched
     )
+
+    # Send a mail
+    mail(to: mail, subject: title)
+
+    # Update email queue status
+    queue = EmailQueue.where(
+        to_address: mail,
+        request_log: request_log,
+        subject: title,
+        sent_status: false,
+        email_type: Settings.email_type.family_matched
+    ).limit(1)
+    queue.update(sent_status: true, time_delivered: Time.now)
+
   end
 
   # マッチング成立時に参加者に向けて送る
@@ -124,9 +147,6 @@ class CommonMailer < ActionMailer::Base
     @log = RequestLog.find(event.request_log_id)
     @user = User.find(event.user_id)
     title = "【manma】家族留学のマッチングが成立いたしました"
-
-    # Send a mail
-    mail(to: @log.email, subject: title)
 
     body = MailerBody.notify_to_candidate(@event, @log, @user)
 
@@ -139,56 +159,93 @@ class CommonMailer < ActionMailer::Base
         :body_text => body,
         :request_log => @log,
         :retry_count => 0,
-        :sent_status => true,
-        :email_type => 'notify_to_candidate',
-        :time_delivered => Time.now
+        :sent_status => false,
+        :email_type => Settings.email_type.candidate
     )
+
+    # Send a mail
+    mail(to: @log.email, subject: title)
+
+    # Update email queue status
+    queue = EmailQueue.where(
+        to_address: @log.email,
+        request_log: @log,
+        subject: title,
+        sent_status: false,
+        email_type: Settings.email_type.candidate
+    ).limit(1)
+    queue.update(sent_status: true, time_delivered: Time.now)
+
   end
 
   # マッチング開始時に参加者に向けて送る
   def matching_start(email)
-    # Send a mail
-    mail(to: email, subject: '【manma】家族留学の打診を開始いたしました')
 
     body = MailerBody.matching_start
-
+    title = '【manma】家族留学の打診を開始いたしました'
+    log = RequestLog.first
     # Insert to DB
     EmailQueue.create!(
         :sender_address => 'info@manma.co',
         :to_address => email,
         :bcc_address => 'info@manma.co',
-        :subject => '【manma】家族留学の打診を開始いたしました',
+        :subject => title,
         :body_text => body,
-        :request_log => RequestLog.first,
+        :request_log => log,
         :retry_count => 0,
-        :sent_status => true,
-        :email_type => 'matching_start',
-        :time_delivered => Time.now
+        :sent_status => false,
+        :email_type => Settings.email_type.matching_start,
     )
+
+    # Send a mail
+    mail(to: email, subject: title)
+
+    # Update email queue status
+    queue = EmailQueue.where(
+        to_address: email,
+        request_log: log,
+        subject: title,
+        sent_status: false,
+        email_type: Settings.email_type.matching_start
+    ).limit(1)
+    queue.update(sent_status: true, time_delivered: Time.now)
+
   end
 
   # マッチングを断った場合に家庭に送る
   def deny(user)
     @user = user
     title = "【manma】家族留学受け入れ可否のご回答をありがとうございました"
-    # Send a mail
-    mail(to: user.contact.email_pc, subject: title)
 
     body = MailerBody.deny(@user)
+    mail = user.contact.email_pc
+    log = RequestLog.first
 
     # Insert to DB
     EmailQueue.create!(
         :sender_address => 'info@manma.co',
-        :to_address => user.contact.email_pc,
+        :to_address => mail,
         :bcc_address => 'info@manma.co',
         :subject => title,
         :body_text => body,
-        :request_log => RequestLog.first,
+        :request_log => log,
         :retry_count => 0,
-        :sent_status => true,
-        :email_type => 'deny',
-        :time_delivered => Time.now
+        :sent_status => false,
+        :email_type => Settings.email_type.deny
     )
+
+    # Send a mail
+    mail(to: mail, subject: title)
+
+    # Update email queue status
+    queue = EmailQueue.where(
+        to_address: mail,
+        request_log: log,
+        subject: title,
+        sent_status: false,
+        email_type: Settings.email_type.deny
+    ).limit(1)
+    queue.update(sent_status: true, time_delivered: Time.now)
   end
 
   # 再打診候補日程をもらうメール
@@ -196,9 +253,6 @@ class CommonMailer < ActionMailer::Base
 
     @log = log
     title = "【要返信】家族留学の再打診に関しまして"
-
-    # Send a mail
-    mail(to: log.email, subject: title)
 
     body = MailerBody.readjustment_to_candidate(@log)
 
@@ -211,10 +265,22 @@ class CommonMailer < ActionMailer::Base
         :body_text => body,
         :request_log => log,
         :retry_count => 0,
-        :sent_status => true,
-        :email_type => Settings.email_type.readjustment,
-        :time_delivered => Time.now
+        :sent_status => false,
+        :email_type => Settings.email_type.readjustment
     )
+
+    # Send a mail
+    mail(to: log.email, subject: title)
+
+    # Update email queue status
+    queue = EmailQueue.where(
+        to_address: log.email,
+        request_log: log,
+        subject: title,
+        sent_status: false,
+        email_type: Settings.email_type.readjustment
+    ).limit(1)
+    queue.update(sent_status: true, time_delivered: Time.now)
 
   end
 
@@ -224,9 +290,6 @@ class CommonMailer < ActionMailer::Base
 
     @log = log
     title = "自動送信 →【要返信】家族留学の再打診に関しまして"
-
-    # Send to manma
-    mail(to: 'yoshihito522@gmail.com', subject: title)
 
     body = MailerBody.readjustment_to_manma(@log)
 
@@ -239,10 +302,23 @@ class CommonMailer < ActionMailer::Base
         :body_text => body,
         :request_log => log,
         :retry_count => 0,
-        :sent_status => true,
-        :email_type => 'readjustment_to_manma',
-        :time_delivered => Time.now
+        :sent_status => false,
+        :email_type => Settings.email_type.readjustment_to_manma
     )
+
+    # Send to manma
+    mail(to: 'yoshihito522@gmail.com', subject: title)
+
+    # Update email queue status
+    queue = EmailQueue.where(
+        to_address: 'info@manma.co',
+        request_log: log,
+        subject: title,
+        sent_status: false,
+        email_type: Settings.email_type.readjustment_to_manma
+    ).limit(1)
+    queue.update(sent_status: true, time_delivered: Time.now)
+
   end
 
   include ApplicationHelper
@@ -257,24 +333,34 @@ class CommonMailer < ActionMailer::Base
     @url = root + 'request/' + @log.hashed_key + '?email=' + user.contact.email_pc
     title = "【リマインド】家族留学受け入れのお願い"
 
-    # Send a mail
-    mail(to: user.contact.email_pc, subject: title)
-
     body = MailerBody.reminder_three_days(@user, @log, @days, @url)
+    mail = user.contact.email_pc
 
     # Insert to DB
     EmailQueue.create!(
         :sender_address => 'info@manma.co',
-        :to_address => user.contact.email_pc,
+        :to_address => mail,
         :bcc_address => 'info@manma.co',
         :subject => title,
         :body_text => body,
         :request_log => log,
         :retry_count => 0,
-        :sent_status => true,
-        :email_type => 'reminder_three_days',
-        :time_delivered => Time.now
+        :sent_status => false,
+        :email_type => Settings.email_type.three_days
     )
+
+    # Send a mail
+    mail(to: mail, subject: title)
+
+    # Update email queue status
+    queue = EmailQueue.where(
+        to_address: mail,
+        request_log: log,
+        subject: title,
+        sent_status: false,
+        email_type: Settings.email_type.three_days
+    ).limit(1)
+    queue.update(sent_status: true, time_delivered: Time.now)
 
   end
 
