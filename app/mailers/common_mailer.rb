@@ -50,6 +50,7 @@ class CommonMailer < ApplicationMailer
       mail(to: mail, subject: title)
     rescue => e
       p "エラー: #{e.message}"
+      mail(to: 'info@manma.co', subject: "エラーが発生しました。#{e.message} at: #{Time.now}")
     else
       queue = EmailQueue.where(
           to_address: mail,
@@ -93,6 +94,7 @@ class CommonMailer < ApplicationMailer
       mail(to: 'info@manma.co', subject: title)
     rescue => e
       p "エラー: #{e.message}"
+      mail(to: 'info@manma.co', subject: "エラーが発生しました。#{e.message} at: #{Time.now}")
     else
       # Update email queue status
       queue = EmailQueue.where(
@@ -135,6 +137,7 @@ class CommonMailer < ApplicationMailer
       mail(to: mail, subject: title)
     rescue => e
       p "エラー: #{e.message}"
+      mail(to: 'info@manma.co', subject: "エラーが発生しました。#{e.message} at: #{Time.now}")
     else
       # Update email queue status
       queue = EmailQueue.where(
@@ -174,6 +177,7 @@ class CommonMailer < ApplicationMailer
       mail(to: @log.email, subject: title)
     rescue => e
       p "エラー: #{e.message}"
+      mail(to: 'info@manma.co', subject: "エラーが発生しました。#{e.message} at: #{Time.now}")
     else
       # Update email queue status
       queue = EmailQueue.where(
@@ -212,6 +216,7 @@ class CommonMailer < ApplicationMailer
       mail(to: email, subject: title)
     rescue => e
       p "エラー: #{e.message}"
+      mail(to: 'info@manma.co', subject: "エラーが発生しました。#{e.message} at: #{Time.now}")
     else
       # Update email queue status
       queue = EmailQueue.where(
@@ -251,6 +256,7 @@ class CommonMailer < ApplicationMailer
       mail(to: mail, subject: title)
     rescue => e
       p "エラー: #{e.message}"
+      mail(to: 'info@manma.co', subject: "エラーが発生しました。#{e.message} at: #{Time.now}")
     else
       queue = EmailQueue.where(
           to_address: mail,
@@ -287,6 +293,7 @@ class CommonMailer < ApplicationMailer
       mail(to: log.email, subject: title)
     rescue => e
       p "エラー: #{e.message}"
+      mail(to: 'info@manma.co', subject: "エラーが発生しました。#{e.message} at: #{Time.now}")
     else
       queue = EmailQueue.where(
           to_address: log.email,
@@ -324,6 +331,7 @@ class CommonMailer < ApplicationMailer
       mail(to: 'yoshihito522@gmail.com', subject: title)
     rescue => e
       p "エラー: #{e.message}"
+      mail(to: 'info@manma.co', subject: "エラーが発生しました。#{e.message} at: #{Time.now}")
     else
       queue = EmailQueue.where(
           to_address: 'info@manma.co',
@@ -367,6 +375,7 @@ class CommonMailer < ApplicationMailer
       mail(to: mail, subject: title)
     rescue => e
       p "エラー: #{e.message}"
+      mail(to: 'info@manma.co', subject: "エラーが発生しました。#{e.message} at: #{Time.now}")
     else
       queue = EmailQueue.where(
           to_address: mail,
