@@ -7,16 +7,12 @@ class NewsLetterMailer < ApplicationMailer
     default from: 'manma <info@manma.co>'
   end
 
-  default bcc: 'info@manma.co'
-
   add_template_helper(TextHelper)
 
   # ニュースレターを送信する
   def send_news_letter(news_letter, bcc_address)
     @body = news_letter.content
     subject = news_letter.subject
-    mail(to: 'info@manma.co', bcc: bcc_address, subject: subject)
-
     # Insert to DB
     EmailQueue.create!(
         :sender_address => 'info@manma.co',
@@ -26,9 +22,23 @@ class NewsLetterMailer < ApplicationMailer
         :body_text => '',
         :request_log => RequestLog.first,
         :retry_count => 0,
-        :sent_status => true,
-        :email_type => 'send_news_letter',
-        :time_delivered => Time.now
+        :sent_status => false,
+        :email_type => 'send_news_letter'
     )
+
+    begin
+      mail(to: 'info@manma.co', bcc: bcc_address, subject: subject)
+    rescue => e
+      p "エラー: #{e.message}"
+    else
+      queue = EmailQueue.where(
+          to_address: 'info@manma.co',
+          request_log: RequestLog.first,
+          subject: subject,
+          sent_status: false,
+          email_type: 'send_news_letter'
+      ).limit(1)
+      queue.update(sent_status: true, time_delivered: Time.now)
+    end
   end
 end
