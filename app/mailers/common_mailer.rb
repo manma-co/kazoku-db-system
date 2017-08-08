@@ -46,18 +46,20 @@ class CommonMailer < ApplicationMailer
         :email_type => Settings.email_type.request
     )
     @body = mail_body
-    # Send Grid を使ってmanma.coからメールを送るようにする。
-    mail(to: mail, subject: title)
-
-    # Update email queue status
-    queue = EmailQueue.where(
-        to_address: mail,
-        request_log: log,
-        subject: title,
-        sent_status: false,
-        email_type: Settings.email_type.request
-    ).limit(1)
-    queue.update(sent_status: true, time_delivered: Time.now)
+    begin
+      mail(to: mail, subject: title)
+    rescue => e
+      p "エラー: #{e.message}"
+    else
+      queue = EmailQueue.where(
+          to_address: mail,
+          request_log: log,
+          subject: title,
+          sent_status: false,
+          email_type: Settings.email_type.request
+      ).limit(1)
+      queue.update(sent_status: true, time_delivered: Time.now)
+    end
   end
 
 
@@ -86,19 +88,22 @@ class CommonMailer < ApplicationMailer
         :sent_status => false,
         :email_type => Settings.email_type.manma
     )
-
-    # Send a mail
-    mail(to: 'info@manma.co', subject: title)
-
-    # Update email queue status
-    queue = EmailQueue.where(
-        to_address: 'info@manma.co',
-        request_log: log,
-        subject: title,
-        sent_status: false,
-        email_type: Settings.email_type.manma
-    ).order('id desc').limit(1)
-    queue.update(sent_status: true, time_delivered: Time.now)
+    begin
+      # Send a mail
+      mail(to: 'info@manma.co', subject: title)
+    rescue => e
+      p "エラー: #{e.message}"
+    else
+      # Update email queue status
+      queue = EmailQueue.where(
+          to_address: 'info@manma.co',
+          request_log: log,
+          subject: title,
+          sent_status: false,
+          email_type: Settings.email_type.manma
+      ).order('id desc').limit(1)
+      queue.update(sent_status: true, time_delivered: Time.now)
+    end
 
   end
 
@@ -125,20 +130,22 @@ class CommonMailer < ApplicationMailer
         :sent_status => false,
         :email_type => Settings.email_type.family_matched
     )
-
-    # Send a mail
-    mail(to: mail, subject: title)
-
-    # Update email queue status
-    queue = EmailQueue.where(
-        to_address: mail,
-        request_log: request_log,
-        subject: title,
-        sent_status: false,
-        email_type: Settings.email_type.family_matched
-    ).limit(1)
-    queue.update(sent_status: true, time_delivered: Time.now)
-
+    begin
+      # Send a mail
+      mail(to: mail, subject: title)
+    rescue => e
+      p "エラー: #{e.message}"
+    else
+      # Update email queue status
+      queue = EmailQueue.where(
+          to_address: mail,
+          request_log: request_log,
+          subject: title,
+          sent_status: false,
+          email_type: Settings.email_type.family_matched
+      ).limit(1)
+      queue.update(sent_status: true, time_delivered: Time.now)
+    end
   end
 
   # マッチング成立時に参加者に向けて送る
@@ -162,19 +169,22 @@ class CommonMailer < ApplicationMailer
         :sent_status => false,
         :email_type => Settings.email_type.candidate
     )
-
-    # Send a mail
-    mail(to: @log.email, subject: title)
-
-    # Update email queue status
-    queue = EmailQueue.where(
-        to_address: @log.email,
-        request_log: @log,
-        subject: title,
-        sent_status: false,
-        email_type: Settings.email_type.candidate
-    ).limit(1)
-    queue.update(sent_status: true, time_delivered: Time.now)
+    begin
+      # Send a mail
+      mail(to: @log.email, subject: title)
+    rescue => e
+      p "エラー: #{e.message}"
+    else
+      # Update email queue status
+      queue = EmailQueue.where(
+          to_address: @log.email,
+          request_log: @log,
+          subject: title,
+          sent_status: false,
+          email_type: Settings.email_type.candidate
+      ).limit(1)
+      queue.update(sent_status: true, time_delivered: Time.now)
+    end
 
   end
 
@@ -197,18 +207,22 @@ class CommonMailer < ApplicationMailer
         :email_type => Settings.email_type.matching_start,
     )
 
-    # Send a mail
-    mail(to: email, subject: title)
-
-    # Update email queue status
-    queue = EmailQueue.where(
-        to_address: email,
-        request_log: log,
-        subject: title,
-        sent_status: false,
-        email_type: Settings.email_type.matching_start
-    ).limit(1)
-    queue.update(sent_status: true, time_delivered: Time.now)
+    begin
+      # Send a mail
+      mail(to: email, subject: title)
+    rescue => e
+      p "エラー: #{e.message}"
+    else
+      # Update email queue status
+      queue = EmailQueue.where(
+          to_address: email,
+          request_log: log,
+          subject: title,
+          sent_status: false,
+          email_type: Settings.email_type.matching_start
+      ).limit(1)
+      queue.update(sent_status: true, time_delivered: Time.now)
+    end
 
   end
 
@@ -233,19 +247,20 @@ class CommonMailer < ApplicationMailer
         :sent_status => false,
         :email_type => Settings.email_type.deny
     )
-
-    # Send a mail
-    mail(to: mail, subject: title)
-
-    # Update email queue status
-    queue = EmailQueue.where(
-        to_address: mail,
-        request_log: log,
-        subject: title,
-        sent_status: false,
-        email_type: Settings.email_type.deny
-    ).limit(1)
-    queue.update(sent_status: true, time_delivered: Time.now)
+    begin
+      mail(to: mail, subject: title)
+    rescue => e
+      p "エラー: #{e.message}"
+    else
+      queue = EmailQueue.where(
+          to_address: mail,
+          request_log: log,
+          subject: title,
+          sent_status: false,
+          email_type: Settings.email_type.deny
+      ).limit(1)
+      queue.update(sent_status: true, time_delivered: Time.now)
+    end
   end
 
   # 再打診候補日程をもらうメール
@@ -268,20 +283,20 @@ class CommonMailer < ApplicationMailer
         :sent_status => false,
         :email_type => Settings.email_type.readjustment
     )
-
-    # Send a mail
-    mail(to: log.email, subject: title)
-
-    # Update email queue status
-    queue = EmailQueue.where(
-        to_address: log.email,
-        request_log: log,
-        subject: title,
-        sent_status: false,
-        email_type: Settings.email_type.readjustment
-    ).limit(1)
-    queue.update(sent_status: true, time_delivered: Time.now)
-
+    begin
+      mail(to: log.email, subject: title)
+    rescue => e
+      p "エラー: #{e.message}"
+    else
+      queue = EmailQueue.where(
+          to_address: log.email,
+          request_log: log,
+          subject: title,
+          sent_status: false,
+          email_type: Settings.email_type.readjustment
+      ).limit(1)
+      queue.update(sent_status: true, time_delivered: Time.now)
+    end
   end
 
 
@@ -305,20 +320,20 @@ class CommonMailer < ApplicationMailer
         :sent_status => false,
         :email_type => Settings.email_type.readjustment_to_manma
     )
-
-    # Send to manma
-    mail(to: 'yoshihito522@gmail.com', subject: title)
-
-    # Update email queue status
-    queue = EmailQueue.where(
-        to_address: 'info@manma.co',
-        request_log: log,
-        subject: title,
-        sent_status: false,
-        email_type: Settings.email_type.readjustment_to_manma
-    ).limit(1)
-    queue.update(sent_status: true, time_delivered: Time.now)
-
+    begin
+      mail(to: 'yoshihito522@gmail.com', subject: title)
+    rescue => e
+      p "エラー: #{e.message}"
+    else
+      queue = EmailQueue.where(
+          to_address: 'info@manma.co',
+          request_log: log,
+          subject: title,
+          sent_status: false,
+          email_type: Settings.email_type.readjustment_to_manma
+      ).limit(1)
+      queue.update(sent_status: true, time_delivered: Time.now)
+    end
   end
 
   include ApplicationHelper
@@ -348,20 +363,20 @@ class CommonMailer < ApplicationMailer
         :sent_status => false,
         :email_type => Settings.email_type.three_days
     )
-
-    # Send a mail
-    mail(to: mail, subject: title)
-
-    # Update email queue status
-    queue = EmailQueue.where(
-        to_address: mail,
-        request_log: log,
-        subject: title,
-        sent_status: false,
-        email_type: Settings.email_type.three_days
-    ).limit(1)
-    queue.update(sent_status: true, time_delivered: Time.now)
-
+    begin
+      mail(to: mail, subject: title)
+    rescue => e
+      p "エラー: #{e.message}"
+    else
+      queue = EmailQueue.where(
+          to_address: mail,
+          request_log: log,
+          subject: title,
+          sent_status: false,
+          email_type: Settings.email_type.three_days
+      ).limit(1)
+      queue.update(sent_status: true, time_delivered: Time.now)
+    end
   end
 
 end
