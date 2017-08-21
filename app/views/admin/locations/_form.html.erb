@@ -16,8 +16,8 @@
     <%= label_tag 'job_style_dual', Settings.job_style.str.both %>
     <%= radio_button_tag 'job_style', homemaker, checked = @job_style == homemaker ? true : false, id: 'job_style_single' %>
     <%= label_tag 'job_style_single', Settings.job_style.str.homemaker %>
-    <%= check_box_tag 'is_male_ng', 'checked', checked = @is_male_ng, id: 'is_male_ng' %>
-    <%= label_tag 'is_male_ng', '男性NG' %>
+    <%= check_box_tag 'is_male_ok', 'checked', checked = @is_male_ok, id: 'is_male_ok' %>
+    <%= label_tag 'is_male_ok', '男性OK' %>
 
     <div class="row">
       <div class="input-field col s12">
