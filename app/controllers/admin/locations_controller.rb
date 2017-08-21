@@ -53,11 +53,11 @@ class Admin::LocationsController < Admin::AdminController
     end
 
     # 男性NGかどうか
-    @is_male_ng = params[:is_male_ng].nil? ? false : true
-    if params[:is_male_ng].nil?
+    @is_male_ok = params[:is_male_ok].nil? ? false : true
+    if params[:is_male_ok].nil?
       family ||= ProfileFamily.all
     else
-      family = family.where(is_male_ok: !@is_male_ng)
+      family = family.where(is_male_ok: @is_male_ok)
     end
     family
   end
