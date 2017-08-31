@@ -24,8 +24,8 @@
     <td>
       <small>マークダウンで記入できます。<%= link_to 'マークダウンとは', 'http://www.canpath.jp/markdown', :target => '_blank' %></small>
       <ul class="tab_wrap clearfix">
-        <li class="active tab1"><%= link_to '入力', '#', class: 'back-to-input' %></li>
-        <li class="tab2"><%= link_to 'プレビュー', '#', class: 'preview' %></li>
+        <li class="active tab1"><div class="back-to-input">入力</div></li>
+        <li class="tab2"><div class="preview">プレビュー</div></li>
       </ul>
       <div class="text-input">
         <%= f.text_area :content, rows: 10, class: 'h-300', required: true %>
