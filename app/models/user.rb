@@ -21,4 +21,28 @@ class User < ApplicationRecord
     end
   end
 
+  # 打診回数を取得する
+  def request_times
+    email_pc = self.contact.email_pc
+    # Email queue から打診メールの数を取得して返却する
+    EmailQueue.where(
+        email_type: Settings.email_type.request,
+        to_address: email_pc
+    ).size
+  end
+
+
+  # 最終打診日を取得する
+  def last_request_day
+    email_pc = self.contact.email_pc
+    # Email queue から打診メールの中で最後の日を取得して返却する
+    eq = EmailQueue.where(
+        email_type: Settings.email_type.request,
+        to_address: email_pc
+    ).order('time_delivered desc').first
+
+    # nil check
+    eq.time_delivered.strftime('%Y/%m/%d') unless eq.nil?
+  end
+
 end
