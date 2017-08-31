@@ -1,6 +1,6 @@
 class NewsLetter < ApplicationRecord
-  validates :subject, presence: true
-  validates :content, presence: true
+  validates :subject,      presence: true
+  validates :content,      presence: true
   validates :distribution, presence: true
 
 

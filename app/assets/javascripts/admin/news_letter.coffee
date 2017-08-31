@@ -2,9 +2,7 @@
 # All this logic will automatically be available in application.js.
 # You can use CoffeeScript in this file: http://coffeescript.org/
 ready = ->
-  $('.tab_wrap .preview').on 'click', (event) ->
-    # なぜかわからないけど、console log がないとプレビュー表示が失敗する。
-    console.log("Showing preview...");
+  $(document).on 'click', '.tab_wrap .preview', (event) ->
     event.preventDefault()
     url = '/admin/news_letters/preview'
     $.ajax(
