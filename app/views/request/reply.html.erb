@@ -111,9 +111,9 @@
           <small>ない場合は電話で簡単に説明いたします。</small>
         </div>
         <div class="">
-          <%= f.radio_button :is_first_time, {}, :id => "yes", :checked => false, :onclick => "chkradio(this)" %>
+          <%= f.radio_button :is_first_time, true, :id => "yes", :checked => false, :onclick => "chkradio(this)" %>
           <%= f.label :is_first_time, 'はい' %>
-          <%= f.radio_button :is_first_time, {}, :id => "no", :checked => true, :onclick => "chkradio(this)" %>
+          <%= f.radio_button :is_first_time, false, :id => "no", :checked => true, :onclick => "chkradio(this)" %>
           <%= f.label :is_first_time, 'いいえ' %>
         </div>
         <div>
