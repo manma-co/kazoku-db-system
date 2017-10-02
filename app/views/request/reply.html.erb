@@ -39,7 +39,7 @@
         </div>
         <div>
           <select id="event_time_select" class="form-control mb1">
-            <option value="">選択してください</option>
+            <option value="">参加者からの希望日時を選択してください</option>
             <% @days.each do |d| %>
                 <option value="<%= d.day.strftime('%Y-%m-%d') + ' ' + d.time %>"><%= d.day.strftime('%Y-%m-%d') + ' ' + d.time %></option>
             <% end %>
@@ -72,11 +72,14 @@
                 分
               </div>
             </div>
+            <p>
+              <small>※希望時間は5時間以上で記入してください</small>
+              <br>
+              <small>※例）リクエスト 9:00 ~ 20:00 → 回答 10:00 ~ 18:00</small>
+            </p>
             <!-- TODO: Add date time picker to avoid format error -->
             <%= f.label '以下の日程で家族留学を実施します' %>
             <%= f.text_field :event_time, :size => "43", :placeholder => '選択した実施予定日における希望時間を記入', :class => 'form-control', :required => true, :readonly => true %>
-
-            <small>※希望時間は5時間以上で記入してください</small>
           </div>
         </div>
       </div>
