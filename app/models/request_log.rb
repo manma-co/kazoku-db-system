@@ -9,25 +9,30 @@ class RequestLog < ApplicationRecord
   def self.seven_days_over
     logs = RequestLog.includes(:event_date)
     logs.each do |log|
+
+      # Log id 1 の時は next
+      next if log.id <= 1
+
+      # Event Dates が存在していたら next
+      next if log.event_date != nil
+
+      # 7日経っていなかったら next
+      next if log.created_at + 7.days >= Time.now
+
       # イベントが成立していなくて、7日以上たったリクエストを探す。
       # Email queue を利用して、すでに送信しているかどうかをチェックする。
       queue = EmailQueue.find_by(
         request_log: log,
         email_type: Settings.email_type.readjustment
       )
-      # Event Data が存在していたら return
-      return if log.event_date != nil
-      # 7日経っていなかったら return
-      return if log.created_at + 7.days >= Time.now
+
       # メールを送信しているかを確認
       # 送信していなかったらメールを送信
-      return unless queue.nil?
+      next unless queue.nil?
 
       # 参加希望者に対して再打診をするかどうかのメールを送信
-      if log.id > 1
-        CommonMailer.readjustment_to_candidate(log).deliver_now
-        CommonMailer.readjustment_to_manma(log).deliver_now
-      end
+      CommonMailer.readjustment_to_candidate(log).deliver_now
+      CommonMailer.readjustment_to_manma(log).deliver_now
     end
   end
 
@@ -45,8 +50,9 @@ class RequestLog < ApplicationRecord
       # RequestLog の中から EventDate のないものを探す。
       # 且つ3日たち、リマインドメールを送っていない場合
 
-      # Check remind status.
-      if log.event_date == nil && log.created_at + 3.days < Time.now && log.reminder == nil
+      # Check remind statu
+      past_three_days = log.created_at + 3.days < Time.now
+      if log.event_date == nil && past_three_days && log.reminder == nil
 
         # リマインドメールを送る家庭を探すために、ReplyLog から何もアクションをしていない家庭を探す。
         # すべての送信履歴を参照
