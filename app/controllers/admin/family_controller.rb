@@ -28,7 +28,9 @@ class Admin::FamilyController < Admin::AdminController
   def update
     user_id = params[:id]
     @family = User.find(user_id)
-    if @family.update(family_params)
+    if @family.update(family_params) and \
+       @family.contact.update(contact_params) and \
+       @family.location.update(location_params)
       redirect_to edit_admin_family_path(user_id), notice: '更新成功'
     else
       redirect_to edit_admin_family_path(user_id), alert: '更新失敗'
@@ -39,6 +41,14 @@ class Admin::FamilyController < Admin::AdminController
 
   def family_params
     params.permit(:name, :kana)
+  end
+
+  def location_params
+    params.permit(:address)
+  end
+
+  def contact_params
+    params.permit(:email_pc, :email_phone, :phone_number)
   end
 
 end
