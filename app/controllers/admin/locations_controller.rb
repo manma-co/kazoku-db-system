@@ -16,23 +16,24 @@ class Admin::LocationsController < Admin::AdminController
   end
 
   def search
+    return unless params[:address].present?
+
     @address = params[:address]
     family_list = family_params
     begin
-      if params[:address].present?
-        geocoder = Geocoder.search(params[:address])
-        @search_result_address = geocoder[0].formatted_address
-        location = geocoder[0].geometry['location']
+      geocoder = Geocoder.search(params[:address])
+      if geocoder[0]&.geometry.has_key?('location')
+        location = geocoder[0]&.geometry['location']
+        @search_result_address = geocoder[0]&.formatted_address
         @candidate_hash = Location.candidate_list(location, family_list)
+      else
+        raise('地点が見つかりませんでした。')
       end
     rescue Exception => e
       # Google API error: over query limit. 対策
-      @search_result_address = 'エラーが発生しました。全件表示します。'
-      @candidate_hash = {}
-      locations = family_list.map { |f| f.user.location }
-      locations.each do |l|
-        @candidate_hash.store(l, 0)
-      end
+      @search_result_address = "エラーが発生しました。全件表示します。エラー内容: #{e}"
+      locations = family_list.map { |f| [f.user.location, 0] }
+      @candidate_hash = Hash[*locations.flatten]
     end
   end
 
