@@ -25,7 +25,7 @@ class Admin::LocationsController < Admin::AdminController
         location = geocoder[0].geometry['location']
         @candidate_hash = Location.candidate_list(location, family_list)
       end
-    rescue
+    rescue Exception => e
       # Google API error: over query limit. 対策
       @search_result_address = 'エラーが発生しました。全件表示します。'
       @candidate_hash = {}

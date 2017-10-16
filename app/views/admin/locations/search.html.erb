@@ -19,7 +19,7 @@
           </tr>
           </thead>
           <tbody>
-          <% @candidate_hash.each_with_index do |(location), index| %>
+          <% @candidate_hash.each_with_index do |(location, distance), index| %>
               <tr>
                 <td>
                   <%= check_box_tag 'user_id[]', location.user.id, checked = false, :id => "user_id_#{location.user.id}" %>

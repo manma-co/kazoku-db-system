@@ -10,24 +10,21 @@ class Location < ApplicationRecord
   # @return [Hash] candidate_hash 家族留学候補家庭ハッシュ key: location, value: 距離
   def self.candidate_list(location, family_list)
     # 出発地
-    dept = Hash.new
-    dept[:lat] = location['lat']
-    dept[:lng] = location['lng']
+    dept = {lat: location['lat'], lng: location['lng']}
 
     candidate_hash = {}
     # 検索対象の位置情報リストを取得する
     locations = family_list.map { |f| f.user.location }
-    locations.each do |n|
+    locations.each do |loc|
+      next if loc.latitude.nil? or loc.longitude.nil?
       # 目的地
-      dist = Hash.new
-      next if n.latitude.nil? or n.longitude.nil?
-      dist[:lat] = n.latitude
-      dist[:lng] = n.longitude
-
+      dist = {lat: loc.latitude, lng: loc.longitude}
       distance = distance_of_two_points(dept, dist)
-      candidate_hash.store(n, distance)
+      candidate_hash.store(loc, distance)
     end
-    candidate_hash.sort {|(k1, v1), (k2, v2)| v1 <=> v2 }
+    # 結果が[[location, 距離], ...]になるのでHash化する
+    ary = candidate_hash.sort {|(k1, v1), (k2, v2)| v1 <=> v2 }
+    Hash[*ary.flatten]
   end
 
   # 2点間の距離計算
