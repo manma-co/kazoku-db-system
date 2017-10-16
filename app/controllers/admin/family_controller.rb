@@ -37,6 +37,16 @@ class Admin::FamilyController < Admin::AdminController
     end
   end
 
+  def destroy
+    # TODO: モーダルを出す
+    @family = User.find(params[:id])
+    if @family.destroy
+      redirect_to admin_family_index_path, notice: '削除成功'
+    else
+      redirect_to admin_family_index_path, notice: '削除失敗'
+    end
+  end
+
   private
 
   def family_params

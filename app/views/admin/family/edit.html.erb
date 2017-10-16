@@ -18,15 +18,15 @@
       </div>
       <div class="row">
         <div class="input-field col s4">
-          <%= text_field_tag :email_pc, @family.contact&.email_pc, class: 'validate' %>
+          <%= email_field_tag :email_pc, @family.contact&.email_pc, class: 'validate' %>
           <%= label_tag :email_pc, 'PCメールアドレス' %>
         </div>
         <div class="input-field col s4">
-          <%= text_field_tag :email_phone, @family.contact&.email_phone %>
+          <%= email_field_tag :email_phone, @family.contact&.email_phone %>
           <%= label_tag :email_phone, '携帯メールアドレス' %>
         </div>
         <div class="input-field col s4">
-          <%= text_field_tag :phone_number, @family.contact&.phone_number, class: 'validate' %>
+          <%= telephone_field_tag :phone_number, @family.contact&.phone_number, class: 'validate' %>
           <%= label_tag :phone_number, '携帯電話番号' %>
         </div>
       </div>
@@ -175,4 +175,9 @@
         <button class="btn waves-effect waves-light" name="action" type="submit">更新</button>
       </p>
   <% end %>
+  <%= form_tag(admin_family_path(@family.id), method: :delete, class: 'col s12') do %>
+      <p>
+        <button class="btn waves-effect waves-red" name="action" type="submit">削除</button>
+      </p>
+  <% end%>
 </div>
