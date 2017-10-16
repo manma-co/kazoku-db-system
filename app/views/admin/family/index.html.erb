@@ -10,8 +10,9 @@
   <% @user_list.each_with_index do |user, index| %>
       <tr>
         <td><%= index + 1 %></td>
-        <td><%= user.name %></td>
+        <td><%= link_to user.name, admin_family_path(user.id) %></td>
         <td><%= user.contact.email_pc %></td>
+        <td><%= button_to('編集', edit_admin_family_path(user.id), method: :get, class: 'btn waves-effect waves-light') %></td>
       </tr>
   <% end %>
 </table>

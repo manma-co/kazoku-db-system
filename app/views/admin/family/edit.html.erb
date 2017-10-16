@@ -1,0 +1,178 @@
+<p>家庭情報編集</p>
+<div class="row">
+  <%= form_tag(admin_family_path(@family.id), method: :put, class: 'col s12') do %>
+    <fieldset>
+      <div class="row">
+        <div class="input-field col s4">
+          <%= text_field_tag :name, @family.name, class: 'validate' %>
+          <%= label_tag :name, '氏名' %>
+        </div>
+        <div class="input-field col s4">
+          <%= text_field_tag :kana, @family.kana, class: 'validate' %>
+          <%= label_tag :kana, 'ふりがな' %>
+        </div>
+        <div class="input-field col s4">
+          <%= text_field_tag :gender, '', class: 'validate' %>
+          <%= label_tag :gender, '性別' %>
+        </div>
+      </div>
+      <div class="row">
+        <div class="input-field col s4">
+          <%= text_field_tag :email_pc, @family.contact&.email_pc, class: 'validate' %>
+          <%= label_tag :email_pc, 'PCメールアドレス' %>
+        </div>
+        <div class="input-field col s4">
+          <%= text_field_tag :email_phone, @family.contact&.email_phone %>
+          <%= label_tag :email_phone, '携帯メールアドレス' %>
+        </div>
+        <div class="input-field col s4">
+          <%= text_field_tag :phone_number, @family.contact&.phone_number, class: 'validate' %>
+          <%= label_tag :phone_number, '携帯電話番号' %>
+        </div>
+      </div>
+      <div class="row">
+        <div class="input-field col s6">
+          <%= text_field_tag :address, @family.location&.address, class: 'validate' %>
+          <%= label_tag :address, 'ご住所' %>
+        </div>
+        <div class="input-field col s6">
+          <%= text_field_tag :job_style, job_style_str(@family.profile_family&.job_style), class: 'validate' %>
+          <%= label_tag :job_style, '現在の働き方' %>
+        </div>
+      </div>
+      <span>お母さま</span>
+      <div class="row">
+        <div class="input-field col s4">
+          <%= text_field_tag :birthday_mother, '', class: 'validate' %>
+          <%= label_tag :birthday_mother, '生年月日' %>
+        </div>
+        <div class="input-field col s4">
+          <%= text_field_tag :hometown_mother, '', class: 'validate' %>
+          <%= label_tag :hometown_mother, '出身地' %>
+        </div>
+        <div class="input-field col s4">
+          <%= text_field_tag :married_age_mother, '', class: 'validate' %>
+          <%= label_tag :married_age_mother, 'ご結婚された年齢' %>
+        </div>
+      </div>
+      <div class="row">
+        <div class="input-field col s4">
+          <%= text_field_tag :job_domain_mother, '', class: 'validate' %>
+          <%= label_tag :job_domain_mother, '職業' %>
+        </div>
+        <div class="input-field col s4">
+          <%= text_field_tag :company_mother, '', class: 'validate' %>
+          <%= label_tag :company_mother, '勤務先' %>
+        </div>
+        <div class="input-field col s4">
+          <%= text_field_tag :career_mother, '', class: 'validate' %>
+          <%= label_tag :career_mother, 'キャリア変遷' %>
+        </div>
+      </div>
+      <div class="row">
+        <div class="input-field col s12">
+          <%= text_field_tag :is_abroad_mother, '', class: 'validate' %>
+          <%= label_tag :is_abroad_mother, '海外留学、勤務のご経験の有無' %>
+        </div>
+      </div>
+      <span>お父さま</span>
+      <div class="row">
+        <div class="input-field col s4">
+          <%= text_field_tag :birthday_father, '', class: 'validate' %>
+          <%= label_tag :birthday_father, '生年月日' %>
+        </div>
+        <div class="input-field col s4">
+          <%= text_field_tag :hometown_father, '', class: 'validate' %>
+          <%= label_tag :hometown_father, '出身地' %>
+        </div>
+        <div class="input-field col s4">
+          <%= text_field_tag :married_age_father, '', class: 'validate' %>
+          <%= label_tag :married_age_father, 'ご結婚された年齢' %>
+        </div>
+      </div>
+      <div class="row">
+        <div class="input-field col s4">
+          <%= text_field_tag :job_domain_father, '', class: 'validate' %>
+          <%= label_tag :job_domain_father, '職業' %>
+        </div>
+        <div class="input-field col s4">
+          <%= text_field_tag :company_father, '', class: 'validate' %>
+          <%= label_tag :company_father, '勤務先' %>
+        </div>
+        <div class="input-field col s4">
+          <%= text_field_tag :career_father, '', class: 'validate' %>
+          <%= label_tag :career_father, 'キャリア変遷' %>
+        </div>
+      </div>
+      <div class="row">
+        <div class="input-field col s12">
+          <%= text_field_tag :is_abroad_father, '', class: 'validate' %>
+          <%= label_tag :is_abroad_father, '海外留学、勤務のご経験の有無' %>
+        </div>
+      </div>
+      <span>お子さま</span>
+      <div class="row">
+        <div class="input-field col s6">
+          <%= text_field_tag :num_child, '', class: 'validate' %>
+          <%= label_tag :num_child, '人数' %>
+        </div>
+        <div class="input-field col s6">
+          <%= text_field_tag :birthday_child, '', class: 'validate' %>
+          <%= label_tag :birthday_child, '生年月日' %>
+        </div>
+      </div>
+      <span>ご経験</span>
+      <div class="row">
+        <div class="input-field col s6">
+          <%= text_field_tag :birthday_child, '', class: 'validate' %>
+          <%= label_tag :birthday_child, '時短勤務のご経験の有無' %>
+        </div>
+        <div class="input-field col s6">
+          <%= text_field_tag :birthday_child, '', class: 'validate' %>
+          <%= label_tag :birthday_child, '育休のご経験の有無' %>
+        </div>
+        <div class="input-field col s6">
+          <%= text_field_tag :birthday_child, '', class: 'validate' %>
+          <%= label_tag :birthday_child, '転職のご経験の有無' %>
+        </div>
+      </div>
+      <span>使用許可</span>
+      <div class="row">
+        <div class="input-field col s12">
+          <%= text_field_tag :birthday_child, '', class: 'validate' %>
+          <%= label_tag :birthday_child, '写真をHPやFacebookで使用可能？' %>
+        </div>
+      </div>
+      <div class="row">
+        <div class="input-field col s12">
+          <%= text_field_tag :birthday_child, '', class: 'validate' %>
+          <%= label_tag :birthday_child, 'レポートをHPやFacebookで使用可能？	' %>
+        </div>
+      </div>
+      <span>受け入れ可能な参加者について</span>
+      <div class="row">
+        <div class="input-field col s6">
+          <%= text_field_tag :birthday_child, '', class: 'validate' %>
+          <%= label_tag :birthday_child, '男性OK？' %>
+        </div>
+      </div>
+      <span>その他、ご意見/ご質問など</span>
+      <div class="row">
+        <div class="input-field col s6">
+          <%= text_field_tag :birthday_child, '', class: 'validate' %>
+          <%= label_tag :birthday_child, '男性OK？' %>
+        </div>
+      </div>
+      <span>打診履歴</span>
+      <div class="row">
+        <div class="input-field col s6">
+          <%= text_field_tag :birthday_child, '', class: 'validate' %>
+          <%= label_tag :birthday_child, '男性OK？' %>
+        </div>
+      </div>
+    </fieldset>
+      <p>
+        <button class="btn waves-effect waves-light" name="action" type="submit">更新</button>
+      </p>
+  <% end %>
+</div>
