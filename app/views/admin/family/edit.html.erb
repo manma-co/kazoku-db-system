@@ -51,11 +51,11 @@
           <%= label_tag :hometown_mother, '出身地' %>
         </div>
         <div class="input-field col s3">
-          <%= text_field_tag :first_childbirth_mother_age, @family&.profile_family&.first_childbirth_mother_age, class: 'validate' %>
+          <%= number_field_tag :first_childbirth_mother_age, @family&.profile_family&.first_childbirth_mother_age, class: 'validate' %>
           <%= label_tag :first_childbirth_mother_age, '第一子をご出産された年齢' %>
         </div>
         <div class="input-field col s3">
-          <%= text_field_tag :married_age_mother, @family.profile_family&.married_mother_age, class: 'validate' %>
+          <%= number_field_tag :married_age_mother, @family.profile_family&.married_mother_age, class: 'validate' %>
           <%= label_tag :married_age_mother, 'ご結婚された年齢' %>
         </div>
       </div>
@@ -90,7 +90,7 @@
           <%= label_tag :hometown_father, '出身地' %>
         </div>
         <div class="input-field col s4">
-          <%= text_field_tag :married_age_father, @family.profile_family&.married_father_age, class: 'validate' %>
+          <%= number_field_tag :married_age_father, @family.profile_family&.married_father_age, class: 'validate' %>
           <%= label_tag :married_age_father, 'ご結婚された年齢' %>
         </div>
       </div>
@@ -117,7 +117,7 @@
       <span>お子さまについて</span>
       <div class="row">
         <div class="input-field col s6">
-          <%= text_field_tag :num_child, @family.profile_family&.number_of_children, class: 'validate' %>
+          <%= number_field_tag :num_child, @family.profile_family&.number_of_children, class: 'validate' %>
           <%= label_tag :num_child, '人数' %>
         </div>
         <div class="input-field col s6">
