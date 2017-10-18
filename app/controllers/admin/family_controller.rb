@@ -28,8 +28,8 @@ class Admin::FamilyController < Admin::AdminController
   def update
     user_id = params[:id]
     @family = User.find(user_id)
-    if @family.update(family_params) and \
-       @family.contact.update(contact_params) and \
+    if @family.update(family_params) and
+       @family.contact.update(contact_params) and
        @family.location.update(location_params)
       redirect_to edit_admin_family_path(user_id), notice: '更新成功'
     else
