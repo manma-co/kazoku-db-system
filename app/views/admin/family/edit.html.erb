@@ -43,7 +43,7 @@
       <span>お母さまについて</span>
       <div class="row">
         <div class="input-field col s3">
-          <%= text_field_tag :birthday_mother, @mother&.birthday, class: 'validate' %>
+          <%= text_field_tag :birthday_mother, @mother&.birthday, class: 'datepicker picker__input', readonly: true %>
           <%= label_tag :birthday_mother, '生年月日' %>
         </div>
         <div class="input-field col s3">
@@ -82,7 +82,7 @@
       <span>お父さまについて</span>
       <div class="row">
         <div class="input-field col s4">
-          <%= text_field_tag :birthday_father, @father&.birthday, class: 'validate' %>
+          <%= text_field_tag :birthday_father, @father&.birthday, class: 'datepicker picker__input', readonly: true %>
           <%= label_tag :birthday_father, '生年月日' %>
         </div>
         <div class="input-field col s4">
@@ -121,7 +121,7 @@
           <%= label_tag :num_child, '人数' %>
         </div>
         <div class="input-field col s6">
-          <%= text_field_tag :birthday_child, @family.profile_family&.child_birthday, class: 'validate' %>
+          <%= text_field_tag :birthday_child, @family.profile_family&.child_birthday, class: 'datepicker picker__input', readonly: true %>
           <%= label_tag :birthday_child, '生年月日' %>
         </div>
       </div>
@@ -171,4 +171,16 @@
         <button class="btn waves-effect waves-red" name="action" type="submit">削除</button>
       </p>
   <% end%>
+
+  <script>$('.datepicker').pickadate({
+    monthsShort: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'],
+    monthsFull: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'],
+    weekdaysFull: ['日曜日', '月曜日', '火曜日', '水曜日', '木曜日', '金曜日', '土曜日'],
+    weekdaysShort: ['日', '月', '火', '水', '木', '金', '土'],
+    today: '今日',
+    clear: 'リセット',
+    close: '閉じる',
+    format: 'yyyy年mm月dd日 dddd',
+    formatSubmit: 'yyyy/mm/dd'
+  });</script>
 </div>
