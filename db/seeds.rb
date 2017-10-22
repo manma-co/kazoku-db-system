@@ -113,5 +113,20 @@ end
 # リクエストログを参照しない場合のログを用意しておく。
 RequestLog.create!
 
+participants = [
+  { name: '仮名', kana: 'かな', email: 'shino@cps.im.dendai.ac.jp', belong: 'hogheoge'},
+  { name: '仮名', kana: 'かな', email: 'test@hoge.com', belong: 'hogheoge'},
+  { name: '仮名', kana: 'かな', email: 'test@fuga.com', belong: 'hogheoge'},
+]
+
+participants.each do |p|
+  Participant.create(
+    name: p[:name],
+    kana: p[:kana],
+    email: p[:email],
+    belong: p[:belong]
+  )
+end
+
 
 
