@@ -1,10 +1,19 @@
-<h3>打診メール作成</h3>
+<% breadcrumb :new_mail, @users  %>
 <p>メールを送信する家庭一覧</p>
-<ol>
+<table>
+  <tr>
+    <th>名前</th>
+    <th>住所</th>
+    <th>メールアドレス</th>
+  </tr>
   <% @users.each do |user| %>
-      <li><%= user.name %>, <%= user.location.address %>, <%= user.contact.email_pc %></li>
+      <tr>
+        <td><%= user.name %></td>
+        <td><%= user.location.address %></td>
+        <td><%= user.contact.email_pc %></td>
+      </tr>
   <% end %>
-</ol>
+</table>
 
 <div class="row">
   <%= form_tag(admin_mails_confirm_path, method: :post, class: 'col s12') do %>

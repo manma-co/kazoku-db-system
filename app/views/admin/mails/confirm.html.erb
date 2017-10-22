@@ -1,9 +1,20 @@
-<h2>打診メール最終確認</h2>
-<ol>
+<% breadcrumb :confirm_mail, @users  %>
+<p>メールを送信する家庭一覧</p>
+<table>
+  <tr>
+    <th>名前</th>
+    <th>住所</th>
+    <th>メールアドレス</th>
+  </tr>
   <% @users.each do |user| %>
-      <li><%= user.name %>, <%= user.location.address %>, <%= user.contact.email_pc %></li>
+      <tr>
+        <td><%= user.name %></td>
+        <td><%= user.location.address %></td>
+        <td><%= user.contact.email_pc %></td>
+      </tr>
   <% end %>
-</ol>
+</table>
+
 <p>送信先メールアドレス（コピー用）</p>
 <p><%= (@users.map { |user| user.contact.email_pc }).join(',') %></p>
 

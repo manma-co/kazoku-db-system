@@ -1,4 +1,4 @@
-<h4>ニュースレターの編集</h4>
+<% breadcrumb :edit_news_letter, @news_letter  %>
 
 <%= form_for @news_letter, url: admin_news_letter_path, method: 'patch' do |f| %>
     <div id="news_letter">

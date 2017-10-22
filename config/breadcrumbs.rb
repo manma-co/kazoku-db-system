@@ -24,6 +24,58 @@ crumb :participant do |participant|
   link "参加者詳細 : #{participant.name}", admin_participant_path(participant)
   parent :participants
 end
+
+crumb :locations do
+  link '打診メール作成(家庭検索)', admin_locations_search_path
+end
+
+crumb :new_mail do
+  link 'メール新規作成', ''
+  parent :locations
+end
+
+crumb :confirm_mail do
+  link '送信前メール確認', ''
+  parent :locations
+end
+
+crumb :complete_mail do
+  link 'メール送信完了', ''
+  parent :locations
+end
+
+crumb :mail_histories do
+  link 'メール送信履歴一覧', admin_mails_histories_path
+end
+
+crumb :mail_history do |mail_history|
+  link "メール送信履歴詳細 : ##{mail_history.id}", admin_mails_history_path(mail_history)
+  parent :mail_histories
+end
+
+crumb :news_letters do
+  link 'ニュースレター', admin_news_letter_index_path
+end
+
+crumb :news_letter do |news_letter|
+  link "ニュースレター詳細 : ##{news_letter.id}", admin_news_letter_path(news_letter)
+  parent :news_letters
+end
+
+crumb :new_news_letter do
+  link '新規ニュースレター作成', new_admin_news_letter_path
+  parent :news_letters
+end
+
+crumb :edit_news_letter do |news_letter|
+  link "ニュースレター編集 : ##{news_letter.id}", edit_admin_news_letter_path(news_letter)
+  parent :news_letters
+end
+
+crumb :history_news_letters do
+  link 'メール配信終了リスト', admin_news_history_path
+  parent :news_letters
+end
 # crumb :projects do
 #   link "Projects", projects_path
 # end

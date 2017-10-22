@@ -1,4 +1,5 @@
-<h4>以下の内容で送信しました</h4>
+<% breadcrumb :complete_mail, @users  %>
+<p>以下の内容で送信しました</p>
 
 <h5>宛先メールアドレス</h5>
 <p><%= (@users.map { |user| user.contact.email_pc }).join(',') %></p>

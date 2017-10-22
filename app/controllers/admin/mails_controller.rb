@@ -27,7 +27,6 @@ class Admin::MailsController < Admin::AdminController
 
     email = log.email
     CommonMailer.matching_start(email).deliver_now if email
-
   end
 
   def histories

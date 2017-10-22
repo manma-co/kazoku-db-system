@@ -1,8 +1,8 @@
-
+<% breadcrumb :news_letters, @monthly_news_letter  %>
 <div id="mailing_lists">
   <%= link_to '新規作成', new_admin_news_letter_path, class: 'btn btn-default' %>
   <div class="mailing_list">
-    <h5>メール配信予定リストです。</h5>
+    <h5>メール配信予定リスト</h5>
     <%= link_to '過去のメールリストはこちら', admin_news_history_path %>
 
     <h6>月１メール配信予定リスト</h6>
