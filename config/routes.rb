@@ -5,7 +5,7 @@ Rails.application.routes.draw do
   namespace :admin do
     get '/' => redirect("admin/family")
     resources :family
-    resources :participants, only: [:index, :show]
+    resources :participants
 
     resources :locations, :only => [:index, :create]
     get 'locations/search'

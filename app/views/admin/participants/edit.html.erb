@@ -1,0 +1,37 @@
+<% breadcrumb :edit_participant, @participant  %>
+
+<div class="row">
+  <%= form_tag(admin_participant_path(@participant.id), method: :put, class: 'col s12') do %>
+    <fieldset>
+      <div class="row">
+        <div class="input-field col s6">
+          <%= text_field_tag :name, @participant.name, class: 'validate' %>
+          <%= label_tag :name, '氏名' %>
+        </div>
+        <div class="input-field col s6">
+          <%= text_field_tag :kana, @participant.kana, class: 'validate' %>
+          <%= label_tag :kana, 'ふりがな' %>
+        </div>
+      </div>
+      <div class="row">
+        <div class="input-field col s6">
+          <%= text_field_tag :email, @participant.email, class: 'validate' %>
+          <%= label_tag :email, 'メールアドレス' %>
+        </div>
+        <div class="input-field col s6">
+          <%= text_field_tag :belong, @participant.belong, class: 'validate' %>
+          <%= label_tag :email, '所属' %>
+        </div>
+      </div>
+    </fieldset>
+      <p>
+        <button class="btn waves-effect waves-light" name="action" type="submit">更新</button>
+      </p>
+  <% end %>
+
+  <%= form_tag(admin_participant_path(@participant.id), method: :delete, class: 'col s12') do %>
+      <p>
+        <button class="btn waves-effect waves-red" name="action" type="submit">削除</button>
+      </p>
+  <% end%>
+</div>

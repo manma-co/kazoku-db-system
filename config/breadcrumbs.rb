@@ -25,6 +25,11 @@ crumb :participant do |participant|
   parent :participants
 end
 
+crumb :edit_participant do |participant|
+  link "参加者編集 : #{participant.name}", edit_admin_participant_path(participant)
+  parent :participants
+end
+
 crumb :locations do
   link '打診メール作成(家庭検索)', admin_locations_search_path
 end
