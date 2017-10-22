@@ -3,17 +3,27 @@
   <%= form_tag(admin_family_path(@family.id), method: :put, class: 'col s12') do %>
     <fieldset>
       <div class="row">
+        <div class="input-field col  s4">
+          <%= label_tag :name, '氏名' %>
+        </div>
+        <div class="input-field col  s4">
+          <%= label_tag :kana, 'ふりがな' %>
+        </div>
+        <div class="input-field col  s4">
+          <%= label_tag :gender, '性別' %>
+        </div>
+      </div>
+      <div class="row">
         <div class="input-field col s4">
           <%= text_field_tag :name, @family.name, class: 'validate' %>
-          <%= label_tag :name, '氏名' %>
         </div>
         <div class="input-field col s4">
           <%= text_field_tag :kana, @family.kana, class: 'validate' %>
-          <%= label_tag :kana, 'ふりがな' %>
         </div>
         <div class="input-field col s4">
-          <%= text_field_tag :gender, @family.gender, class: 'validate' %>
-          <%= label_tag :gender, '性別' %>
+          <%= select_tag :gender, options_for_select(
+            User.genders.map {|k, v| [k, v]}, @family.gender
+          ), class: 'browser-default' %>
         </div>
       </div>
       <div class="row">
@@ -32,12 +42,20 @@
       </div>
       <div class="row">
         <div class="input-field col s6">
-          <%= text_field_tag :address, @family.location&.address, class: 'validate' %>
           <%= label_tag :address, 'ご住所' %>
         </div>
         <div class="input-field col s6">
-          <%= text_field_tag :job_style, job_style_str(@family.profile_family&.job_style), class: 'validate' %>
           <%= label_tag :job_style, '現在の働き方' %>
+        </div>
+      </div>
+      <div class="row">
+        <div class="input-field col s6">
+          <%= text_field_tag :address, @family.location&.address, class: 'validate' %>
+        </div>
+        <div class="input-field col s6">
+          <%= select_tag :job_style, options_for_select(
+            ProfileFamily.job_styles.map {|k, v| [k, v]}, @family.profile_family&.job_style
+          ), class: 'browser-default' %>
         </div>
       </div>
       <span>お母さまについて</span>
@@ -55,14 +73,16 @@
           <%= label_tag :first_childbirth_mother_age, '第一子をご出産された年齢' %>
         </div>
         <div class="input-field col s3">
-          <%= number_field_tag :married_age_mother, @family.profile_family&.married_mother_age, class: 'validate' %>
-          <%= label_tag :married_age_mother, 'ご結婚された年齢' %>
+          <%= number_field_tag :married_mother_age, @family.profile_family&.married_mother_age, class: 'validate' %>
+          <%= label_tag :married_mother_age, 'ご結婚された年齢' %>
         </div>
       </div>
+      <%= label_tag :job_domain_mother, '職業' %>
       <div class="row">
         <div class="input-field col s4">
-          <%= text_field_tag :job_domain_mother, @mother&.job_domain&.domain, class: 'validate' %>
-          <%= label_tag :job_domain_mother, '職業' %>
+          <%= select_tag :job_domain_mother, options_for_select(
+            JobDomain.job_domains.map {|k, v| [k, v]}, @mother&.job_domain_id
+          ), class: 'browser-default' %>
         </div>
         <div class="input-field col s4">
           <%= text_field_tag :company_mother, @mother&.company, class: 'validate' %>
@@ -96,16 +116,26 @@
       </div>
       <div class="row">
         <div class="input-field col s4">
-          <%= text_field_tag :job_domain_father, @father&.job_domain&.domain, class: 'validate' %>
           <%= label_tag :job_domain_father, '職業' %>
         </div>
         <div class="input-field col s4">
-          <%= text_field_tag :company_father, @father&.company, class: 'validate' %>
           <%= label_tag :company_father, '勤務先' %>
         </div>
         <div class="input-field col s4">
-          <%= text_field_tag :career_father, @father&.career, class: 'validate' %>
           <%= label_tag :career_father, 'キャリア変遷' %>
+        </div>
+      </div>
+      <div class="row">
+        <div class="input-field col s4">
+          <%= select_tag :job_domain_father, options_for_select(
+            JobDomain.job_domains.map {|k, v| [k, v]}, @father&.job_domain_id
+          ), class: 'browser-default' %>
+        </div>
+        <div class="input-field col s4">
+          <%= text_field_tag :company_father, @father&.company, class: 'validate' %>
+        </div>
+        <div class="input-field col s4">
+          <%= text_field_tag :career_father, @father&.career, class: 'validate' %>
         </div>
       </div>
       <div class="row">
@@ -117,47 +147,75 @@
       <span>お子さまについて</span>
       <div class="row">
         <div class="input-field col s6">
-          <%= number_field_tag :num_child, @family.profile_family&.number_of_children, class: 'validate' %>
-          <%= label_tag :num_child, '人数' %>
+          <%= number_field_tag :number_of_children, @family.profile_family&.number_of_children, class: 'validate' %>
+          <%= label_tag :number_of_children, '人数' %>
         </div>
         <div class="input-field col s6">
-          <%= text_field_tag :birthday_child, @family.profile_family&.child_birthday, class: 'datepicker picker__input', readonly: true %>
-          <%= label_tag :birthday_child, '生年月日' %>
+          <%= text_field_tag :child_birthday, @family.profile_family&.child_birthday, class: 'datepicker picker__input', readonly: true %>
+          <%= label_tag :child_birthday, '生年月日' %>
         </div>
       </div>
       <span>ご経験について</span>
       <div class="row">
         <div class="input-field col s4">
-          <%= text_field_tag :birthday_child, @family.profile_family&.has_time_shortening_experience, class: 'validate' %>
-          <%= label_tag :birthday_child, '時短勤務のご経験の有無' %>
+          <%= label_tag :has_time_shortening_experience, '時短勤務のご経験の有無' %>
         </div>
         <div class="input-field col s4">
-          <%= text_field_tag :birthday_child, @family.profile_family&.has_childcare_leave_experience, class: 'validate' %>
-          <%= label_tag :birthday_child, '育休のご経験の有無' %>
+          <%= label_tag :has_childcare_leave_experience, '育休のご経験の有無' %>
         </div>
         <div class="input-field col s4">
-          <%= text_field_tag :birthday_child, @family.profile_family&.has_job_change_experience, class: 'validate' %>
-          <%= label_tag :birthday_child, '転職のご経験の有無' %>
+          <%= label_tag :has_job_change_experience, '転職のご経験の有無' %>
         </div>
       </div>
       <div class="row">
         <div class="input-field col s4">
-          <%= text_field_tag :birthday_child, is_photo_ok_str(@family.profile_family&.is_photo_ok), class: 'validate' %>
-          <%= label_tag :birthday_child, '写真をHPやFacebookで使用可能？' %>
+          <%= select_tag :has_time_shortening_experience, options_for_select(
+            ProfileFamily.has_time_shortening_experiences.map {|str, num| [str, str]}, @family.profile_family&.has_time_shortening_experience
+          ), class: 'browser-default' %>
         </div>
         <div class="input-field col s4">
-          <%= text_field_tag :birthday_child, is_report_ok_str(@family.profile_family&.is_report_ok), class: 'validate' %>
-          <%= label_tag :birthday_child, 'レポートをHPやFacebookで使用可能？	' %>
+          <%= select_tag :has_childcare_leave_experience, options_for_select(
+            ProfileFamily.has_childcare_leave_experiences.map {|str, num| [str, str]}, @family.profile_family&.has_childcare_leave_experience
+          ), class: 'browser-default' %>
         </div>
         <div class="input-field col s4">
-          <%= text_field_tag :birthday_child, is_male_ok_str(@family.profile_family&.is_male_ok), class: 'validate' %>
-          <%= label_tag :birthday_child, '男性OK？' %>
+          <%= select_tag :has_job_change_experience, options_for_select(
+            ProfileFamily.has_job_change_experiences.map {|str, num| [str, str]}, @family.profile_family&.has_job_change_experience
+          ), class: 'browser-default' %>
+        </div>
+      </div>
+      <div class="row">
+        <div class="input-field col s4">
+          <%= label_tag :is_photo, '写真をHPやFacebookで使用可能？' %>
+        </div>
+        <div class="input-field col s4">
+          <%= label_tag :is_report, 'レポートをHPやFacebookで使用可能？' %>
+        </div>
+        <div class="input-field col s4">
+          <%= label_tag :is_male_ok, '男性OK？' %>
+        </div>
+      </div>
+      <div class="row">
+        <div class="input-field col s4">
+          <%= select_tag :is_photo_ok, options_for_select(
+            ProfileFamily.available_statuses.map {|k, v| [k, v]}, @family.profile_family&.is_photo_ok
+          ), class: 'browser-default' %>
+        </div>
+        <div class="input-field col s4">
+          <%= select_tag :is_report_ok, options_for_select(
+            ProfileFamily.available_statuses.map {|k, v| [k, v]}, @family.profile_family&.is_report_ok
+          ), class: 'browser-default' %>
+        </div>
+        <div class="input-field col s4">
+          <%= select_tag :is_male_ok, options_for_select(
+            ProfileFamily.is_male_ok_statuses.map {|k, v| [k, v]}, @family.profile_family&.is_male_ok
+          ), class: 'browser-default' %>
         </div>
       </div>
       <div class="row">
         <div class="input-field col s12">
-          <%= text_field_tag :birthday_child, @family.profile_family&.opinion_or_question, class: 'validate' %>
-          <%= label_tag :birthday_child, 'その他、ご意見/ご質問など' %>
+          <%= text_field_tag :opinion_or_question, @family.profile_family&.opinion_or_question, class: 'validate' %>
+          <%= label_tag :opinion_or_question, 'その他、ご意見/ご質問など' %>
         </div>
       </div>
     </fieldset>

@@ -8,6 +8,11 @@ class User < ApplicationRecord
   validates :name, presence: true, length: {maximum: 20}
   validates :gender, presence: true
 
+  enum genders:  {
+    "#{Settings.gender.str.woman}": 0,
+    "#{Settings.gender.str.man}": 1,
+    "#{Settings.gender.str.unknown}": 2
+  }
 
   # 働き方の文字列を取得する
   def job_style_str

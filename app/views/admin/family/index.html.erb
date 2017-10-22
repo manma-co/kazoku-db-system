@@ -1,3 +1,4 @@
+<p>TOP > 家庭一覧</p>
 <% if admin_signed_in? %>
     ログイン中: <%= current_admin.email %>
 <% end %>
@@ -5,7 +6,6 @@
 
 <%= button_to('スプレッドシートから家族情報を取得', admin_spread_sheets_fetch_family_path, method: :get, class: 'btn waves-effect waves-light') %>
 
-<h2>家庭一覧</h2>
 <table>
   <% @user_list.each_with_index do |user, index| %>
       <tr>

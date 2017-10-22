@@ -62,6 +62,8 @@ defaults: &defaults
     ok: 1
     str:
       all_participant: '全参加者'
+      ng: 'NG'
+      ok: 'OK'
   is_photo:
     ng: 0
     ok: 1
@@ -85,6 +87,53 @@ defaults: &defaults
     kana: 2
     belong: 3
     email: 4
+  job_domain:
+    str:
+      homemaker: '専業主婦・専業主夫（パート・アルバイトは除く）'
+      maker: 'メーカー（食品、飲料、繊維、木材、印刷、化学、鉄鋼、精密機器）'
+      restaurant: '飲食店・宿泊業・娯楽'
+      store: '百貨店・ストア・専門店'
+      retail: '卸売・小売'
+      finance: '金融証券・保険'
+      media: '情報＜メディア＞（マスコミ、新聞、出版、放送）'
+      it: '情報＜IT＞（通信、IT）'
+      infrastructure: 'インフラ'
+      real_state: '不動産'
+      medical: '医療・福祉'
+      education: '教育・学習支援業'
+      consultant: '専門サービス（税理士、弁護士、学術機関職員、広告、コンサル、人材など）'
+      public: '公務員、官公庁'
+      self: '自営業'
+      npo: '非営利団体'
+  has_experience_abroads:
+    str:
+      abroad_and_work: '海外留学及び勤務の経験あり'
+      abroad_only: '海外留学の経験あり'
+      work_only: '海外勤務の経験あり'
+      none: 'どちらも経験無し'
+  has_time_shortening_experiences:
+    str:
+      both: 'お父様及びお母様の時短勤務のご経験あり'
+      mother_only: 'お母様のみ時短勤務のご経験あり'
+      father_only: 'お父様のみ時短勤務のご経験あり'
+      none: 'どちらもご経験無し'
+  has_childcare_leave_experiences:
+    str:
+      both: 'お父様及びお母様の育休のご経験あり'
+      mother_only: 'お母様のみ育休のご経験あり'
+      father_only: 'お父様のみ育休のご経験あり'
+      none: 'どちらもご経験無し'
+  has_job_change_experiences:
+    str:
+      both: 'お父様及びお母様の転職のご経験あり'
+      mother_only: 'お母様のみ転職のご経験あり'
+      father_only: 'お父様のみ転職のご経験あり'
+      none: 'どちらもご経験無し'
+  gender:
+    str:
+      woman: '女性'
+      man: '男性'
+      unknown: '不明'
 
 development:
   <<: *defaults
