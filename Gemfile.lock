@@ -94,6 +94,8 @@ GEM
       multi_json (~> 1.11)
       os (~> 0.9)
       signet (~> 0.7)
+    gretel (3.0.9)
+      rails (>= 3.1.0)
     hashie (3.5.5)
     hirb (0.7.3)
     hirb-unicode (0.0.5)
@@ -265,6 +267,7 @@ DEPENDENCIES
   geocoder
   google-api-client (~> 0.11)
   google_drive
+  gretel
   hirb
   hirb-unicode
   jbuilder (~> 2.5)
@@ -292,4 +295,4 @@ DEPENDENCIES
   web-console (>= 3.3.0)
 
 BUNDLED WITH
-   1.15.1
+   1.15.4

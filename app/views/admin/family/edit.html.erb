@@ -1,4 +1,4 @@
-<p>家庭情報編集</p>
+<% breadcrumb :edit_family, @family  %>
 <div class="row">
   <%= form_tag(admin_family_path(@family.id), method: :put, class: 'col s12') do %>
     <fieldset>

@@ -2,8 +2,7 @@
   <nav>
     <div class="nav-wrapper">
       <div class="container">
-        <%= link_to 'TOP', admin_family_index_path, :class => 'brand-logo'  %>
-        <ul id="nav-mobile" class="right hide-on-med-and-down">
+        <ul id="nav-mobile" class="hide-on-small-and-down">
           <li><%= link_to '家庭一覧', admin_family_index_path, :class => 'grey-text text-lighten-4 right' %></li>
           <li><%= link_to '参加者一覧', admin_participants_path, :class => 'grey-text text-lighten-4 right' %></li>
           <li><%= link_to '打診メール作成', admin_locations_search_path, :class => 'grey-text text-lighten-4 right' %></li>

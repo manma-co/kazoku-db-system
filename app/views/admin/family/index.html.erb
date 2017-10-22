@@ -1,4 +1,4 @@
-<p>TOP > 家庭一覧</p>
+<% breadcrumb :families, @user_list  %>
 <% if admin_signed_in? %>
     ログイン中: <%= current_admin.email %>
 <% end %>
