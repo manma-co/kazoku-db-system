@@ -77,33 +77,26 @@ class Admin::FamilyController < Admin::AdminController
   end
 
   def mother_params
-    p = params.permit(
-      :birthday_mother, :hometown_mother, :job_domain_mother,
-      :company_mother, :career_mother, :is_abroad_mother
-    )
-    # p[:has_experience_abroad] = p[:is_abroad_mother]
-    individual_params(p,
-      :birthday_mother, :job_domain_mother,
+    individual_params(
+      :birthday_mother_submit, :job_domain_mother,
       :hometown_mother, :company_mother,
       :career_mother, :is_abroad_mother
     )
   end
 
   def father_params
-    p = params.permit(
-      :birthday_father, :hometown_father, :job_domain_father,
-      :company_father, :career_father, :is_abroad_father
-    )
-    individual_params(p,
-      :birthday_father, :job_domain_father,
+    individual_params(
+      :birthday_father_submit, :job_domain_father,
       :hometown_father, :company_father,
       :career_father, :is_abroad_father
     )
   end
 
-  def individual_params(p, birthday, job_domain, hometown,
-                        company, career, is_abroad)
+  def individual_params(birthday, job_domain, hometown, company, career, is_abroad)
+    p = params.permit(birthday, hometown, job_domain, company, career, is_abroad)
+
     # TODO: 指定フォーマットに変換
+    p[birthday]
     p[:birthday] = p[birthday]
     p[:job_domain] = JobDomain.find(p[job_domain])
     p[:hometown] = p[hometown]
