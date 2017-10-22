@@ -30,6 +30,8 @@ class RequestLog < ApplicationRecord
       # 送信していなかったらメールを送信
       next unless queue.nil?
 
+      p "readjustment_to_candidate email is being sent to: #{log.email} with Request Log Id: #{log.id}"
+
       # 参加希望者に対して再打診をするかどうかのメールを送信
       CommonMailer.readjustment_to_candidate(log).deliver_now
       CommonMailer.readjustment_to_manma(log).deliver_now
