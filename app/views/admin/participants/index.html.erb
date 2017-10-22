@@ -7,8 +7,15 @@
 
 <%= button_to('スプレッドシートから参加者登録情報を取得', admin_spread_sheets_fetch_participant_path, method: :get, class: 'btn waves-effect waves-light') %>
 
-<h2>参加登録者一覧</h2>
 <table border="1" role="grid">
+  <thead>
+    <tr>
+      <th>#</th>
+      <th>名前</th>
+      <th>メールアドレス</th>
+      <th></th>
+    </tr>
+  </thead>
   <tbody>
   <% @participant_list.each_with_index do |p, index| %>
       <tr role="row" class="odd">

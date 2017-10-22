@@ -7,6 +7,15 @@
 <%= button_to('スプレッドシートから家族情報を取得', admin_spread_sheets_fetch_family_path, method: :get, class: 'btn waves-effect waves-light') %>
 
 <table>
+  <thead>
+    <tr>
+      <th>#</th>
+      <th>名前</th>
+      <th>メールアドレス</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
   <% @user_list.each_with_index do |user, index| %>
       <tr>
         <td><%= index + 1 %></td>
@@ -15,4 +24,5 @@
         <td><%= button_to('編集', edit_admin_family_path(user.id), method: :get, class: 'btn waves-effect waves-light') %></td>
       </tr>
   <% end %>
+  </tbody>
 </table>
