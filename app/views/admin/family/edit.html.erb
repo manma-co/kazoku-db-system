@@ -61,7 +61,7 @@
       <span>お母さまについて</span>
       <div class="row">
         <div class="input-field col s3">
-          <%= text_field_tag :birthday_mother, @mother&.birthday.strftime('%Y-%m-%d'), class: 'datepicker picker__input', readonly: true %>
+          <%= text_field_tag :birthday_mother, @mother&.birthday&.strftime('%Y-%m-%d'), class: 'datepicker picker__input', readonly: true %>
           <%= label_tag :birthday_mother, '生年月日' %>
         </div>
         <div class="input-field col s3">
@@ -102,7 +102,7 @@
       <span>お父さまについて</span>
       <div class="row">
         <div class="input-field col s4">
-          <%= text_field_tag :birthday_father, @father&.birthday.strftime('%Y-%m-%d'), class: 'datepicker picker__input', readonly: true %>
+          <%= text_field_tag :birthday_father, @father&.birthday&.strftime('%Y-%m-%d'), class: 'datepicker picker__input', readonly: true %>
           <%= label_tag :birthday_father, '生年月日' %>
         </div>
         <div class="input-field col s4">
@@ -151,7 +151,7 @@
           <%= label_tag :number_of_children, '人数' %>
         </div>
         <div class="input-field col s6">
-          <%= text_field_tag :child_birthday, @family.profile_family&.child_birthday.strftime('%Y-%m-%d'), class: 'datepicker picker__input', readonly: true %>
+          <%= text_field_tag :child_birthday, @family.profile_family&.child_birthday&.strftime('%Y-%m-%d'), class: 'datepicker picker__input', readonly: true %>
           <%= label_tag :child_birthday, '生年月日' %>
         </div>
       </div>
