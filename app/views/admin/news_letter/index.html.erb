@@ -44,7 +44,7 @@
           <tbody>
           <tr>
             <td><%= @news_letter.subject %></td>
-            <td><%= @news_letter.distribution.strftime('%m月%d日') %></td>
+            <td><%= @news_letter.distribution.strftime('%m月%d日 %H:%M') %></td>
             <td><%= link_to '詳細', admin_news_letter_path(@news_letter) %></td>
             <td><%= link_to '編集', edit_admin_news_letter_path(@news_letter) %></td>
           </tr>

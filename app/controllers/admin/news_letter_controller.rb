@@ -11,7 +11,7 @@ class Admin::NewsLetterController < Admin::AdminController
         where('send_to = ?', 'participant').first
 
     @news_letter = NewsLetter.
-        where('distribution >= ? AND is_save = ? AND is_sent = ?', Time.now, false, false).
+        where('is_save = ? AND is_sent = ?', false, false).
         where('is_monthly = ? ', false).
         where('send_to = ?', 'family').first
 
