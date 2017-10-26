@@ -91,11 +91,13 @@ class NewsLetter < ApplicationRecord
     # TODO: 受信設定に応じて取得するユーザーを変更する。
     bcc_address = ""
     if news_letter.send_to == 'family'
+      p 'Sending a news mail to family...'
       users = User.all
       users.each do |user|
         bcc_address += user.contact.email_pc + ", "
       end
     else
+      p 'Sending a news mail to participants...'
       participants = Participant.all
       participants.each do |participant|
         bcc_address += participant.email + ", "
