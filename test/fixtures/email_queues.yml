@@ -2,16 +2,22 @@
 
 one:
   sender_address: MyString
-  recipient_address: MyString
+  to_address: MyString
+  cc_address: MyString
+  bcc_address: MyString
   subject: MyString
-  body_text: MyText
+  body_text: MyString
   retry_count: 1
   sent_status: false
+  email_type: MyString
 
 two:
   sender_address: MyString
-  recipient_address: MyString
+  to_address: MyString
+  cc_address: MyString
+  bcc_address: MyString
   subject: MyString
-  body_text: MyText
+  body_text: MyString
   retry_count: 1
   sent_status: false
+  email_type: MyString

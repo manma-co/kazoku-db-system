@@ -1,11 +1,8 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
-  how_find_out: MyText
-  family_structure: MyString
-  childcare_ratio: 1
+  job_style: 1
 
 two:
-  how_find_out: MyText
-  family_structure: MyString
-  childcare_ratio: 1
+  job_style: 0
+

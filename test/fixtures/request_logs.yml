@@ -1,17 +1,15 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
-  hash: MyString
+  hashed_key: MyString
   name: MyString
   belongs: MyString
   station: MyString
-  reason: MyText
-  status: 
+  motivation: MyText
 
 two:
-  hash: MyString
+  hashed_key: MyString
   name: MyString
   belongs: MyString
   station: MyString
-  reason: MyText
-  status: 
+  motivation: MyText
