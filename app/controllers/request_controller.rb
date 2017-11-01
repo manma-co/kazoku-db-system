@@ -61,6 +61,7 @@ class RequestController < ApplicationController
     event.emergency_contact = event_params[:emergency_contact]
     event.event_time = event_params[:event_time]
     event.information = event_params[:information]
+    event.is_amazon_card = event_params[:is_amazon_card]
 
     if event.save!
       session[:event] = event.id
@@ -146,7 +147,8 @@ class RequestController < ApplicationController
       :emergency_contact,
       :is_first_time,
       :information,
-      :event_time
+      :event_time,
+      :is_amazon_card,
     )
   end
 
