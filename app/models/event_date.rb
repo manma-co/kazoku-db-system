@@ -14,4 +14,8 @@ class EventDate < ApplicationRecord
     self.is_first_time ? "初めて" : "初めてではない"
   end
 
+  def is_amazon_card?
+    self.is_amazon_card ? "受け取る" : "受け取らない"
+  end
+
 end

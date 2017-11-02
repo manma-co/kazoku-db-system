@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170717014159) do
+ActiveRecord::Schema.define(version: 20171101221648) do
 
   create_table "admins", force: :cascade do |t|
     t.string   "email",              default: "", null: false
@@ -63,6 +63,7 @@ ActiveRecord::Schema.define(version: 20170717014159) do
     t.text     "information"
     t.datetime "created_at",                        null: false
     t.datetime "updated_at",                        null: false
+    t.boolean  "is_amazon_card"
     t.index ["request_log_id"], name: "index_event_dates_on_request_log_id"
     t.index ["user_id"], name: "index_event_dates_on_user_id"
   end

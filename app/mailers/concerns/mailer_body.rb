@@ -15,6 +15,7 @@ class MailerBody
 家庭情報: [user_name]
 家庭連絡先: [user_contact_email_pc]
 初めての家族留学か: [event_is_first]
+Amazon カードを受け取るか: [is_amazon_card]
 特記事項: [event_information] 
 
 電話可能時間
@@ -28,6 +29,7 @@ EOS
     body.sub!(/\[user_contact_email_pc\]/, user.contact.email_pc)
     body.sub!(/\[event_is_first\]/, event.is_first?)
     body.sub!(/\[event_information\]/, event.information)
+    body.sub!(/\[is_amazon_card\]/, event.is_amazon_card?)
     body.sub!(/\[tel_time\]/, tel_time.to_s)
 
     # Return

@@ -38,7 +38,7 @@
           <label for="event_time_select">家族留学の実施予定日</label>
         </div>
         <div>
-          <select id="event_time_select" class="form-control mb1">
+          <select id="event_time_select" class="form-control mb1" required>
             <option value="">参加者からの希望日時を選択してください</option>
             <% @days.each do |d| %>
                 <option value="<%= d.day.strftime('%Y-%m-%d') + ' ' + d.time %>"><%= d.day.strftime('%Y-%m-%d') + ' ' + d.time %></option>
@@ -129,6 +129,22 @@
               <%= text_field_tag 'tel_time[]', '', :placeholder => '8/2 10:00-11:30', :class => 'form-control' %>
             </div>
         <% end %>
+      </div>
+
+      <div class="manma-form-item row">
+        <div class="col-md-12">
+          <%= f.label 'Amazonギフトカードを受け取りますか？' %>
+        </div>
+        <small class="col-md-6">
+          ※「受け入れ準備代・食事代」として参加者の参加費より500円分をAmazonギフトカードでお渡しいたします。
+          受け取りを希望する場合は「はい」をご選択ください。
+        </small>
+        <div class="col-md-12">
+          <%= f.radio_button :is_amazon_card, true, :id => "yes", :checked => false %>
+          <%= f.label :is_amazon_card, 'はい' %>
+          <%= f.radio_button :is_amazon_card, false, :id => "no", :checked => true %>
+          <%= f.label :is_amazon_card, 'いいえ' %>
+        </div>
       </div>
 
       <div class="manma-form-item">
