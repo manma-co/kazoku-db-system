@@ -1,8 +1,8 @@
 // 家族留学の詳細を学生と受け入れ家庭に連絡するscript
 // 10日前に家族留学のリマインドメールを送信する
-function remaind_family_abroad_Function() {
+function remindFamilyAbroad() {
   // フォーム回答の場合を実行
-  var FORM_MAM_COLUMN = {
+  const MAM_COLUMN = {
     TIMESTAMP:              0,  // A1 記入日
     MANMA_member:           1,  // B1 担当
     FAMILY_NAME:            2,  // C1 お名前（家庭）
@@ -39,30 +39,26 @@ function remaind_family_abroad_Function() {
     REPORT_2:              33,  // AH1 レポート提出確認(2人目)
     REPORT_3:              34,  // AI1 レポート提出確認(3人目)
   }
-  sent_family_abroad_Function("フォームの回答", FORM_MAM_COLUMN);
-}
 
-function sent_family_abroad_Function(sheet_name, MAM_COLUMN) {
+  const sheetName = 'フォームの回答'
   // シート情報取得
-  var sheet = SpreadsheetApp.getActive().getSheetByName(sheet_name) ;
+  const sheet = SpreadsheetApp.getActive().getSheetByName(sheetName)
 
-  var startRow = 2;  // First row of data to process
-  var lastRow = sheet.getLastRow() - 1 ;
-  var lastCol = sheet.getLastColumn();
+  const startRow = 2
+  const lastRow = sheet.getLastRow() - 1 ;
+  const lastCol = sheet.getLastColumn();
 
   // 今日の日付をフォーマットして取得
-  var today = new Date();
-  var year = today.getFullYear();
-  var month = today.getMonth() + 1;
-  var day = today.getDate();
-  var f_today = Utilities.formatDate(today, 'JST', 'yyyy/MM/dd');
+  const today = new Date();
+  const year = today.getFullYear();
+  const month = today.getMonth() + 1;
+  const day = today.getDate();
 
-  var current_time_ms = new Date(year, month-1, day).getTime();              // 今日の日付のmsを取得
-  var in_ten_days = new Date(current_time_ms + (60 * 60 * 24 * 1000) * 10);  // 今日から10日後
-  var remainddate = Utilities.formatDate(in_ten_days, 'JST', 'yyyy/MM/dd');
+  const current_time_ms = new Date(year, month-1, day).getTime();              // 今日の日付のmsを取得
+  const in_ten_days = new Date(current_time_ms + (60 * 60 * 24 * 1000) * 10);  // 今日から10日後
 
-  var dataRange = sheet.getRange(startRow, 1, lastRow, lastCol);
-  var data = dataRange.getValues();
+  const dataRange = sheet.getRange(startRow, 1, lastRow, lastCol);
+  const data = dataRange.getValues();
 
   for (var i = 0; i < data.length; ++i) {
     var row = data[i];
@@ -107,6 +103,7 @@ function sent_family_abroad_Function(sheet_name, MAM_COLUMN) {
       // Logger.log("メールが送信されている記録があるため通知しない");
       continue;
     }
+
     if (diff_in_ten_days_abroad < 0) {
       // Logger.log("家族留学実施より10日よりも前なので通知しない");
       continue;
@@ -192,6 +189,5 @@ function sent_family_abroad_Function(sheet_name, MAM_COLUMN) {
 
     // Make sure the cell is updated right away in case the script is interrupted
     SpreadsheetApp.flush();
-
   }
 }
