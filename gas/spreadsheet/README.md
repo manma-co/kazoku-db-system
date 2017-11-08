@@ -31,5 +31,5 @@
 ## [RemindFamilyAbroadDayBefore.js](RemindFamilyAbroadDayBefore.js)
 - 家族留学前日にリマインドメールを送信する
 - 対象: 家庭、参加車
-- トリガー: 10:00 ~ 11:00 
+- トリガー: 10:00 ~ 11:00 / 日
     
