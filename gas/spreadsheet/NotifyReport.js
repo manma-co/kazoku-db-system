@@ -6,7 +6,7 @@ var SHEET_NAME = {
   MANUAL: "手動"
 }
 
-function notificate_report_Function() {
+function notifyReport() {
   var FORM_MAM_COLUMN = {
     TIMESTAMP: 0,  // A1 記入日
     MANMA_member: 1,  // B1 担当
@@ -127,7 +127,7 @@ function get_student_message(student_name) {
     + "下記のフォームより、ご記入くださいませ\n"
     + "5分ほどで記入が終わりますので、お早めのご回答をお願いいたします。\n"
     + "（回答期限は一週間以内となります。）\n"
-    + "▷▷▷ https://goo.gl/forms/JeeWwQ1Cn2mUom552\n"
+    + "▷▷▷ https://docs.google.com/forms/d/e/1FAIpQLSciw15kjeHz3U-sCTRq30XSAa1REeXbhUhXa2kxXPGqmKbzfA/viewform \n"
     + "また、送信いただいた学び・感想に関しましてはこちらで編集して\n\n"
     + "manmaのSNS及びHPに掲載する可能性がございます。\n"
     + "掲載前に事前にお知らせのメールをお送りさせていただきます。\n\n"
@@ -158,7 +158,7 @@ function get_family_message(family_name) {
     + "つながりを深めていただけたら嬉しく思います。\n\n"
     + "また、受け入れ家庭の皆さまには、家族留学後に簡単なアンケートへのご協力をお願いしております。\n"
     + "翌日までにご回答いただけますと幸いです。\n"
-    + "▷▷▷ https://goo.gl/forms/JeeWwQ1Cn2mUom552\n"
+    + "▷▷▷ https://docs.google.com/forms/d/e/1FAIpQLScDKSkR-A5T2FR9O6t19zMMoUES2RkfYlNwOt3e7UCT6DELtw/viewform \n"
     + "学生にとって、貴重な機会をご提供くださり、本当にありがとうございました！\n\n"
     + "引き続き、家族留学およびmanmaをよろしくお願いいたします。\n\n"
     + "manma";

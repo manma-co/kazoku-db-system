@@ -47,10 +47,10 @@ function convert() {
 
 // namespace
 var APP = APP || {
-    util: {
-      common: {}
-    },
+  util: {
+    common: {}
   }
+}
 
 APP.util.common = (function () {
   /*
@@ -104,8 +104,7 @@ APP.util.common = (function () {
   }
 
   // Public API
-
-    sleepByCount: sleepByCount,
-    convertAddress: convertFromAddressToLocation
+  sleepByCount: sleepByCount,
+  convertAddress: convertFromAddressToLocation
   }
 }())
