@@ -1,13 +1,8 @@
 // レポートをお願いするscript
 // 家族留学実施日に送信されるメールのため
 // トリガーは21時-22時が望ましいと思います。
-var SHEET_NAME = {
-  AUTO: "フォームの回答",
-  MANUAL: "手動"
-}
-
 function notifyReport() {
-  var FORM_MAM_COLUMN = {
+  var MAM_COLUMN = {
     TIMESTAMP: 0,  // A1 記入日
     MANMA_member: 1,  // B1 担当
     FAMILY_NAME: 2,  // C1 お名前（家庭）
@@ -45,28 +40,106 @@ function notifyReport() {
     REPORT_3: 34,  // AI1 レポート提出確認(3人目)
   }
 
-  sent_notificate_report_Function(SHEET_NAME.AUTO, FORM_MAM_COLUMN);
-}
+  const mSheet = (function () {
+    const sheet = SpreadsheetApp.getActive().getSheetByName("フォームの回答");
+    const startRow = 2 // First row of data to process
+    const lastRow = sheet.getLastRow() - 1
+    const lastCol = sheet.getLastColumn()
+    const dataRange = sheet.getRange(startRow, 1, lastRow, lastCol)
+    return {
+      values: function () {
+        return dataRange.getValues()
+      }
+    }
+  })()
 
-function sent_notificate_report_Function(sheet_name, MAM_COLUMN) {
-  var sheet = SpreadsheetApp.getActive().getSheetByName(sheet_name);
-  var startRow = 2;  // First row of data to process
-  var lastRow = sheet.getLastRow() - 1;
-  var lastCol = sheet.getLastColumn();
-  var now_date = new Date();
-  var year = now_date.getFullYear();
-  var month = now_date.getMonth() + 1;
-  var day = now_date.getDate();
+  const mMail = (function() {
+    return {
+      subjectForParticipant: function() { return "【manma】ご家庭へのご連絡はお済みでしょうか" },
+      bodyForParticipant: function(name) {
+        if (name === '') { return '' }
+        return student_name + "\n\n"
+          + "お世話になっております、manmaです。\n\n"
+          + "今回の家族留学はいかがでしたか?\n"
+          + "ご参加いただき、大変ありがとうございました。\n\n"
+          + "ぜひ、お写真と共に家族留学の様子や発見を\n"
+          + "SNS等でもシェアしていただけたら幸いです。\n\n"
+          + "１.【必須】 ご家庭へのお礼について\n\n"
+          + "家族留学終了後は、受け入れてくださったご家族に、お礼と学びの報告メールをお送りいただきたく思います。\n"
+          + "下記項目を踏まえて、実施日の翌日までに必ず、お送りいただきますようお願いいたします。\n\n"
+          + "また、その際には【info.manma@gmail.com】をccにいれてください。\n\n"
+          + "------------------お礼メールでお伝えいただきたいこと-----------------------\n"
+          + "●ご家族のお話の中で印象的だったこと\n"
+          + "●家族留学を通して気づいたことや学び\n"
+          + "-------------------------------------------------------------------------\n\n"
+          + "２.【必須】 アンケートへのご記入のお願い\n"
+          + "下記のフォームより、ご記入くださいませ\n"
+          + "5分ほどで記入が終わりますので、お早めのご回答をお願いいたします。\n"
+          + "（回答期限は一週間以内となります。）\n"
+          + "▷▷▷ https://docs.google.com/forms/d/e/1FAIpQLSciw15kjeHz3U-sCTRq30XSAa1REeXbhUhXa2kxXPGqmKbzfA/viewform \n"
+          + "また、送信いただいた学び・感想に関しましてはこちらで編集して\n\n"
+          + "manmaのSNS及びHPに掲載する可能性がございます。\n"
+          + "掲載前に事前にお知らせのメールをお送りさせていただきます。\n\n"
+          + "何卒よろしくお願いいたします。\n\n"
+          + "皆様のご報告をお待ちしております！\n\n"
+          + "manma"
+      },
+      subjectForFamily: function() { return "【manma】家族留学受け入れのお礼" },
+      bodyForFamily: function() {
+        return family_name + "様\n\n"
+          + "お世話になっております、manma 家族留学事務局です。\n"
+          + "今回は留学生を受け入れてくださり、本当にありがとうございました！\n\n"
+          + "家族留学はいかがでしたでしょうか。\n"
+          + "ご家庭のみなさまにとっても、楽しい時間となっておりましたら嬉しく思います。\n\n"
+          + "これまでに家族留学に参加していただいた学生のみなさまからは、\n\n"
+          + "・子どもがかわいくて、早く子育てをしてみたいと思った！\n"
+          + "・1番家族留学に参加してよかったことは、お母さんとお話しできたこと。\n"
+          + "仕事や家庭、教育についてどのようなことを考えながら日々過ごしているのかを知るきっかけになってよかったです。\n"
+          + "・自分が当たり前だと思っていた家族像だけじゃない新しいかたちの家族を見れた！\n\n"
+          + "など、上記のような感想をいただいております。\n\n"
+          + "今回の家族留学を通じて、参加者にとって将来につながる変化や気づきがあったことと思います。\n"
+          + "学生さんにも、お礼メールを送付していただくようお願いはしておりますが\n\n"
+          + "今後も家族留学参加後にメールやSNS等で連絡のやり取りをしていただき\n"
+          + "つながりを深めていただけたら嬉しく思います。\n\n"
+          + "また、受け入れ家庭の皆さまには、家族留学後に簡単なアンケートへのご協力をお願いしております。\n"
+          + "翌日までにご回答いただけますと幸いです。\n"
+          + "▷▷▷ https://docs.google.com/forms/d/e/1FAIpQLScDKSkR-A5T2FR9O6t19zMMoUES2RkfYlNwOt3e7UCT6DELtw/viewform \n"
+          + "学生にとって、貴重な機会をご提供くださり、本当にありがとうございました！\n\n"
+          + "引き続き、家族留学およびmanmaをよろしくお願いいたします。\n\n"
+          + "manma"
+      },
+      send: function(email, subject, body) {
+        if (email === '' || body === ''){ return }
+        Logger.log(email + "に送信"); Logger.log(subject); Logger.log(body)
+        // GmailApp.sendEmail(email, subject, body, {name: 'manma'})
+      }
+    }
+  })()
 
-  var nowdate = Utilities.formatDate(now_date, 'JST', 'yyyy/MM/dd');
-  var remaind_time = new Date(year, month - 1, day).getTime();
-  var nextDateTime = remaind_time + (60 * 60 * 24 * 1000) * 0;
-  var remaind_date = new Date(nextDateTime);
-  var remainddate = Utilities.formatDate(remaind_date, 'JST', 'yyyy/MM/dd');
+  const mDate = (function () {
+    return {
+      today: function () {
+        return Utilities.formatDate(new Date(), 'JST', 'yyyy/MM/dd')
+      },
+      todayOfDateType: function () {
+        // 今日の日付のDate型を取得する
+        return new Date(Date.parse(Utilities.formatDate(new Date(), 'JST', 'yyyy/MM/dd')))
+      },
+      before: function (targetDate, beforeDays) {
+        // targetDateの日付からbeforeDays日前を取得する
+        return Utilities.formatDate((new Date((targetDate.getTime()) - (60 * 60 * 24 * 1000) * beforeDays)), 'JST', 'yyyy/MM/dd')
+      },
+      after: function (targetDate, afterDays, isFormatted) {
+        if (isFormatted !== false) {
+          return Utilities.formatDate((new Date((targetDate.getTime()) + (60 * 60 * 24 * 1000) * afterDays)), 'JST', 'yyyy/MM/dd')
+        } else {
+          return new Date((targetDate.getTime()) + (60 * 60 * 24 * 1000) * afterDays)
+        }
+      },
+    }
+  })()
 
-  var dataRange = sheet.getRange(startRow, 1, lastRow, lastCol);
-  var data = dataRange.getValues();
-
+  const data = mSheet.values()
   for (var i = 0; i < data.length; ++i) {
     var row = data[i];
 
@@ -88,78 +161,14 @@ function sent_notificate_report_Function(sheet_name, MAM_COLUMN) {
     }
 
     var family_name = row[MAM_COLUMN.FAMILY_NAME];
-    var construction = row[MAM_COLUMN.FAMILY_CONSTRUCTION];
     var family_mail = row[MAM_COLUMN.FAMILY_EMAIL];
     var family_abroad_date = new Date(row[MAM_COLUMN.START_DATE]);
-    var family_abroad_dateTime = new Date(row[MAM_COLUMN.START_TIME]);
-    var meeting_location = row[MAM_COLUMN.MTG_PLACE];
     var f_family_abroad_date = Utilities.formatDate(family_abroad_date, 'JST', 'yyyy/MM/dd')
-    var f_familyabroad_dateTime = Utilities.formatDate(family_abroad_dateTime, 'JST', 'HH:mm')
 
     // 家族留学実施日なら送信
-    if (f_family_abroad_date == remainddate) {
-      GmailApp.sendEmail(student_mail, get_student_subject(), get_student_message(student_name), {name: 'manma'});
-      GmailApp.sendEmail(family_mail, get_family_subject(), get_family_message(family_name), {name: 'manma'});
+    if (f_family_abroad_date == mDate.today()) {
+      mMail.send(student_mail, mMail.subjectForParticipant(), mMail.bodyForParticipant(student_name))
+      mMail.send(family_mail, mMail.subjectForFamily(), mMail.bodyForFamily(family_name))
     }
   }
-}
-
-function get_student_subject() {
-  return "【manma】ご家庭へのご連絡はお済みでしょうか";
-}
-
-function get_student_message(student_name) {
-  return student_name + "\n\n"
-    + "お世話になっております、manmaです。\n\n"
-    + "今回の家族留学はいかがでしたか?\n"
-    + "ご参加いただき、大変ありがとうございました。\n\n"
-    + "ぜひ、お写真と共に家族留学の様子や発見を\n"
-    + "SNS等でもシェアしていただけたら幸いです。\n\n"
-    + "１.【必須】 ご家庭へのお礼について\n\n"
-    + "家族留学終了後は、受け入れてくださったご家族に、お礼と学びの報告メールをお送りいただきたく思います。\n"
-    + "下記項目を踏まえて、実施日の翌日までに必ず、お送りいただきますようお願いいたします。\n\n"
-    + "また、その際には【info.manma@gmail.com】をccにいれてください。\n\n"
-    + "------------------お礼メールでお伝えいただきたいこと-----------------------\n"
-    + "●ご家族のお話の中で印象的だったこと\n"
-    + "●家族留学を通して気づいたことや学び\n"
-    + "-------------------------------------------------------------------------\n\n"
-    + "２.【必須】 アンケートへのご記入のお願い\n"
-    + "下記のフォームより、ご記入くださいませ\n"
-    + "5分ほどで記入が終わりますので、お早めのご回答をお願いいたします。\n"
-    + "（回答期限は一週間以内となります。）\n"
-    + "▷▷▷ https://docs.google.com/forms/d/e/1FAIpQLSciw15kjeHz3U-sCTRq30XSAa1REeXbhUhXa2kxXPGqmKbzfA/viewform \n"
-    + "また、送信いただいた学び・感想に関しましてはこちらで編集して\n\n"
-    + "manmaのSNS及びHPに掲載する可能性がございます。\n"
-    + "掲載前に事前にお知らせのメールをお送りさせていただきます。\n\n"
-    + "何卒よろしくお願いいたします。\n\n"
-    + "皆様のご報告をお待ちしております！\n\n"
-    + "manma";
-}
-
-function get_family_subject() {
-  return "【manma】家族留学受け入れのお礼";
-}
-
-function get_family_message(family_name) {
-  return family_name + "様\n\n"
-    + "お世話になっております、manma 家族留学事務局です。\n"
-    + "今回は留学生を受け入れてくださり、本当にありがとうございました！\n\n"
-    + "家族留学はいかがでしたでしょうか。\n"
-    + "ご家庭のみなさまにとっても、楽しい時間となっておりましたら嬉しく思います。\n\n"
-    + "これまでに家族留学に参加していただいた学生のみなさまからは、\n\n"
-    + "・子どもがかわいくて、早く子育てをしてみたいと思った！\n"
-    + "・1番家族留学に参加してよかったことは、お母さんとお話しできたこと。\n"
-    + "仕事や家庭、教育についてどのようなことを考えながら日々過ごしているのかを知るきっかけになってよかったです。\n"
-    + "・自分が当たり前だと思っていた家族像だけじゃない新しいかたちの家族を見れた！\n\n"
-    + "など、上記のような感想をいただいております。\n\n"
-    + "今回の家族留学を通じて、参加者にとって将来につながる変化や気づきがあったことと思います。\n"
-    + "学生さんにも、お礼メールを送付していただくようお願いはしておりますが\n\n"
-    + "今後も家族留学参加後にメールやSNS等で連絡のやり取りをしていただき\n"
-    + "つながりを深めていただけたら嬉しく思います。\n\n"
-    + "また、受け入れ家庭の皆さまには、家族留学後に簡単なアンケートへのご協力をお願いしております。\n"
-    + "翌日までにご回答いただけますと幸いです。\n"
-    + "▷▷▷ https://docs.google.com/forms/d/e/1FAIpQLScDKSkR-A5T2FR9O6t19zMMoUES2RkfYlNwOt3e7UCT6DELtw/viewform \n"
-    + "学生にとって、貴重な機会をご提供くださり、本当にありがとうございました！\n\n"
-    + "引き続き、家族留学およびmanmaをよろしくお願いいたします。\n\n"
-    + "manma";
 }
