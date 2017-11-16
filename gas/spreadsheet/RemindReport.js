@@ -1,7 +1,7 @@
 // レポートを催促するscript
 // 20170830 composed by shino
-function remaind_report_Function(){
-  var FORM_MAM_COLUMN = {
+function remindReport(){
+  var MAM_COLUMN = {
     TIMESTAMP:              0,  // A1 記入日
     MANMA_member:           1,  // B1 担当
     FAMILY_NAME:            2,  // C1 お名前（家庭）
@@ -38,18 +38,68 @@ function remaind_report_Function(){
     REPORT_2:              33,  // AH1 レポート提出確認(2人目)
     REPORT_3:              34,  // AI1 レポート提出確認(3人目)
   }
-  sent_remind_report_Function("フォームの回答", FORM_MAM_COLUMN);
-}
 
-function sent_remind_report_Function(sheets,MAM_COLUMN){
-  var sheet = SpreadsheetApp.getActive().getSheetByName(sheets)
-  var startRow = 2;  // First row of data to process
-  var lastRow = sheet.getLastRow() - 1
-  var lastCol = sheet.getLastColumn()
+  const mSheet = (function () {
+    const sheet = SpreadsheetApp.getActive().getSheetByName("フォームの回答");
+    const startRow = 2 // First row of data to process
+    const lastRow = sheet.getLastRow() - 1
+    const lastCol = sheet.getLastColumn()
+    const dataRange = sheet.getRange(startRow, 1, lastRow, lastCol)
+    return {
+      values: function () {
+        return dataRange.getValues()
+      }
+    }
+  })()
+
+  const mMail = (function() {
+    return {
+      subject: function() { return "【manma】参加後レポートの提出のご確認" },
+      body: function(name) {
+        if (name === '') { return '' }
+        return name + "さま\n\n"
+          + "お世話になっております、manmaです。\n\n"
+          + "先日ご案内いたしましたフォームへのご記入をよろしくお願いいたします。\n\n"
+          + "家族留学は“家族留学の学び”をフォームにご記入いただいたのち、正式に終了とさせていただきますので、下記のフォームよりご記入くださいませ。\n\n"
+          + "また、家族留学終了後は、参加者より受け入れてくださったご家族に、お礼のメールをお送りいただきたく思います。\n"
+          + "行き違いでのご連絡となっておりましたら申し訳ございません。\n"
+          + "▷▷▷ http://goo.gl/forms/YQCfdw4sSQ\n"
+          + "何卒よろしくお願いいたします。\n\n"
+          + "manma"
+      },
+      send: function(email, subject, body) {
+        if (email === '' || body === ''){ return }
+        Logger.log(email + "に送信"); Logger.log(subject); Logger.log(body)
+        // GmailApp.sendEmail(email, subject, body, {name: 'manma'})
+      }
+    }
+  })()
+
+  const mDate = (function () {
+    return {
+      today: function () {
+        return Utilities.formatDate(new Date(), 'JST', 'yyyy/MM/dd')
+      },
+      todayOfDateType: function () {
+        // 今日の日付のDate型を取得する
+        return new Date(Date.parse(Utilities.formatDate(new Date(), 'JST', 'yyyy/MM/dd')))
+      },
+      before: function (targetDate, beforeDays) {
+        // targetDateの日付からbeforeDays日前を取得する
+        return Utilities.formatDate((new Date((targetDate.getTime()) - (60 * 60 * 24 * 1000) * beforeDays)), 'JST', 'yyyy/MM/dd')
+      },
+      after: function (targetDate, afterDays, isFormatted) {
+        if (isFormatted !== false) {
+          return Utilities.formatDate((new Date((targetDate.getTime()) + (60 * 60 * 24 * 1000) * afterDays)), 'JST', 'yyyy/MM/dd')
+        } else {
+          return new Date((targetDate.getTime()) + (60 * 60 * 24 * 1000) * afterDays)
+        }
+      },
+    }
+  })()
 
   var today = Utilities.formatDate(new Date(), 'JST', 'yyyy/MM/dd');
-  var dataRange = sheet.getRange(startRow, 1, lastRow, lastCol);
-  var data = dataRange.getValues();
+  const data = mSheet.values()
   for (var i = 0; i < data.length; ++i) {
     var row = data[i]
 
@@ -67,10 +117,10 @@ function sent_remind_report_Function(sheets,MAM_COLUMN){
     var fad = new Date(sfamily_abroad_date);
 
     // リマインドメールを送信する日でなければメールを送信しない
-    var is_notify = after_args_day(fad, 3) == today || after_args_day(fad, 5) == today || after_args_day(fad, 7) == today
+    var is_notify = mDate.after(fad, 3, true) == mDate.today() || mDate.after(fad, 5, true) == mDate.today() || mDate.after(fad, 7, true) == mDate.today()
     Logger.log("家族留学実施日: " + fad)
-    Logger.log("検証: " + after_args_day(fad, 2))
-    Logger.log("今日:" + today)
+    Logger.log("検証: " + mDate.after(fad, 3))
+    Logger.log("今日:" + mDate.today())
     if (!is_notify) {
       continue
     }
@@ -78,46 +128,17 @@ function sent_remind_report_Function(sheets,MAM_COLUMN){
     // 1人目
     var report_flag_1 = row[MAM_COLUMN.REPORT_1];
     if (report_flag_1 === ""){
-      mail_remind_report(row[MAM_COLUMN.STUDENT_EMAIL_1], row[MAM_COLUMN.STUDENT_NAME_1])
+      mMail.send(row[MAM_COLUMN.STUDENT_EMAIL_1], mMail.subject(), mMail.body(row[MAM_COLUMN.STUDENT_NAME_1]))
     }
     // 2人目
     var report_flag_2 = row[MAM_COLUMN.REPORT_2];
     if (report_flag_2 === ""){
-      mail_remind_report(row[MAM_COLUMN.STUDENT_EMAIL_2], row[MAM_COLUMN.STUDENT_NAME_2])
+      mMail.send(row[MAM_COLUMN.STUDENT_EMAIL_2], mMail.subject(), mMail.body(row[MAM_COLUMN.STUDENT_NAME_2]))
     }
     // 3人目
     var report_flag_3 = row[MAM_COLUMN.REPORT_3];
     if (report_flag_3 === ""){
-      mail_remind_report(row[MAM_COLUMN.STUDENT_EMAIL_3], row[MAM_COLUMN.STUDENT_NAME_3])
+      mMail.send(row[MAM_COLUMN.STUDENT_EMAIL_3], mMail.subject(), mMail.body(row[MAM_COLUMN.STUDENT_NAME_3]))
     }
   }
-}
-
-// dateの日付からafter日後を取得する
-function after_args_day(date, after) {
-  return Utilities.formatDate((new Date((date.getTime()) + (60*60*24*1000) * after)), 'JST', 'yyyy/MM/dd');
-}
-
-function mail_remind_report(student_mail, student_name) {
-  if (student_mail === "" || student_name === "") {
-    return
-  }
-  Logger.log("メールを" + student_name + "に送信")
-  GmailApp.sendEmail(student_mail, get_subject_remind_report(), get_message_remind_report(student_name), {name: 'manma'})
-}
-
-function get_subject_remind_report() {
-  return "【manma】参加後レポートの提出のご確認"
-}
-
-function get_message_remind_report(student_name) {
-  return student_name + "さま\n\n"
-    + "お世話になっております、manmaです。\n\n"
-    + "先日ご案内いたしましたフォームへのご記入をよろしくお願いいたします。\n\n"
-    + "家族留学は“家族留学の学び”をフォームにご記入いただいたのち、正式に終了とさせていただきますので、下記のフォームよりご記入くださいませ。\n\n"
-    + "また、家族留学終了後は、参加者より受け入れてくださったご家族に、お礼のメールをお送りいただきたく思います。\n"
-    + "行き違いでのご連絡となっておりましたら申し訳ございません。\n"
-    + "▷▷▷ http://goo.gl/forms/YQCfdw4sSQ\n"
-    + "何卒よろしくお願いいたします。\n\n"
-    + "manma";
 }

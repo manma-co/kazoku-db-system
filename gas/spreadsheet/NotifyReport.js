@@ -58,7 +58,7 @@ function notifyReport() {
       subjectForParticipant: function() { return "【manma】ご家庭へのご連絡はお済みでしょうか" },
       bodyForParticipant: function(name) {
         if (name === '') { return '' }
-        return student_name + "\n\n"
+        return name + "\n\n"
           + "お世話になっております、manmaです。\n\n"
           + "今回の家族留学はいかがでしたか?\n"
           + "ご参加いただき、大変ありがとうございました。\n\n"
@@ -85,8 +85,8 @@ function notifyReport() {
           + "manma"
       },
       subjectForFamily: function() { return "【manma】家族留学受け入れのお礼" },
-      bodyForFamily: function() {
-        return family_name + "様\n\n"
+      bodyForFamily: function(name) {
+        return name + "様\n\n"
           + "お世話になっております、manma 家族留学事務局です。\n"
           + "今回は留学生を受け入れてくださり、本当にありがとうございました！\n\n"
           + "家族留学はいかがでしたでしょうか。\n"
