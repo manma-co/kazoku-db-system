@@ -58,19 +58,23 @@ function remindReport(){
       body: function(name) {
         if (name === '') { return '' }
         return name + "さま\n\n"
-          + "お世話になっております、manmaです。\n\n"
-          + "先日ご案内いたしましたフォームへのご記入をよろしくお願いいたします。\n\n"
-          + "家族留学は“家族留学の学び”をフォームにご記入いただいたのち、正式に終了とさせていただきますので、下記のフォームよりご記入くださいませ。\n\n"
-          + "また、家族留学終了後は、参加者より受け入れてくださったご家族に、お礼のメールをお送りいただきたく思います。\n"
-          + "行き違いでのご連絡となっておりましたら申し訳ございません。\n"
-          + "▷▷▷ http://goo.gl/forms/YQCfdw4sSQ\n"
-          + "何卒よろしくお願いいたします。\n\n"
-          + "manma"
+          + "お世話になっております、manmaです。\n"
+          + "先日ご案内いたしましたフォームへのご記入及び受け入れ家庭への【お礼メール】はお済みでしょうか。\n"
+          + "\n"
+          + "家族留学はご家庭へのお礼メールの送付と“家族留学の学び”を下記フォームにご記入いただいたのち、正式に終了とさせていただきますので、お済みでない方はご対応お願いいたします。\n"
+          + "▷▷▷ https://docs.google.com/forms/d/e/1FAIpQLSciw15kjeHz3U-sCTRq30XSAa1REeXbhUhXa2kxXPGqmKbzfA/viewform\n"
+          + "\n"
+          + "※システムの関係上、レポート及びお礼メールをすでにお送りいただいている方へもこのメールが届く場合がございます。\n"
+          + "恐れ入りますが、そのような場合はこちらのメールにお知らせしていただければと思います。\n"
+          + "\n"
+          + "何卒よろしくお願いいたします。\n"
+          + "\n"
+          + "manma"
       },
       send: function(email, subject, body) {
         if (email === '' || body === ''){ return }
-        Logger.log(email + "に送信"); Logger.log(subject); Logger.log(body)
-        // GmailApp.sendEmail(email, subject, body, {name: 'manma'})
+        // Logger.log(email + "に送信"); Logger.log(subject); Logger.log(body)
+        GmailApp.sendEmail(email, subject, body, {name: 'manma'})
       }
     }
   })()
