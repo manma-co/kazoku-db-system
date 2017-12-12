@@ -4,6 +4,10 @@ class NewsLetter < ApplicationRecord
   validates :distribution, presence: true
 
 
+  def send_to_ja
+    self.send_to == 'participant' ? '参加者' : '家庭'
+  end
+
   # TODO: scope がうまく使えないので調査
   # 送信可能なメールを探す（保存ではないもの）
   scope :can_be_sent, -> {

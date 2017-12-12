@@ -30,24 +30,29 @@
   </div>
 
   <div class="mailing_list">
-    <h6>家庭向けメール配信予定リスト</h6>
+    <h6>配信予定リスト</h6>
 
-    <% if @news_letter %>
+    <% if @news_letters %>
         <table>
           <thead>
           <tr>
             <th>タイトル</th>
             <th>配信予定日</th>
+            <th>配信先</th>
             <th colspan="2">アクション</th>
           </tr>
           </thead>
           <tbody>
+
+          <% @news_letters.each do |nl| %>
           <tr>
-            <td><%= @news_letter.subject %></td>
-            <td><%= @news_letter.distribution.strftime('%m月%d日 %H:%M') %></td>
-            <td><%= link_to '詳細', admin_news_letter_path(@news_letter) %></td>
-            <td><%= link_to '編集', edit_admin_news_letter_path(@news_letter) %></td>
+            <td><%= nl.subject %></td>
+            <td><%= nl.distribution.strftime('%m月%d日 %H:%M') %></td>
+            <td><%= nl.send_to_ja %></td>
+            <td><%= link_to '詳細', admin_news_letter_path(nl) %></td>
+            <td><%= link_to '編集', edit_admin_news_letter_path(nl) %></td>
           </tr>
+          <% end %>
           </tbody>
         </table>
     <% else %>
