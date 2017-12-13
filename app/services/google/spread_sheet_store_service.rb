@@ -146,7 +146,6 @@ module Google
     # レスポンス情報からユーザ情報の保存をする
     # @param [array] response スプレッドシートから取得した情報の配列
     # @param [bool] is_debug trueなら1行のみ処理を行う(動作確認用)
-    # TODO: find_or_initialize_by ... を利用する
     def self.store_participant(response, is_debug: false)
       response.values.map do |r|
         query = {
@@ -157,10 +156,8 @@ module Google
           email: r[Settings.participant.email],
         }
         # 存在チェック
-        p = Participant.where(email: email).first
-        if p.nil?
-          Participant.create(name: name, kana: kana, belong: belong, email: email)
-        end
+        participant = Participant.find_or_initialize_by(query)
+        participant.update_attributes(query)
 
         # デバッグモード(1行のみ取得)
         break if is_debug
