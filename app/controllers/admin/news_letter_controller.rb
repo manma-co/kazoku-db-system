@@ -10,10 +10,9 @@ class Admin::NewsLetterController < Admin::AdminController
         where('is_monthly = ? ', true).
         where('send_to = ?', 'participant').first
 
-    @news_letter = NewsLetter.
+    @news_letters = NewsLetter.
         where('is_save = ? AND is_sent = ?', false, false).
-        where('is_monthly = ? ', false).
-        where('send_to = ?', 'family').first
+        where('is_monthly = ? ', false)
 
     @news_saved = NewsLetter.where(is_save: true)
   end
