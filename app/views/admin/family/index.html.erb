@@ -21,7 +21,7 @@
         <td><%= index + 1 %></td>
         <td><%= link_to user.name, admin_family_path(user.id) %></td>
         <td><%= user.contact.email_pc %></td>
-        <td><%= button_to('編集', edit_admin_family_path(user.id), method: :get, class: 'btn waves-effect waves-light') %></td>
+        <!-- <td><%= button_to('編集', edit_admin_family_path(user.id), method: :get, class: 'btn waves-effect waves-light') %></td> -->
       </tr>
   <% end %>
   </tbody>
