@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171101221648) do
+ActiveRecord::Schema.define(version: 20171213201635) do
 
   create_table "admins", force: :cascade do |t|
     t.string   "email",              default: "", null: false
@@ -137,6 +137,7 @@ ActiveRecord::Schema.define(version: 20171101221648) do
     t.datetime "updated_at",            null: false
     t.integer  "profile_family_id"
     t.integer  "job_domain_id"
+    t.string   "job_domain_str"
     t.index ["job_domain_id"], name: "index_profile_individuals_on_job_domain_id"
     t.index ["profile_family_id"], name: "index_profile_individuals_on_profile_family_id"
   end

@@ -20,7 +20,8 @@ defaults: &defaults
     mothers_birthday: 6
     fathers_birthday: 7
     job_style: 8
-    job_domain: 9
+    mothers_job_domain: 9
+    fathers_job_domain: 10
     number_of_children: 11
     is_photo: 12
     is_report: 13
@@ -48,7 +49,7 @@ defaults: &defaults
     recognization: 35
     blank2: 36 # 空白
     latitude: 37
-    longitude: 37
+    longitude: 38
   job_style:
     # none: 指定なし
     # both: 共働き

@@ -41,7 +41,7 @@ module Google
           latitude: r[Settings.sheet.latitude],
           longitude: r[Settings.sheet.longitude]
         }
-        location = Location.find_or_initialize_by(location_query)
+        location = Location.find_or_initialize_by(address: location_query[:address])
         location.update_attributes(location_query)
 
         # 働き方情報のパース
@@ -115,8 +115,8 @@ module Google
           company: r[Settings.sheet.mothers_company],
           career: r[Settings.sheet.mothers_career],
           has_experience_abroad: r[Settings.sheet.mothers_experience_abroad],
-          job_domain_id: 1,
-          # job_domain_id: row[9], # TODO: 文字列情報のため変換が必要
+          job_domain_str: r[Settings.sheet.mothers_job_domain],
+          job_domain_id: 1, # TODO: job_domain廃止しましょう
         }
 
         # お父様情報のパース
@@ -128,8 +128,8 @@ module Google
           company: r[Settings.sheet.fathers_company],
           career: r[Settings.sheet.fathers_career],
           has_experience_abroad: r[Settings.sheet.fathers_experience_abroad],
-          job_domain_id: 1,
-          # job_domain_id: row[10], # TODO: 文字列情報のため変換が必要
+          job_domain_str: r[Settings.sheet.fathers_job_domain],
+          job_domain_id: 1, # TODO: job_domain廃止しましょう
         }
 
         mothers_profile = ProfileIndividual.find_or_initialize_by(mothers_query)
@@ -146,10 +146,9 @@ module Google
     # レスポンス情報からユーザ情報の保存をする
     # @param [array] response スプレッドシートから取得した情報の配列
     # @param [bool] is_debug trueなら1行のみ処理を行う(動作確認用)
-    # TODO: スレッド処理したい pallarelを使う？
+    # TODO: find_or_initialize_by ... を利用する
     def self.store_participant(response, is_debug: false)
       response.values.map do |r|
-
         query = {
           # ユーザ情報のパース
           name: r[Settings.participant.name],
@@ -157,7 +156,6 @@ module Google
           belong: r[Settings.participant.belong],
           email: r[Settings.participant.email],
         }
-
         # 存在チェック
         p = Participant.where(email: email).first
         if p.nil?

@@ -21,7 +21,9 @@ class Admin::SpreadSheetsController < Admin::AdminController
     response = Google::SpreadSheetFetchService.fetch_family(credentials)
 
     # スプレッドシート情報の保存(家庭向け)
-    Google::SpreadSheetStoreService.store_family(response, is_debug: false)
+    Google::SpreadSheetStoreService.store_family(
+      response, is_debug: false
+    )
 
     redirect_to admin_family_index_path
   end
