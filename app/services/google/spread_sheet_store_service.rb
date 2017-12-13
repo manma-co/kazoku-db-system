@@ -21,8 +21,8 @@ module Google
           gender: 0, # フォームに存在しない情報
           is_family: true,
         }
-        user = User.where(user_query).first
-        user ||= User.create(user_query)
+        user = User.find_or_initialize_by(user_query)
+        user.update_attributes(user_query)
 
         # 連絡先情報のパース
         contact_query = {
@@ -31,16 +31,18 @@ module Google
           email_phone: r[Settings.sheet.email_phone],
           phone_number: r[Settings.sheet.phone_number]
         }
-        contact = Contact.where(contact_query).first
-        contact ||= Contact.create(contact_query)
+        contact = Contact.find_or_initialize_by(contact_query)
+        contact.update_attributes(contact_query)
 
         # 位置情報のパース
         location_query = {
           user_id: user.id,
-          address: r[Settings.sheet.address]
+          address: r[Settings.sheet.address],
+          latitude: r[Settings.sheet.latitude],
+          longitude: r[Settings.sheet.longitude]
         }
-        location = Location.where(location_query).first
-        location ||= Location.create(location_query)
+        location = Location.find_or_initialize_by(location_query)
+        location.update_attributes(location_query)
 
         # 働き方情報のパース
         job_style = r[Settings.sheet.job_style]
@@ -101,8 +103,8 @@ module Google
           child_birthday: r[Settings.sheet.child_birthday]
         }
 
-        family = ProfileFamily.where(family_query).first
-        family ||= ProfileFamily.create(family_query)
+        family = ProfileFamily.find_or_initialize_by(family_query)
+        family.update_attributes(family_query)
 
         # お母様情報のパース
         mothers_query = {
@@ -130,10 +132,11 @@ module Google
           # job_domain_id: row[10], # TODO: 文字列情報のため変換が必要
         }
 
-        mother = ProfileIndividual.where(mothers_query).first
-        mother ||= ProfileIndividual.create(mothers_query)
-        father = ProfileIndividual.where(fathers_query).first
-        father ||= ProfileIndividual.create(fathers_query)
+        mothers_profile = ProfileIndividual.find_or_initialize_by(mothers_query)
+        mothers_profile.update_attributes(mothers_query)
+
+        fathers_profile = ProfileIndividual.find_or_initialize_by(fathers_query)
+        fathers_profile.update_attributes(fathers_query)
 
         # デバッグモード(1行のみ処理)
         break if is_debug
@@ -146,11 +149,14 @@ module Google
     # TODO: スレッド処理したい pallarelを使う？
     def self.store_participant(response, is_debug: false)
       response.values.map do |r|
-        # ユーザ情報のパース
-        name = r[Settings.participant.name]
-        kana = r[Settings.participant.kana]
-        belong = r[Settings.participant.belong]
-        email = r[Settings.participant.email]
+
+        query = {
+          # ユーザ情報のパース
+          name: r[Settings.participant.name],
+          kana: r[Settings.participant.kana],
+          belong: r[Settings.participant.belong],
+          email: r[Settings.participant.email],
+        }
 
         # 存在チェック
         p = Participant.where(email: email).first

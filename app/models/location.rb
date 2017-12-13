@@ -1,9 +1,6 @@
 class Location < ApplicationRecord
   belongs_to :user
 
-  geocoded_by :address
-  after_validation :geocode, if: :address_changed?
-
   # 家族留学候補リストを取得する
   # @param [Hash] location 検索対象の位置情報
   # @param [Array] family_list 家族留学候補家庭リスト

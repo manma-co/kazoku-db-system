@@ -23,7 +23,7 @@ module Google
       # 家庭情報スプレッドシートID
       spreadsheet_id = ENV['SPREAD_SHEET_ID']
       sheet_name = 'フォームの回答 1'
-      range = "#{sheet_name}!A2:AD"
+      range = "#{sheet_name}!A2:AM"
       response = service.get_spreadsheet_values(spreadsheet_id, range)
       puts 'No data found.' if response.values.empty?
 
