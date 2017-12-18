@@ -50,4 +50,9 @@ class User < ApplicationRecord
     eq.time_delivered.strftime('%Y/%m/%d') unless eq.nil?
   end
 
+  # 家族留学の実施回数
+  def execution_number
+    EventDate.where(user_id: self.id).size
+  end
+
 end
