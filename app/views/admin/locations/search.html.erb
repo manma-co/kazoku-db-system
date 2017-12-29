@@ -16,6 +16,7 @@
             <th>子どもの数</th>
             <th>第一子の年齢</th>
             <th>打診回数</th>
+            <th>実施回数</th>
             <th>最終打診日</th>
           </tr>
           </thead>
@@ -32,6 +33,7 @@
                 <td><%= location.user.profile_family.number_of_children %></td>
                 <td><%= current_age(location.user.profile_family.child_birthday) %></td>
                 <td><%= location.user.request_times %></td>
+                <td><%= location.user.execution_number %></td>
                 <td><%= location.user.last_request_day %></td>
               </tr>
           <% end %>
