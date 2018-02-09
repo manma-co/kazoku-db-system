@@ -22,6 +22,5 @@
 # Ignore Byebug command history file.
 .byebug_history
 .envrc
-.credentials/
 run.sh
 vendor/bundler
