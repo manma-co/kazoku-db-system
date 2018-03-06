@@ -13,6 +13,7 @@ class Location < ApplicationRecord
     # 検索対象の位置情報リストを取得する
     locations = family_list.map { |f| f.user.location }
     locations.each do |loc|
+      next if loc.nil?
       next if loc.latitude.nil? or loc.longitude.nil?
       # 目的地
       dist = {lat: loc.latitude, lng: loc.longitude}
