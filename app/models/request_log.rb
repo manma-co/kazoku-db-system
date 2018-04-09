@@ -30,6 +30,9 @@ class RequestLog < ApplicationRecord
       # 送信していなかったらメールを送信
       next unless queue.nil?
 
+      # メールアドレスがあるかを確認。なければ送信しない。
+      next if log.email.nil?
+
       p "readjustment_to_candidate email is being sent to: #{log.email} with Request Log Id: #{log.id}"
 
       # 参加希望者に対して再打診をするかどうかのメールを送信
