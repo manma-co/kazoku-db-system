@@ -1,141 +1,274 @@
+/**
+ * 共通関数モジュール
+ */
+function m() {
+  /* timeModule */
+  const timeModule = (function () {
+    const getCurrentTimeMilliSecond = function (currentDate) {
+      // 今日の日付をフォーマットして取得
+      var year = currentDate.getFullYear()
+      var month = currentDate.getMonth()
+      var day = currentDate.getDate()
+      return new Date(year, month, day).getTime()
+    }
+    return {
+      formatDate: function (format, date) {
+        if (!format) format = 'YYYY-MM-DD hh:mm:ss.SSS';
+        format = format.replace(/YYYY/g, date.getFullYear());
+        format = format.replace(/MM/g, ('0' + (date.getMonth() + 1)).slice(-2));
+        format = format.replace(/DD/g, ('0' + date.getDate()).slice(-2));
+        format = format.replace(/hh/g, ('0' + date.getHours()).slice(-2));
+        format = format.replace(/mm/g, ('0' + date.getMinutes()).slice(-2));
+        format = format.replace(/ss/g, ('0' + date.getSeconds()).slice(-2));
+        if (format.match(/S/g)) {
+          var milliSeconds = ('00' + date.getMilliseconds()).slice(-3);
+          var length = format.match(/S/g).length;
+          for (var i = 0; i < length; i++) format = format.replace(/S/, milliSeconds.substring(i, i + 1));
+        }
+        return format;
+      },
+      // @param [int] currentDateの日付から num_days 日後
+      // @return [Date] currentDateから1日後のDate
+      getArgsDaysLater: function (currentDate, numDays) {
+        var currentTimeMilliSecond = getCurrentTimeMilliSecond(currentDate)
+        // currentDateから1日後
+        return new Date(currentTimeMilliSecond + (60 * 60 * 24 * 1000) * numDays);
+      },
+      // @return [long] 今日の日付 0時のms
+      getCurrentTimeMilliSecond: function (currentDate) {
+        return getCurrentTimeMilliSecond(currentDate)
+      },
+      // DatetimeをDateに変換
+      // @return [Date]
+      convertDatetimeToDate: function (datetime) {
+        var year = datetime.getFullYear();
+        var month = datetime.getMonth();
+        var day = datetime.getDate();
+        return new Date(year, month, day)
+      },
+    }
+  })()
+
+  const utilModule = (function () {
+    return {
+      /**
+       * リマインドする日かどうか判定する
+       * remindEndDate - beforeDays <= cunrretDateならリマインドする
+       * @param {Date} currentDate 現在の日付
+       * @param {Date} remindEndDate リマインド終了日(面談当日の日付)
+       * @param {Date} beforeDays 減算する日付
+       * @return {Boolean} リマインドするかどうか
+       */
+      isRemind: function (currentDate, remindEndDate, beforeDays) {
+        var remindStartDate = timeModule.getArgsDaysLater(remindEndDate, -beforeDays)
+        return remindStartDate.getTime() <= currentDate.getTime() && currentDate.getTime() <= remindEndDate.getTime()
+      },
+    }
+  })()
+
+  /* Common */
+  const commonModule = (function () {
+    return {
+      removeTilde: function (str) {
+        return str.replace(/~/g, '');
+      },
+      splitTilde: function (str) {
+        return str.split('~')
+      },
+      // yyyy年mm月dd日 を yyyy/mm/dd に変換
+      convertFromJPStrDateToCommonDateStr: function (dateStr) {
+        dateStr = dateStr.replace(/年/g, '/')
+        dateStr = dateStr.replace(/月/g, '/')
+        return dateStr.replace(/日/g, '')
+      },
+    }
+  })()
+
+  return {
+    timeModule: timeModule,
+    utilModule: utilModule,
+    commonModule: commonModule,
+  }
+}
+
+function helper() {
+  const common = (function () {
+    return {
+      canFamilyAbroad: function (row, column) {
+        return row[column.CAN_FAMILY_ABROAD] === 'はい'
+      },
+      isEmailSent: function (row, column) {
+        return row[column.IS_CONFIRM_EMAIL_SENT] !== ''
+      },
+      getStudentName: function (row, column) {
+        // 複数人対応するために studentName に　"さま"を付与する
+        var studentName = row[column.STUDENT_NAME_1] + "さま";
+        if (row[column.STUDENT_NAME_2] !== "") {
+          studentName = studentName + "," + row[column.STUDENT_NAME_2] + "さま";
+        }
+        if (row[column.STUDENT_NAME_3] !== "") {
+          studentName = studentName + "," + row[column.STUDENT_NAME_3] + "さま";
+        }
+        return studentName
+      },
+      getStudentEmail: function (row, column) {
+        var studentEmail = row[column.STUDENT_EMAIL_1]
+        if (row[column.STUDENT_EMAIL_2] != "") {
+          studentEmail = studentEmail + "," + row[column.STUDENT_EMAIL_2];
+        }
+        if (row[column.STUDENT_EMAIL_3] != "") {
+          studentEmail = studentEmail + "," + row[column.STUDENT_EMAIL_3];
+        }
+        return studentEmail
+      },
+      getFamilyAbroadStartDateTime: function (row, column) {
+        if (typeof row[column.START_TIME] === 'string') {
+          return new Date(row[column.START_DATE] + ' ' + row[column.START_TIME])
+        } else {
+          const startTime = m().timeModule.formatDate('hh:mm', new Date(row[column.START_TIME]))
+          const startDate = m().timeModule.formatDate('YYYY/MM/DD', new Date(row[column.START_DATE]))
+          return new Date(startDate + ' ' + startTime)
+        }
+      },
+      getFamilyAbroadFinishDateTime: function (row, column) {
+        if (typeof row[column.FINISH_TIME] === 'string') {
+          return new Date(row[column.START_DATE] + ' ' + row[column.FINISH_TIME])
+        } else {
+          const finishTime = m().timeModule.formatDate('hh:mm', new Date(row[column.FINISH_TIME]))
+          const startDate = m().timeModule.formatDate('YYYY/MM/DD', new Date(row[column.START_DATE]))
+          return new Date(startDate + ' ' + startTime)
+        }
+      },
+    }
+  })()
+  return {
+    common,
+  }
+}
+
 // 家族留学の詳細を学生と受け入れ家庭に連絡するscript
 // 10日前に家族留学のリマインドメールを送信する
-function remindFamilyAbroad() {
+function remindFamilyAbroad(options) {
   // フォーム回答の場合を実行
-  const MAM_COLUMN = {
-    TIMESTAMP:              0,  // A1 記入日
-    MANMA_member:           1,  // B1 担当
-    FAMILY_NAME:            2,  // C1 お名前（家庭）
-    FAMILY_EMAIL:           3,  // D1 ご連絡先（家庭）
-    CAN_FAMILY_ABROAD:      4,  // E1 受け入れ可否
-    STUDENT_NAME_1:         5,  // F1 参加学生名（1人目）
-    STUDENT_EMAIL_1:        6,  // G1 参加学生の連絡先（1人目）
-    STUDENT_NAME_2:         7,  // H1 参加学生名（2人目）
-    STUDENT_EMAIL_2:        8,  // I1 参加学生の連絡先（2人目）
-    STUDENT_NAME_3:         9,  // J1 参加学生名（3人目）
-    STUDENT_EMAIL_3:       10,  // K1 参加学生の連絡先（3人目）
-    FAMILY_CONSTRUCTION:   11,  // L1 受け入れ家庭の家族構成
-    START_DATE:            12,  // M1 実施日時
-    START_TIME:            13,  // N1 実施開始時間
-    FINISH_TIME:           14,  // O1 実施終了時間
-    MTG_PLACE:             15,  // P1 集合場所
-    POSSIBLE_DATE:         16,  // Q1 受け入れ可能な日程
-    NULL:                  17,  // R1
-    MAM_CHECK:             18,  // S1 manmaチェック欄
-    IS_EMAIL_SENT:         19,  // T1 sent欄
-    MAM_REPLY_CHECK:       20,  // U1 manma　返信確認
+  const COLUMN = {
+    TIMESTAMP: 0,  // A1 記入日
+    MANMA_member: 1,  // B1 担当
+    FAMILY_NAME: 2,  // C1 お名前（家庭）
+    FAMILY_EMAIL: 3,  // D1 ご連絡先（家庭）
+    CAN_FAMILY_ABROAD: 4,  // E1 受け入れ可否
+    STUDENT_NAME_1: 5,  // F1 参加学生名（1人目）
+    STUDENT_EMAIL_1: 6,  // G1 参加学生の連絡先（1人目）
+    STUDENT_NAME_2: 7,  // H1 参加学生名（2人目）
+    STUDENT_EMAIL_2: 8,  // I1 参加学生の連絡先（2人目）
+    STUDENT_NAME_3: 9,  // J1 参加学生名（3人目）
+    STUDENT_EMAIL_3: 10,  // K1 参加学生の連絡先（3人目）
+    FAMILY_CONSTRUCTION: 11,  // L1 受け入れ家庭の家族構成
+    START_DATE: 12,  // M1 実施日時
+    START_TIME: 13,  // N1 実施開始時間
+    FINISH_TIME: 14,  // O1 実施終了時間
+    MTG_PLACE: 15,  // P1 集合場所
+    POSSIBLE_DATE: 16,  // Q1 受け入れ可能な日程
+    NULL: 17,  // R1
+    MAM_CHECK: 18,  // S1 manmaチェック欄
+    IS_EMAIL_SENT: 19,  // T1 sent欄
+    MAM_REPLY_CHECK: 20,  // U1 manma　返信確認
     IS_CONFIRM_EMAIL_SENT: 21,  // V1 実施sent欄
-    CHECK_PAYMENT_1:       22,  // W1 振り込み確認(1人目)
-    CHECK_PAYMENT_2:       23,  // X1 振り込み確認(2人目)
-    CHECK_PAYMENT_3:       24,  // Y1 振り込み確認(3人目)
-    SELF_INTRO_FAM:        25,  // Z1 プロフィール確認(家庭)
-    SELF_INTRO_1:          26,  // AA1 プロフィール確認(1人目)
-    SELF_INTRO_2:          27,  // AB1 プロフィール確認(2人目)
-    SELF_INTRO_3:          28,  // AC1 プロフィール確認(3人目)
-    THANK_YOU_MESE1:       29,  // AD1 お礼メール確認欄(1人目)
-    THANK_YOU_MESE2:       30,  // AE1 お礼メール確認欄(1人目)
-    THANK_YOU_MESE3:       31,  // AF1 お礼メール確認欄(3人目)
-    REPORT_1:              32,  // AG1 レポート提出確認(1人目)
-    REPORT_2:              33,  // AH1 レポート提出確認(2人目)
-    REPORT_3:              34,  // AI1 レポート提出確認(3人目)
+    CHECK_PAYMENT_1: 22,  // W1 振り込み確認(1人目)
+    CHECK_PAYMENT_2: 23,  // X1 振り込み確認(2人目)
+    CHECK_PAYMENT_3: 24,  // Y1 振り込み確認(3人目)
+    SELF_INTRO_FAM: 25,  // Z1 プロフィール確認(家庭)
+    SELF_INTRO_1: 26,  // AA1 プロフィール確認(1人目)
+    SELF_INTRO_2: 27,  // AB1 プロフィール確認(2人目)
+    SELF_INTRO_3: 28,  // AC1 プロフィール確認(3人目)
+    THANK_YOU_MESE1: 29,  // AD1 お礼メール確認欄(1人目)
+    THANK_YOU_MESE2: 30,  // AE1 お礼メール確認欄(1人目)
+    THANK_YOU_MESE3: 31,  // AF1 お礼メール確認欄(3人目)
+    REPORT_1: 32,  // AG1 レポート提出確認(1人目)
+    REPORT_2: 33,  // AH1 レポート提出確認(2人目)
+    REPORT_3: 34,  // AI1 レポート提出確認(3人目)
   }
 
+  // DI
+  const MAM_COLUMN = options.COLUMN || COLUMN
+  const spreadSheetApp = options.SpreadsheetApp || SpreadsheetApp
+  const gmailApp = options.GmailApp || GmailApp
+  const logger = options.Logger || Logger
+  const currentDate = options.currentDate || new Date()
+  // 処理位置の決定
+  // 2行目から処理を開始(1行目はヘッダ)
+  const startRow = (options.startRow !== undefined) ? options.startRow : 2
+
+  // スプレッドシート情報準備
   const sheetName = 'フォームの回答'
   // シート情報取得
-  const sheet = SpreadsheetApp.getActive().getSheetByName(sheetName)
-
-  const startRow = 2
-  const lastRow = sheet.getLastRow() - 1 ;
+  const sheet = spreadSheetApp.getActive().getSheetByName(sheetName)
+  const lastRow = sheet.getLastRow() - 1;
   const lastCol = sheet.getLastColumn();
-
-  // 今日の日付をフォーマットして取得
-  const today = new Date();
-  const year = today.getFullYear();
-  const month = today.getMonth() + 1;
-  const day = today.getDate();
-
-  const current_time_ms = new Date(year, month-1, day).getTime();              // 今日の日付のmsを取得
-  const in_ten_days = new Date(current_time_ms + (60 * 60 * 24 * 1000) * 10);  // 今日から10日後
-
   const dataRange = sheet.getRange(startRow, 1, lastRow, lastCol);
   const data = dataRange.getValues();
-
   for (var i = 0; i < data.length; ++i) {
     var row = data[i];
 
-    var status = row[MAM_COLUMN.CAN_FAMILY_ABROAD];
-    if (status == "いいえ") {
-      continue;
+    // メールは送信済みか？(V1: 実施sent欄)
+    if (helper().common.isEmailSent(row, MAM_COLUMN)) {
+      logger.log("メールが送信されている記録があるため通知しない");
+      continue
     }
-
-    // 複数人対応するために student_name に　"さま"を付与する
-    var student_name = row[MAM_COLUMN.STUDENT_NAME_1]+"さま";
-    var student_mail = row[MAM_COLUMN.STUDENT_EMAIL_1];
-    if (row[MAM_COLUMN.STUDENT_NAME_2] != ""){
-      student_name = student_name + "," + row[MAM_COLUMN.STUDENT_NAME_2]+"さま";
-      student_mail = student_mail + "," + row[MAM_COLUMN.STUDENT_EMAIL_2];
-    }
-    if (row[MAM_COLUMN.STUDENT_NAME_3] != ""){
-      student_name = student_name +"," + row[MAM_COLUMN.STUDENT_NAME_3]+"さま";
-      student_mail = student_mail +"," + row[MAM_COLUMN.STUDENT_EMAIL_3];
+    // 家族留学受け入れ可能か？
+    if (!helper().common.canFamilyAbroad(row, MAM_COLUMN)) {
+      continue
     }
 
     var family_name = row[MAM_COLUMN.FAMILY_NAME];                         // E - 受け入れ家庭のお名前
-    var construction = row[MAM_COLUMN.FAMILY_CONSTRUCTION];                // F - 受け入れ家庭の家族構成
     var family_mail = row[MAM_COLUMN.FAMILY_EMAIL];                        // G - 受け入れ家庭のご連絡先
-    var family_abroad_date = new Date(row[MAM_COLUMN.START_DATE]);         // H - 実施日時
-    var family_abroad_datetime = new Date(row[MAM_COLUMN.START_TIME]);     // I - 実施開始時間
-    var meeting_location = row[MAM_COLUMN.MTG_PLACE];                      // J - 集合場所
-    var family_abroad_finish_time = new Date(row[MAM_COLUMN.FINISH_TIME]); // N - 実施終了時間
-
-    var family_abroad_time = family_abroad_date.getTime();  // 家族留学実施日ms秒
-    var f_family_abroad_date = Utilities.formatDate(family_abroad_date, 'JST', 'yyyy/MM/dd');
-    var f_family_abroad_datetime = Utilities.formatDate(family_abroad_datetime, 'JST', 'HH:mm');
-    var f_family_abroad_finish_time = Utilities.formatDate(family_abroad_finish_time, 'JST', 'HH:mm');
-
-    // 日付算: new Date(0) = 1970/01/01
-    var diff_abroad_current = family_abroad_time - current_time_ms;   // 家族留学実施日のms秒 - 今日の日付のms秒
-    var diff_in_ten_days_abroad = in_ten_days - family_abroad_time;   // 今日から10日後のms秒 - 家族留学実施の日付のms秒
-
-    // メールは送信済みか？(V1: 実施sent欄)
-    var check_mail_status = row[MAM_COLUMN.IS_CONFIRM_EMAIL_SENT];
-    if (check_mail_status != "") {
-      // Logger.log("メールが送信されている記録があるため通知しない");
-      continue;
-    }
-
-    if (diff_in_ten_days_abroad < 0) {
-      // Logger.log("家族留学実施より10日よりも前なので通知しない");
-      continue;
-    }
-    if (diff_abroad_current <= 0) {
-      // Logger.log("家族留学が終了しているため通知しない");
-      continue;
-    }
     if (family_mail === "") {
-      // Logger.log("家庭用メールが空なので通知しない")
+      logger.log("家庭用メールが空なので通知しない")
       continue
     }
-    if (student_mail === "") {
-      // Logger.log("学生メールが空なので通知しない")
+    var studentName = helper().common.getStudentName(row, MAM_COLUMN)
+    var studentEmail = helper().common.getStudentEmail(row, MAM_COLUMN)
+    if (studentEmail === "") {
+      logger.log("学生メールが空なので通知しない")
       continue
     }
 
-    var mail = family_mail + "," + student_mail + "," + ""
+    var familyAbroadStartDateTime = new Date(helper().common.getFamilyAbroadStartDateTime(row, MAM_COLUMN))
+    if (!m().utilModule.isRemind(currentDate, familyAbroadStartDateTime, 10)) {
+      logger.log("リマインド日ではないため通知しない")
+      continue
+    }
+
+    // メール文面用整形
+    var construction = row[MAM_COLUMN.FAMILY_CONSTRUCTION]                // F - 受け入れ家庭の家族構成
+    var meetingLocation = row[MAM_COLUMN.MTG_PLACE]                      // J - 集合場所
+    var abroadDate = m().timeModule.formatDate(
+      'YYYY/MM/DD',
+      familyAbroadStartDateTime
+    )
+    var startTime = m().timeModule.formatDate(
+      'hh:mm',
+      familyAbroadStartDateTime
+    )
+    var finishTime = m().timeModule.formatDate(
+      'hh:mm',
+      new Date(helper().common.getFamilyAbroadFinishDateTime(row, MAM_COLUMN))
+    )
+
+    var mail = family_mail + "," + studentEmail + "," + ""
     var subject = "【manma】家族留学当日のお知らせ";
     var message = "受け入れ家庭\n"
       + family_name + "さま\n\n"
       + "留学生\n"
-      + student_name + "\n\n"
+      + studentName + "\n\n"
       + "お世話になっております。"
       + "家族留学実施日が近づいてまいりましたので、\n\n"
       + "manmaより、当日についてご連絡いたします。\n\n"
       + "◆家族留学実施概要◆\n"
-      + "実施日：" + f_family_abroad_date + "\n"
-      + "集合時間："+ f_family_abroad_datetime + "\n"
-      + "集合場所：" + meeting_location + "\n"
-      + "終了予定時間：" + f_family_abroad_finish_time + "\n"
-      + "参加大学生：" + student_name + "\n"
+      + "実施日：" + abroadDate + "\n"
+      + "集合時間：" + startTime + "\n"
+      + "集合場所：" + meetingLocation + "\n"
+      + "終了予定時間：" + finishTime + "\n"
+      + "参加大学生：" + studentName + "\n"
       // TODO: manmaシステムから家族構成情報を送信していない。確認事項。
       // + "ご家族構成：" + construction + "\n"
       + "緊急連絡先：\n"
@@ -172,7 +305,7 @@ function remindFamilyAbroad() {
       + "https://docs.google.com/forms/d/e/1FAIpQLScDKSkR-A5T2FR9O6t19zMMoUES2RkfYlNwOt3e7UCT6DELtw/viewform\n"
       + "\n"
       + " ▷▷▷参加者の方\n"
-      + " https://docs.google.com/forms/d/e/1FAIpQLSciw15kjeHz3U-sCTRq30XSAa1REeXbhUhXa2kxXPGqmKbzfA/viewform\n"
+      + " https://docs.google.com/forms/d/e/1FAIpQLSfnCKgCFHtdUKAxXC_zEi_qn1WftKkLVn0eTPm4LrisAkkrrQ/viewform\n"
       + "・家族留学のやりとりには、必ず【info.manma@gmail.com】を\n"
       + "ccに入れていただきますようお願いいたします。\n\n"
       + "当日の集合場所や時間、スケジュールに関するご相談なども、\n"
@@ -185,13 +318,21 @@ function remindFamilyAbroad() {
       + "どうぞ宜しくお願い致します！\n\n"
       + "manma";
 
-    Logger.log(mail)
+    logger.log('メールが送信される↓')
+    logger.log(mail)
     // ccにinfo.manma@gmail.comを追加
-    GmailApp.sendEmail(mail, subject, message, { name: "manma", cc: "info.manma@gmail.com" });
+    gmailApp.sendEmail(mail, subject, message, { name: "manma", cc: "info.manma@gmail.com" });
     // V1: 実施sent欄に送信した日付を入力
-    sheet.getRange(startRow + i, MAM_COLUMN.IS_CONFIRM_EMAIL_SENT + 1).setValue(today);
+    sheet.getRange(startRow + i, MAM_COLUMN.IS_CONFIRM_EMAIL_SENT + 1).setValue(
+      m().timeModule.formatDate('YYYY/MM/DD', currentDate)
+    )
 
     // Make sure the cell is updated right away in case the script is interrupted
-    SpreadsheetApp.flush();
+    spreadSheetApp.flush();
   }
+}
+
+module.exports = {
+  helper,
+  remindFamilyAbroad,
 }
