@@ -2,30 +2,47 @@
  * Created by shino on 2018/04/25.
  */
 
-function m () {
+function m() {
   /* timeModule */
-  const timeModule = (function() {
-    const getCurrentTimeMilliSecond = function () {
+  const timeModule = (function () {
+    const getCurrentTimeMilliSecond = function (currentDate) {
       // 今日の日付をフォーマットして取得
-      var today = new Date();
-      var year = today.getFullYear();
-      var month = today.getMonth();
-      var day = today.getDate();
-      return new Date(year, month, day).getTime();
+      var today = currentDate
+      var year = today.getFullYear()
+      var month = today.getMonth()
+      var day = today.getDate()
+      return new Date(year, month, day).getTime()
     }
     return {
-      // @param [int] 今日の日付から num_days 日後
-      // @return [Date] 今日から1日後のDate
-      getArgsDaysLater: function(numDays) {
-        var current_time_ms = getCurrentTimeMilliSecond()
-        // 今日から1日後
+      formatDate: function (format, date) {
+        if (!format) format = 'YYYY-MM-DD hh:mm:ss.SSS';
+        format = format.replace(/YYYY/g, date.getFullYear());
+        format = format.replace(/MM/g, ('0' + (date.getMonth() + 1)).slice(-2));
+        format = format.replace(/DD/g, ('0' + date.getDate()).slice(-2));
+        format = format.replace(/hh/g, ('0' + date.getHours()).slice(-2));
+        format = format.replace(/mm/g, ('0' + date.getMinutes()).slice(-2));
+        format = format.replace(/ss/g, ('0' + date.getSeconds()).slice(-2));
+        if (format.match(/S/g)) {
+          var milliSeconds = ('00' + date.getMilliseconds()).slice(-3);
+          var length = format.match(/S/g).length;
+          for (var i = 0; i < length; i++) format = format.replace(/S/, milliSeconds.substring(i, i + 1));
+        }
+        return format;
+      },
+      // @param [int] currentDateの日付から num_days 日後
+      // @return [Date] currentDateから1日後のDate
+      getArgsDaysLater: function (currentDate, numDays) {
+        var current_time_ms = getCurrentTimeMilliSecond(currentDate)
+        // currentDateから1日後
         return new Date(current_time_ms + (60 * 60 * 24 * 1000) * numDays);
       },
       // @return [long] 今日の日付 0時のms
-      getCurrentTimeMilliSecond: getCurrentTimeMilliSecond(),
+      getCurrentTimeMilliSecond: function (currentDate) {
+        return getCurrentTimeMilliSecond(currentDate)
+      },
       // DatetimeをDateに変換
       // @return [Date]
-      convertDatetimeToDate: function(datetime) {
+      convertDatetimeToDate: function (datetime) {
         var year = datetime.getFullYear();
         var month = datetime.getMonth();
         var day = datetime.getDate();
@@ -34,25 +51,28 @@ function m () {
     }
   })()
 
-  const utilModule = (function() {
+  const utilModule = (function () {
     return {
       // 目的の日付けが、その日付けのX日後と一致すればリマインドが必要
       // そうでなければリマインドはしない
-      isRemind: function(targetDate, laterDays) {
-        var oneDayLater = timeModule.getArgsDaysLater(laterDays)
+      isRemind: function (currentDate, targetDate, laterDays) {
+        var oneDayLater = timeModule.getArgsDaysLater(currentDate, laterDays)
         return targetDate.getTime() == oneDayLater.getTime()
       },
     }
   })()
 
   /* Common */
-  const commonModule = (function() {
+  const commonModule = (function () {
     return {
-      removeTilde: function(str) {
+      removeTilde: function (str) {
         return str.replace(/~/g, '');
       },
+      splitTilde: function (str) {
+        return str.split('~')
+      },
       // yyyy年mm月dd日 を yyyy/mm/dd に変換
-      convertFromJPStrDateToCommonDateStr: function(dateStr) {
+      convertFromJPStrDateToCommonDateStr: function (dateStr) {
         dateStr = dateStr.replace(/年/g, '/')
         dateStr = dateStr.replace(/月/g, '/')
         return dateStr.replace(/日/g, '')
@@ -72,29 +92,35 @@ function m () {
  * Created by shino on 2018/04/25
  * 対応シート: https://docs.google.com/spreadsheets/d/1uT8esOFL2Qf9M1VWPggFkXzYMap0ngcDieBIv7tqNEg/edit#gid=1316265234
  */
-function remind() {
-  const COLUMN = {
+function remind(options) {
+  const column = {
     NAME: 2, // C1: 氏名
     EMAIL: 5, // F2: メールアドレス
     INTERVIEW_DATE: 15,  // P1: 面談希望日時（場所：JR大塚駅付近）
     INTERVIEW_DATE_ONLINE: 17, // R1: 面談希望日時
     IS_REMIND: 20  // U1: リマインドメール送信済み確認(システム利用)
   }
+  const COLUMN = options.COLUMN || column
+  const spreadSheetApp = options.SpreadsheetApp || SpreadsheetApp
+  const gmailApp = options.GmailApp || GmailApp
+  const logger = options.Logger || Logger
+  const currentDate = options.currentDate || new Date()
 
   const SHEET_NAME = 'フォームの回答'
   const SUBJECT = '【リマインド】家族留学の事前面談について'
   const MANMA_MAIL = 'info.manma@gmail.com'
 
   // 情報を取得するシートの決定
-  const sheet = SpreadsheetApp.getActive().getSheetByName(SHEET_NAME)
+  const sheet = spreadSheetApp.getActive().getSheetByName(SHEET_NAME)
   // 処理位置の決定
-  const startRow = 2  // 2行目から処理を開始(1行目はヘッダ)
+  // 2行目から処理を開始(1行目はヘッダ)
+  const startRow = (options.startRow !== undefined) ? options.startRow : 2
   const lastRow = sheet.getLastRow() - 1
   const lastCol = sheet.getLastColumn()
   const dataRange = sheet.getRange(startRow, 1, lastRow, lastCol)
   const data = dataRange.getValues()
 
-  for (var i = 0; i < data.length; ++i) {
+  for (var i = 0; i < data.length; i++) {
     var row = data[i]
     var isRemind = row[COLUMN.IS_REMIND]
     // 送信済みであれば何もしない
@@ -106,7 +132,7 @@ function remind() {
     var interviewDateOnlineStr = row[COLUMN.INTERVIEW_DATE_ONLINE]
 
     if (interviewDateStr === '' && interviewDateOnlineStr === '') {
-      Logger.log('日付が空なのでスルー')
+      logger.log('日付が空なのでスルー')
       continue
     }
 
@@ -121,27 +147,29 @@ function remind() {
     var interviewDate = convertDate(targetDateStr)
     interviewDate = m().timeModule.convertDatetimeToDate(interviewDate)
 
-    var isNeedRemind = m().utilModule.isRemind(interviewDate, 3)
+    var isNeedRemind = m().utilModule.isRemind(currentDate, interviewDate, 3)
     if (!isNeedRemind) {
-      Logger.log('リマインド対象日ではないのでスルー')
+      logger.log('リマインド対象日ではないのでスルー')
       continue
     }
 
     // リマインドメール送信
     var name = row[COLUMN.NAME]
     var email = row[COLUMN.EMAIL]
-    Logger.log(email)
+    logger.log(email)
     var content = getMailContent(name, interviewDateStr)
-    // GmailApp.sendEmail(email, SUBJECT, content, {name: 'manma', cc: MANMA_MAIL});
-    sheet.getRange(startRow + i, COLUMN.IS_REMIND + 1).setValue(new Date())
-    SpreadsheetApp.flush();
+    gmailApp.sendEmail(email, SUBJECT, content, { name: 'manma', cc: MANMA_MAIL });
+    sheet.getRange(startRow + i, COLUMN.IS_REMIND + 1).setValue(
+      m().timeModule.formatDate('YYYY/MM/DD', currentDate)
+    )
+    spreadSheetApp.flush();
   }
 }
 
 // 2017年7月1日 10:00~ の形式の文字列を 2017/7/1 10:00 に変換する
 // @return [Date] 変換されたDate型
 function convertDate(dateStr) {
-  dateStr = m().commonModule.removeTilde(dateStr)
+  dateStr = m().commonModule.splitTilde(dateStr)[0]
   dateStr = m().commonModule.convertFromJPStrDateToCommonDateStr(dateStr)
   return new Date(dateStr)
 }
@@ -210,3 +238,7 @@ function test() {
   }
 }
 
+module.exports = {
+  remind,
+  convertDate,
+}
