@@ -53,11 +53,17 @@ function m() {
 
   const utilModule = (function () {
     return {
-      // 目的の日付けが、その日付けのX日後と一致すればリマインドが必要
-      // そうでなければリマインドはしない
-      isRemind: function (currentDate, targetDate, laterDays) {
-        var oneDayLater = timeModule.getArgsDaysLater(currentDate, laterDays)
-        return targetDate.getTime() == oneDayLater.getTime()
+      /**
+       * リマインドする日かどうか判定する
+       * remindEndDate - beforeDays <= cunrretDateならリマインドする
+       * @param {Date} currentDate 現在の日付
+       * @param {Date} remindEndDate リマインド終了日(面談当日の日付)
+       * @param {Date} beforeDays 減算する日付
+       * @return {Boolean} リマインドするかどうか
+       */
+      isRemind: function (currentDate, remindEndDate, beforeDays) {
+        var remindStartDate = timeModule.getArgsDaysLater(remindEndDate, -beforeDays)
+        return remindStartDate.getTime() <= currentDate.getTime() && currentDate.getTime() <= remindEndDate.getTime()
       },
     }
   })()
@@ -214,28 +220,6 @@ function getMailContent(name, interview_date) {
     + "info@manma.co（久保）までお気軽にご連絡ください。\n"
     + "\n"
     + "お会いできますことを、楽しみにしております。\n"
-}
-
-function test() {
-  // 今日から1日後
-  var oneDayLater = m().timeModule.getArgsDaysLater(1)  // 今日から1日後
-  Logger.log('今日から1日後: ' + oneDayLater)
-
-  var testData = [
-    '2018年5月4日 17:00~18:00',
-    '2017年5月3日 10:00~11:00',
-    '2017年7月2日 10:00~11:00',
-    '2017年7月3日 10:00~11:00',
-    '2017年7月4日 10:00~11:00'
-  ]
-  for (var i = 0; i < testData.length; i++) {
-    var date = new Date(convertDate(testData[i]));
-    date = m().timeModule.convertDatetimeToDate(date)
-    Logger.log('テスト開始: ' + date)
-    Logger.log('変換前: ' + testData[i])
-    Logger.log('変換後: ' + date)
-    Logger.log(m().utilModule.isRemind(date, 1))
-  }
 }
 
 module.exports = {
