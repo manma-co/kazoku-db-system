@@ -7,10 +7,9 @@ function m() {
   const timeModule = (function () {
     const getCurrentTimeMilliSecond = function (currentDate) {
       // 今日の日付をフォーマットして取得
-      var today = currentDate
-      var year = today.getFullYear()
-      var month = today.getMonth()
-      var day = today.getDate()
+      var year = currentDate.getFullYear()
+      var month = currentDate.getMonth()
+      var day = currentDate.getDate()
       return new Date(year, month, day).getTime()
     }
     return {
@@ -106,11 +105,16 @@ function remind(options) {
     INTERVIEW_DATE_ONLINE: 17, // R1: 面談希望日時
     IS_REMIND: 20  // U1: リマインドメール送信済み確認(システム利用)
   }
+
+  // DI
   const COLUMN = options.COLUMN || column
   const spreadSheetApp = options.SpreadsheetApp || SpreadsheetApp
   const gmailApp = options.GmailApp || GmailApp
   const logger = options.Logger || Logger
   const currentDate = options.currentDate || new Date()
+  // 処理位置の決定
+  // 2行目から処理を開始(1行目はヘッダ)
+  const startRow = (options.startRow !== undefined) ? options.startRow : 2
 
   const SHEET_NAME = 'フォームの回答'
   const SUBJECT = '【リマインド】家族留学の事前面談について'
@@ -118,9 +122,6 @@ function remind(options) {
 
   // 情報を取得するシートの決定
   const sheet = spreadSheetApp.getActive().getSheetByName(SHEET_NAME)
-  // 処理位置の決定
-  // 2行目から処理を開始(1行目はヘッダ)
-  const startRow = (options.startRow !== undefined) ? options.startRow : 2
   const lastRow = sheet.getLastRow() - 1
   const lastCol = sheet.getLastColumn()
   const dataRange = sheet.getRange(startRow, 1, lastRow, lastCol)
