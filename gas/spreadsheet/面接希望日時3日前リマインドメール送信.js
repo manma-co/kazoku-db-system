@@ -97,13 +97,14 @@ function m() {
  * Created by shino on 2018/04/25
  * 対応シート: https://docs.google.com/spreadsheets/d/1uT8esOFL2Qf9M1VWPggFkXzYMap0ngcDieBIv7tqNEg/edit#gid=1316265234
  */
-function remind(options) {
+function remind(opt) {
+  const options = opt || {}
   const column = {
     NAME: 2, // C1: 氏名
     EMAIL: 5, // F2: メールアドレス
     INTERVIEW_DATE: 15,  // P1: 面談希望日時（場所：JR大塚駅付近）
     INTERVIEW_DATE_ONLINE: 17, // R1: 面談希望日時
-    IS_REMIND: 20  // U1: リマインドメール送信済み確認(システム利用)
+    IS_REMIND: 21  // V1: リマインドメール送信済み確認(システム利用)
   }
 
   // DI
@@ -164,7 +165,7 @@ function remind(options) {
     var name = row[COLUMN.NAME]
     var email = row[COLUMN.EMAIL]
     logger.log(email)
-    var content = getMailContent(name, interviewDateStr)
+    var content = getMailContent(name, targetDateStr)
     gmailApp.sendEmail(email, SUBJECT, content, { name: 'manma', cc: MANMA_MAIL });
     sheet.getRange(startRow + i, COLUMN.IS_REMIND + 1).setValue(
       m().timeModule.formatDate('YYYY/MM/DD', currentDate)
