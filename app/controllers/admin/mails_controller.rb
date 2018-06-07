@@ -106,6 +106,9 @@ class Admin::MailsController < Admin::AdminController
  
 【候補日】
 [manma_template_dates]
+
+＜この中の一部の時間での受け入れで構いません。ご協力のほどどうぞよろしくお願いいたします。＞
+
  
 【回答用URL】
 [manma_request_link]
