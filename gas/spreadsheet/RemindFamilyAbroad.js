@@ -268,7 +268,7 @@ function remindFamilyAbroad(options) {
       + "集合時間：" + startTime + "\n"
       + "集合場所：" + meetingLocation + "\n"
       + "終了予定時間：" + finishTime + "\n"
-      + "参加大学生：" + studentName + "\n"
+      + "参加留学生：" + studentName + "\n"
       // TODO: manmaシステムから家族構成情報を送信していない。確認事項。
       // + "ご家族構成：" + construction + "\n"
       + "緊急連絡先：\n"
@@ -316,7 +316,7 @@ function remindFamilyAbroad(options) {
       + "当日の家族留学が素敵な時間になりますように\n"
       + "サポートさせていただけたらと思います。\n\n"
       + "どうぞ宜しくお願い致します！\n\n"
-      + "manma";
+      + "manma"
 
     logger.log('メールが送信される↓')
     logger.log(mail)
