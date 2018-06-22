@@ -1,9 +1,0 @@
-# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
-
-one:
-  result: 
-  user_id: one
-
-two:
-  result: 
-  user_id: two
