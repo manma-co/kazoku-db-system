@@ -5,10 +5,10 @@ application up and running.
 
 Things you may want to cover:
 
-* Ruby version  
+* Ruby version
 ruby 2.4.0p0 (2016-12-24 revision 57164)
 
-* Rails version  
+* Rails version
 Rails 5.0.2
 
 * Configuration
@@ -25,7 +25,16 @@ $ rails db:seed
 $ rails s
 ```
 
+* Test
+```
+$ bundle exec rspec
+$ bundle exec rspec spec/controllers/
+$ bundle exec rspec spec/models/
+$ bundle exec rspec spec/requests/
+```
+
 ##### Try those code to recreate database based on migration files
 ```
 bundle exec rake db:drop db:create db:migrate db:seed
 ```
+
