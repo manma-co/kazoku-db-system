@@ -19,7 +19,7 @@ RSpec.describe Admin::FamilyController, type: :controller do
   end
 
   describe 'GET #show' do
-    let(:user) { FactoryBot.create(:user) }
+    let(:user) { FactoryBot.create(:perfect_user) }
     let(:mother) do
       user.profile_family.profile_individuals.find_by(role: 'mother')
     end
