@@ -22,7 +22,7 @@
           </thead>
           <tbody>
           <% @candidate_hash.each_with_index do |(location, distance), index| %>
-            <% if location.user.present? %>
+            <% if location && location.user.present? %>
               <tr>
                 <td>
                   <%= check_box_tag 'user_id[]', location.user.id, checked = false, :id => "user_id_#{location.user.id}" %>
