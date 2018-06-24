@@ -6,8 +6,8 @@ class Admin::FamilyController < Admin::AdminController
 
   def show
     @requests = EmailQueue.where(
-        email_type: Settings.email_type.request,
-        to_address: @user.contact.email_pc
+      email_type: Settings.email_type.request,
+      to_address: @user.contact&.email_pc
     )
   end
 

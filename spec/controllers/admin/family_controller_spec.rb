@@ -19,12 +19,6 @@ RSpec.describe Admin::FamilyController, type: :controller do
   end
 
   describe 'GET #show' do
-    let(:mother) do
-      user.profile_family&.profile_individuals&.find_by(role: 'mother')
-    end
-    let(:father) do
-      user.profile_family&.profile_individuals&.find_by(role: 'father')
-    end
     before {
       login_admin
       get :show, params: { id: user.id }
@@ -33,9 +27,6 @@ RSpec.describe Admin::FamilyController, type: :controller do
       it { expect(response).to have_http_status(:ok) }
       it { expect(response).to render_template :show }
       it { expect(assigns(:user)).to eq user }
-      it { expect(assigns(:requests)).to eq [] }
-      it { expect(assigns(:mother)).to eq mother }
-      it { expect(assigns(:father)).to eq father }
     end
     context 'when user has all references' do
       let(:user) { FactoryBot.create(:perfect_user) }
@@ -48,9 +39,13 @@ RSpec.describe Admin::FamilyController, type: :controller do
     context 'when user has no profile_family' do
       let(:user) { FactoryBot.create(:user, :with_contact, :with_requests) }
       it_behaves_like 'common'
+      it { expect(assigns(:mother)).to eq nil }
+      it { expect(assigns(:father)).to eq nil }
     end
     context 'when user has no requests' do
       let(:user) { FactoryBot.create(:user, :with_contact, :with_profile_family) }
+      it_behaves_like 'common'
+      it { expect(assigns(:requests)).to eq [] }
     end
   end
 
