@@ -1,3 +1,7 @@
+Rails:
+  Enaled: true
+AllCops:
+  TargetRubyVersion: 2.4.0
 Metrics/BlockLength:
   Exclude:
     - 'spec/**/*'
