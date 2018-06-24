@@ -1,6 +1,6 @@
-<% breadcrumb :family, @family  %>
+<% breadcrumb :family, @user  %>
 <div class="family-name">
-  <h4><%= "#{@family.name}様のプロフィール" %></h4>
+  <h4><%= "#{@user.name}様のプロフィール" %></h4>
 </div>
 <br>
 <div class="family-profile">
@@ -11,37 +11,37 @@
       <tr>
         <td class="title">氏名(ふりがな)</td>
         <td class="contents">
-          <%= @family.name %>
+          <%= @user.name %>
         </td>
       </tr>
       <tr>
         <td class="title">PCメールアドレス</td>
         <td class="contents">
-          <%= @family.contact&.email_pc %>
+          <%= @user.contact&.email_pc %>
         </td>
       </tr>
       <tr>
         <td class="title">携帯メールアドレス</td>
         <td class="contents">
-          <%= @family.contact&.email_phone %>
+          <%= @user.contact&.email_phone %>
         </td>
       </tr>
       <tr>
         <td class="title">携帯電話番号</td>
         <td class="contents">
-          <%= @family.contact&.phone_number %>
+          <%= @user.contact&.phone_number %>
         </td>
       </tr>
       <tr>
         <td class="title">ご住所</td>
         <td class="contents">
-          <%= @family.location&.address %>
+          <%= @user.location&.address %>
         </td>
       </tr>
       <tr>
         <td class="title">現在の働き方</td>
         <td class="contents">
-          <%= job_style_str(@family.profile_family&.job_style) %>
+          <%= job_style_str(@user.profile_family&.job_style) %>
         </td>
       </tr>
       </tbody>
@@ -65,11 +65,11 @@
       </tr>
       <tr>
         <td class="title">ご結婚された年齢</td>
-        <td class="contents"><%= @family.profile_family&.married_mother_age %></td>
+        <td class="contents"><%= @user.profile_family&.married_mother_age %></td>
       </tr>
       <tr>
         <td class="title">お母さまが第一子をご出産された年齢</td>
-        <td class="contents"><%= @family.profile_family&.first_childbirth_mother_age %></td>
+        <td class="contents"><%= @user.profile_family&.first_childbirth_mother_age %></td>
       </tr>
       <tr>
         <td class="title">職業</td>
@@ -102,7 +102,7 @@
       </tr>
       <tr>
         <td class="title">ご結婚された年齢</td>
-        <td class="contents"><%= @family.profile_family&.married_father_age %></td>
+        <td class="contents"><%= @user.profile_family&.married_father_age %></td>
       </tr>
       <tr>
         <td class="title">職業</td>
@@ -128,12 +128,12 @@
       <tr>
         <td class="title">人数</td>
         <td class="contents">
-          <%= "#{@family.profile_family&.number_of_children} 人" %>
+          <%= "#{@user.profile_family&.number_of_children} 人" %>
         </td>
       </tr>
       <tr>
         <td class="title">生年月日</td>
-        <td class="contents"><%= @family.profile_family&.child_birthday %></td>
+        <td class="contents"><%= @user.profile_family&.child_birthday %></td>
       </tr>
       </tbody>
     </table>
@@ -154,15 +154,15 @@
       </tr>
       <tr>
         <td class="title">お母さま、お父さまの時短勤務のご経験の有無</td>
-        <td class="contents"><%= @family.profile_family&.has_time_shortening_experience %></td>
+        <td class="contents"><%= @user.profile_family&.has_time_shortening_experience %></td>
       </tr>
       <tr>
         <td class="title">お母さま、お父さまの育休のご経験の有無</td>
-        <td class="contents"><%= @family.profile_family&.has_childcare_leave_experience %></td>
+        <td class="contents"><%= @user.profile_family&.has_childcare_leave_experience %></td>
       </tr>
       <tr>
         <td class="title">お母さま、お父さまの転職のご経験の有無</td>
-        <td class="contents"><%= @family.profile_family&.has_job_change_experience %></td>
+        <td class="contents"><%= @user.profile_family&.has_job_change_experience %></td>
       </tr>
       </tbody>
     </table>
@@ -177,11 +177,11 @@
       <% #TODO family_helperにモジュールを実装する %>
       <tr>
         <td class="title">写真をHPやFacebookで使用可能？</td>
-        <td class="contents"><%= is_photo_ok_str(@family.profile_family&.is_photo_ok) %></td>
+        <td class="contents"><%= is_photo_ok_str(@user.profile_family&.is_photo_ok) %></td>
       </tr>
       <tr>
         <td class="title">レポートをHPやFacebookで使用可能？</td>
-        <td class="contents"><%= is_report_ok_str(@family.profile_family&.is_report_ok) %></td>
+        <td class="contents"><%= is_report_ok_str(@user.profile_family&.is_report_ok) %></td>
       </tr>
       </tbody>
     </table>
@@ -196,7 +196,7 @@
       <tr>
         <td class="title">男性NG?</td>
         <td class="contents">
-          <%= is_male_ok_str(@family.profile_family&.is_male_ok) %>
+          <%= is_male_ok_str(@user.profile_family&.is_male_ok) %>
         </td>
       </tr>
       </tbody>
@@ -210,7 +210,7 @@
     <table class="info-list">
       <tbody>
       <tr>
-        <td class="contents"><%= @family.profile_family&.opinion_or_question %></td>
+        <td class="contents"><%= @user.profile_family&.opinion_or_question %></td>
       </tr>
       </tbody>
     </table>

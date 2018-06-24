@@ -1,13 +1,13 @@
 class Admin::FamilyController < Admin::AdminController
   before_action :create_params, only: [:show, :edit, :update]
   def index
-    @user_list = User.where(is_family: true)
+    @users = User.where(is_family: true)
   end
 
   def show
     @requests = EmailQueue.where(
         email_type: Settings.email_type.request,
-        to_address: @family.contact.email_pc
+        to_address: @user.contact.email_pc
     )
   end
 
@@ -19,10 +19,10 @@ class Admin::FamilyController < Admin::AdminController
   end
 
   def update
-    if @family.update(family_params) and
-       @family.contact.update(contact_params) and
-       @family.location.update(location_params) and
-       @family.profile_family.update(profile_family_params) and
+    if @user.update(family_params) and
+       @user.contact.update(contact_params) and
+       @user.location.update(location_params) and
+       @user.profile_family.update(profile_family_params) and
        @mother.update(mother_params) and
        @father.update(father_params)
       redirect_to edit_admin_family_path(params[:id]), notice: '更新成功'
@@ -32,8 +32,8 @@ class Admin::FamilyController < Admin::AdminController
   end
 
   def destroy
-    @family = User.find(params[:id])
-    if @family.destroy
+    @user = User.find(params[:id])
+    if @user.destroy
       redirect_to admin_family_index_path, notice: '削除成功'
     else
       redirect_to admin_family_index_path, notice: '削除失敗'
@@ -43,9 +43,9 @@ class Admin::FamilyController < Admin::AdminController
   private
 
   def create_params
-    @family = User.find(params[:id])
-    @mother = @family.profile_family&.profile_individuals&.find_by(role: 'mother')
-    @father = @family.profile_family&.profile_individuals&.find_by(role: 'father')
+    @user = User.find(params[:id])
+    @mother = @user.profile_family&.profile_individuals&.find_by(role: 'mother')
+    @father = @user.profile_family&.profile_individuals&.find_by(role: 'father')
   end
 
   def family_params

@@ -1,4 +1,4 @@
-<% breadcrumb :families, @user_list  %>
+<% breadcrumb :families  %>
 <% if admin_signed_in? %>
     ログイン中: <%= current_admin.email %>
 <% end %>
@@ -16,7 +16,7 @@
     </tr>
   </thead>
   <tbody>
-  <% @user_list.each_with_index do |user, index| %>
+  <% @users.each_with_index do |user, index| %>
       <tr>
         <td><%= index + 1 %></td>
         <td><%= link_to user.name, admin_family_path(user.id) %></td>
