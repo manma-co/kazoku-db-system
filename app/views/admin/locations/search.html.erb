@@ -22,6 +22,7 @@
           </thead>
           <tbody>
           <% @candidate_hash.each_with_index do |(location, distance), index| %>
+            <% if location.user.present? %>
               <tr>
                 <td>
                   <%= check_box_tag 'user_id[]', location.user.id, checked = false, :id => "user_id_#{location.user.id}" %>
@@ -36,6 +37,7 @@
                 <td><%= location.user.execution_number %></td>
                 <td><%= location.user.last_request_day %></td>
               </tr>
+            <% end %>
           <% end %>
           </tbody>
         </table>
