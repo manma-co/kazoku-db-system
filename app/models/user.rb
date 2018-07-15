@@ -1,4 +1,7 @@
 class User < ApplicationRecord
+  # 論理削除
+  acts_as_paranoid
+
   has_one :profile_family, dependent: :destroy
   has_one :location, dependent: :destroy
   has_one :contact, dependent: :destroy

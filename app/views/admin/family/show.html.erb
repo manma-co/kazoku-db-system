@@ -235,6 +235,21 @@
       </tbody>
     </table>
   </div>
+
+  <%= form_tag(admin_family_path(@user.id), method: :delete, class: 'col s12', onsubmit: 'return check()') do %>
+  <p>
+    <button class="btn waves-effect waves-red" name="action" type="submit">削除</button>
+  </p>
+  <% end %>
+  <script>
+    function check() {
+      if (window.confirm('本当に削除しますか？')){
+        return true
+      } else {
+        return false
+      }
+    }
+  </script>
   <br>
 
 </div>
