@@ -6,6 +6,7 @@ require 'fileutils'
 require 'multi_json'
 
 module Google
+  # SpreadSheetFetchService
   class SpreadSheetFetchService
 
     APPLICATION_NAME = 'Fetch from manma\'s spread sheet'

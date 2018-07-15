@@ -15,33 +15,30 @@ module Google
       response.values.map do |r|
         # ユーザ情報のパース
         user_query = {
-          spread_sheets_timestamp: r[Settings.sheet.timestamp],
           name: r[Settings.sheet.name],
           kana: r[Settings.sheet.kana],
           gender: 0, # フォームに存在しない情報
           is_family: true,
         }
-        user = User.find_or_initialize_by(user_query)
+        user = User.find_or_initialize_by(spread_sheets_timestamp: r[Settings.sheet.timestamp])
         user.update_attributes(user_query)
 
         # 連絡先情報のパース
         contact_query = {
-          user_id: user.id,
           email_pc: r[Settings.sheet.email_pc],
           email_phone: r[Settings.sheet.email_phone],
           phone_number: r[Settings.sheet.phone_number]
         }
-        contact = Contact.find_or_initialize_by(contact_query)
+        contact = Contact.find_or_initialize_by(user_id: user.id)
         contact.update_attributes(contact_query)
 
         # 位置情報のパース
         location_query = {
-          user_id: user.id,
           address: r[Settings.sheet.address],
           latitude: r[Settings.sheet.latitude],
           longitude: r[Settings.sheet.longitude]
         }
-        location = Location.find_or_initialize_by(address: location_query[:address])
+        location = Location.find_or_initialize_by(user_id: user.id)
         location.update_attributes(location_query)
 
         # 働き方情報のパース
@@ -88,7 +85,6 @@ module Google
 
         # 家族情報のパース
         family_query = {
-          user_id: user.id,
           job_style: job_style,
           number_of_children: r[Settings.sheet.number_of_children],
           is_photo_ok: is_photo,
@@ -103,15 +99,13 @@ module Google
           child_birthday: r[Settings.sheet.child_birthday]
         }
 
-        family = ProfileFamily.find_or_initialize_by(family_query)
+        family = ProfileFamily.find_or_initialize_by(user_id: user.id)
         family.update_attributes(family_query)
 
         # お母様情報のパース
         mothers_query = {
-          profile_family_id: family.id,
           birthday: r[Settings.sheet.mothers_birthday],
           hometown: r[Settings.sheet.mothers_hometown],
-          role: 'mother',
           company: r[Settings.sheet.mothers_company],
           career: r[Settings.sheet.mothers_career],
           has_experience_abroad: r[Settings.sheet.mothers_experience_abroad],
@@ -121,10 +115,8 @@ module Google
 
         # お父様情報のパース
         fathers_query = {
-          profile_family_id: family.id,
           birthday: r[Settings.sheet.fathers_birthday],
           hometown: r[Settings.sheet.fathers_hometown],
-          role: 'father',
           company: r[Settings.sheet.fathers_company],
           career: r[Settings.sheet.fathers_career],
           has_experience_abroad: r[Settings.sheet.fathers_experience_abroad],
@@ -132,10 +124,16 @@ module Google
           job_domain_id: 1, # TODO: job_domain廃止しましょう
         }
 
-        mothers_profile = ProfileIndividual.find_or_initialize_by(mothers_query)
+        mothers_profile = ProfileIndividual.find_or_initialize_by({
+          profile_family_id: family.id,
+          role: 'mother'
+        })
         mothers_profile.update_attributes(mothers_query)
 
-        fathers_profile = ProfileIndividual.find_or_initialize_by(fathers_query)
+        fathers_profile = ProfileIndividual.find_or_initialize_by({
+          profile_family_id: family.id,
+          role: 'father'
+        })
         fathers_profile.update_attributes(fathers_query)
 
         # デバッグモード(1行のみ処理)
