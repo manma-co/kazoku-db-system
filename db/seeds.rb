@@ -6,14 +6,6 @@
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
 
-emails = %w(yoshihito522@gmail.com takashiba@to-on.com)
-emails += %w(shino@cps.im.dendai.ac.jp ricken0203@gmail.com)
-emails += %w(info.manma@gmail.com hinae.niori@gmail.com hino.ikura@gmail.com)
-
-emails.each do |email|
-  Admin.find_or_create_by(email: email)
-end
-
 domains = %w(
     専業主婦・専業主夫（パート・アルバイトは除く）
    メーカー（食品、飲料、繊維、木材、印刷、化学、鉄鋼、精密機器）
@@ -127,6 +119,3 @@ participants.each do |p|
     belong: p[:belong]
   )
 end
-
-
-

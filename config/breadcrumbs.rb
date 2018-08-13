@@ -2,6 +2,15 @@ crumb :root do
   link 'TOP', admin_family_index_path
 end
 
+crumb :admins do
+  link '管理者一覧', admin_admin_index_path
+end
+
+crumb :new_admin do
+  link '管理者新規作成', new_admin_admin_path
+  parent :admins
+end
+
 crumb :families do
   link '家庭一覧', admin_family_index_path
 end

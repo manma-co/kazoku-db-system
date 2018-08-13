@@ -1,0 +1,14 @@
+<p>管理者新規登録</p>
+<div class="row">
+  <%= form_tag(admin_admin_index_path, method: :post, class: 'col s12') do %>
+    <fieldset>
+      <div class="row">
+        <div class="input-field col s12">
+          <%= email_field_tag :email, '', class: 'validate' %>
+          <%= label_tag :email, 'メールアドレス' %>
+        </div>
+        <div><%= submit_tag '登録', class: 'btn' %></div>
+      </div>
+    </fieldset>
+  <% end %>
+</div>

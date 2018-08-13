@@ -4,6 +4,7 @@ Rails.application.routes.draw do
 
   namespace :admin do
     get '/' => redirect("admin/family")
+    resources :admin, only: %i[index new create destroy]
     resources :family
     resources :participants
 
