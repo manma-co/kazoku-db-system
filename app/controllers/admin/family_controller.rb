@@ -1,7 +1,7 @@
 class Admin::FamilyController < Admin::AdminController
   before_action :create_params, only: [:show, :edit, :update]
   def index
-    @users = User.where(is_family: true)
+    @users = User.includes(:contact).where(is_family: true)
   end
 
   def show
