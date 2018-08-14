@@ -18,7 +18,7 @@
     <% @days.each_with_index do |day, i| %>
         <tr>
           <th>参加希望日(<%= i + 1 %>)</th>
-          <td><%= day.day %></td>
+          <td><%= day.day.strftime("%Y/%m/%d(#{%w(日 月 火 水 木 金 土)[day.day.wday]})") %> <%= day.time %></td>
         </tr>
     <% end %>
     <tr>

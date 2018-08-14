@@ -41,7 +41,7 @@
           <select id="event_time_select" class="form-control mb1" required>
             <option value="">参加者からの希望日時を選択してください</option>
             <% @days.each do |d| %>
-                <option value="<%= d.day.strftime('%Y-%m-%d') + ' ' + d.time %>"><%= d.day.strftime('%Y-%m-%d') + ' ' + d.time %></option>
+                <option value="<%= d.day.strftime('%Y-%m-%d') + ' ' + d.time %>"><%= d.day.strftime("%Y/%m/%d(#{%w(日 月 火 水 木 金 土)[d.day.wday]})") + ' ' + d.time %></option>
             <% end %>
           </select>
 
@@ -204,7 +204,7 @@
     // 終了時刻は末尾の要素を選択しておく
     var $finish_hour_options = $('#event_finish_hour option')
     $finish_hour_options[$finish_hour_options.length - 1].selected = true
-    
+
     // 開始時間の分を代入しておく
     var dom = "";
     for (var i=0; i<6; i++) {
