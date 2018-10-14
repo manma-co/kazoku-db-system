@@ -21,7 +21,12 @@ class Admin::LocationsController < Admin::AdminController
     @address = params[:address]
     family_list = family_params
     begin
+      Geocoder.configure(
+        lookup: :google,
+        api_key: ENV['GOOGLE_GEOCODER_API_KEY']
+      )
       geocoder = Geocoder.search(params[:address])
+
       raise('地点が見つかりませんでした。') if geocoder.blank?
 
       @search_result_address = geocoder[0].formatted_address
