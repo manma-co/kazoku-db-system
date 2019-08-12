@@ -9,7 +9,7 @@ end
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 5.0.2'
 # Use sqlite3 as the database for Active Record
-gem 'sqlite3'
+gem 'sqlite3', '~> 1.3.6'
 # Use Puma as the app server
 gem 'puma', '~> 3.0'
 # Use SCSS for stylesheets
@@ -47,12 +47,10 @@ gem 'omniauth-google-oauth2'
 gem "omniauth-rails_csrf_protection"
 
 # See document: https://github.com/mkhairi/materialize-sass
-gem 'materialize-sass'
-gem 'material_icons'
-gem 'jquery-turbolinks'
-
+gem 'materialize-sass', '~> 0.100'
 # See here: https://github.com/Angelmmiguel/material_icons
 gem 'material_icons'
+gem 'jquery-turbolinks'
 
 # Google関連のAPIにアクセスするため
 gem 'google-api-client', '~> 0.11'
