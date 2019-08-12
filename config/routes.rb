@@ -50,7 +50,7 @@ Rails.application.routes.draw do
   }
 
   devise_scope :admin do
-    get 'admin/login', to: "admin/omniauth_callbacks#login", as: 'admin_login'
+    get 'admin/login', to: "admin/omniauth_callbacks#login"
     get "admin/sign_out", to: "devise/sessions#destroy"
   end
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
