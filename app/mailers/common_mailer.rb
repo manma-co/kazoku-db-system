@@ -322,7 +322,7 @@ class CommonMailer < ApplicationMailer
     # Insert to DB
     EmailQueue.create!(
         :sender_address => 'info@manma.co',
-        :to_address => 'info@manma.co',
+        :to_address => log.email,
         :bcc_address => 'info@manma.co',
         :subject => title,
         :body_text => body,
@@ -332,7 +332,7 @@ class CommonMailer < ApplicationMailer
         :email_type => Settings.email_type.readjustment_to_manma
     )
     begin
-      mail(to: 'yoshihito522@gmail.com', subject: title)
+      mail(to: log.email, subject: title)
     rescue => e
       p "エラー: #{e.message}"
       mail(to: 'info@manma.co', subject: "エラーが発生しました。#{e.message} at: #{Time.now}")
