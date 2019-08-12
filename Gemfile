@@ -44,6 +44,7 @@ gem 'sweet-alert2-rails'
 gem 'devise'
 gem 'omniauth'
 gem 'omniauth-google-oauth2'
+gem "omniauth-rails_csrf_protection"
 
 # See document: https://github.com/mkhairi/materialize-sass
 gem 'materialize-sass'
