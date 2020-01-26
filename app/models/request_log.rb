@@ -5,37 +5,13 @@ class RequestLog < ApplicationRecord
   has_one :event_date, dependent: :destroy
   has_one :reminder, dependent: :destroy
 
-  # 7日間経ったかを確認する
-  def self.seven_days_over
-    logs = RequestLog.includes(:event_date)
-    logs.each do |log|
-
-      # Log id 1 の時は next
-      next if log.id <= 1
-
-      # Event Dates が存在していたら next
-      next if log.event_date != nil
-
-      # 7日経っていなかったら next
-      next if log.created_at + 7.days >= Time.now
-
-      # イベントが成立していなくて、7日以上たったリクエストを探す。
-      # Email queue を利用して、すでに送信しているかどうかをチェックする。
-      queue = EmailQueue.find_by(
-        request_log: log,
-        email_type: Settings.email_type.readjustment
-      )
-
-      # メールを送信しているかを確認
-      # 送信していなかったらメールを送信
-      next unless queue.nil?
-
-      p "readjustment_to_candidate email is being sent to: #{log.email} with Request Log Id: #{log.id}"
-
-      # 参加希望者に対して再打診をするかどうかのメールを送信
-      CommonMailer.readjustment_to_candidate(log).deliver_now
-      CommonMailer.readjustment_to_manma(log).deliver_now
+  # まだリマインドメールを送信していない7日前のRequestQueueを取得する(readjustmentでないEmailQueueを持っている)
+  def self.get_all_seven_days_before_for_remind
+    request_logs = []
+    RequestLog.includes(:event_date, :email_queue).where(event_dates: { id: nil }, created_at: 7.days.ago.all_day).each do |request_log|
+      request_logs << request_log if request_log.email_queue.where(email_type: Settings.email_type.readjustment).size == 0
     end
+    request_logs
   end
 
   # 3日たった時にリマインドメールを送る

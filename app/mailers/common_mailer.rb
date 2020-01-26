@@ -273,7 +273,7 @@ class CommonMailer < ApplicationMailer
     end
   end
 
-  # 再打診候補日程をもらうメール
+  # 参加者向けに再打診候補日程をもらうメール
   def readjustment_to_candidate(log)
 
     @log = log
