@@ -2,7 +2,7 @@ class CommonMailer < ApplicationMailer
 
   # Development の時はyoshihito.meからとりあえず送る設定。
   if Rails.env == 'development'
-    default from: 'manma <info@yoshihito.me>'
+    default from: 'manma <localhost:3000>'
   else
     default from: 'manma <info@manma.co>'
   end
@@ -273,7 +273,7 @@ class CommonMailer < ApplicationMailer
     end
   end
 
-  # 再打診候補日程をもらうメール
+  # 参加者向けに再打診候補日程をもらうメール
   def readjustment_to_candidate(log)
 
     @log = log
