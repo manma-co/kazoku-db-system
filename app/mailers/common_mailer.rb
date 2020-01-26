@@ -2,7 +2,7 @@ class CommonMailer < ApplicationMailer
 
   # Development の時はyoshihito.meからとりあえず送る設定。
   if Rails.env == 'development'
-    default from: 'manma <info@yoshihito.me>'
+    default from: 'manma <localhost:3000>'
   else
     default from: 'manma <info@manma.co>'
   end
