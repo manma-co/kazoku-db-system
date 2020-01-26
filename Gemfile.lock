@@ -121,6 +121,10 @@ GEM
       railties (>= 3.1.0)
       turbolinks
     jwt (2.2.1)
+    launchy (2.4.3)
+      addressable (~> 2.3)
+    letter_opener (1.7.0)
+      launchy (~> 2.2)
     listen (3.0.8)
       rb-fsevent (~> 0.9, >= 0.9.4)
       rb-inotify (~> 0.9, >= 0.9.7)
@@ -167,7 +171,6 @@ GEM
     os (1.0.1)
     paranoia (2.4.2)
       activerecord (>= 4.0, < 6.1)
-    pg (0.21.0)
     public_suffix (3.1.1)
     puma (3.12.1)
     rack (2.0.7)
@@ -197,11 +200,6 @@ GEM
       nokogiri (>= 1.6)
     rails-html-sanitizer (1.2.0)
       loofah (~> 2.2, >= 2.2.2)
-    rails_12factor (0.0.3)
-      rails_serve_static_assets
-      rails_stdout_logging
-    rails_serve_static_assets (0.0.5)
-    rails_stdout_logging (0.0.5)
     railties (5.0.7.2)
       actionpack (= 5.0.7.2)
       activesupport (= 5.0.7.2)
@@ -316,6 +314,7 @@ DEPENDENCIES
   jbuilder (~> 2.5)
   jquery-rails
   jquery-turbolinks
+  letter_opener
   listen (~> 3.0.5)
   material_icons
   materialize-sass (~> 0.100)
@@ -323,12 +322,10 @@ DEPENDENCIES
   omniauth-google-oauth2
   omniauth-rails_csrf_protection
   paranoia
-  pg (~> 0.18)
   puma (~> 3.0)
   rails (~> 5.0.2)
   rails-assets-sweetalert2 (~> 5.1.1)!
   rails-controller-testing
-  rails_12factor
   redcarpet
   rspec-rails
   rspec_junit_formatter
