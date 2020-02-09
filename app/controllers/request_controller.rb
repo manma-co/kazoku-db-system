@@ -33,6 +33,7 @@ class RequestController < ApplicationController
     end
   end
 
+  # 受け入れる を選択した場合
   def reply
     @log = RequestLog.find_by(hashed_key: params[:id])
     @days = @log.request_day
@@ -79,7 +80,7 @@ class RequestController < ApplicationController
       user.reply_log.create!(request_log: log, result: true)
 
       # Write data to spread sheet
-      Google::AuthorizeWithWriteByServiceAccount.do(row(user, event, log))
+      # Google::AuthorizeWithWriteByServiceAccount.do(row(user, event, log))
 
       redirect_to thanks_path
     else
