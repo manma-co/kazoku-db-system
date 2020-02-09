@@ -78,7 +78,7 @@ function remindSelfIntroductionForFamily() {
           + "\n"
           + "どうぞ宜しくお願い致します。\n"
           + "\n"
-          + "manma久保"
+          + "manmaマッチング担当"
       },
       send: function(email, subject, body) {
         if (email === '' || body === ''){ return }

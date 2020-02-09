@@ -58,7 +58,7 @@ function remindPayment() {
           + "口座番号：2103218\n"
           + "口座名義：株式会社manma\n\n"
           + "どうぞ宜しくお願い致します。\n\n"
-          + "manma久保\n"
+          + "manmaマッチング担当\n"
       },
       send: function(email, subject, body) {
         if (email === ""){ return }
