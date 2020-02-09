@@ -9,7 +9,7 @@ end
 
 task :seven_days_over_task => :environment do
   puts "Run seven_days_over funtion for families..."
-  request_logs = RequestLog.get_seven_days_before_for_remind
+  request_logs = RequestLog.get_all_seven_days_before_for_remind
   request_logs.each do |request_log|
     # 参加希望者に対して再打診をするかどうかのメールを送信
     CommonMailer.readjustment_to_candidate(log).deliver_now
