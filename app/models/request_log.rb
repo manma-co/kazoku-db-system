@@ -1,9 +1,32 @@
+# TODO: テーブル名をStudyAbroad(留学) に変更する
 class RequestLog < ApplicationRecord
   has_many :request_day, dependent: :destroy
   has_many :reply_log, dependent: :destroy
   has_many :email_queue, dependent: :destroy
   has_one :event_date, dependent: :destroy
   has_one :reminder, dependent: :destroy
+
+  def is_matched?
+    self.reply_log.where(result: true).exists?
+  end
+
+  def is_after_seven_days?
+    Date.current - self.created_at.to_date > 7
+  end
+
+  def is_already_replied_by_user?(user_id)
+    self.reply_log.where(user_id: user_id).exists?
+  end
+
+  # 留学リクエスト中の留学情報を取得する
+  def self.requesting(hashed_key)
+    request_log = RequestLog.includes(:reply_log).find_by(hashed_key: hashed_key)
+    return nil if request_log.nil?
+
+    return nil if request_log.is_matched? || request_log.is_after_seven_days?
+
+    request_log
+  end
 
   # まだリマインドメールを送信していない7日前のRequestQueueを取得する(readjustmentでないEmailQueueを持っている)
   def self.get_all_seven_days_before_for_remind
