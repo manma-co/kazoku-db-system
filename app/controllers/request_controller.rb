@@ -5,8 +5,6 @@ class RequestController < ApplicationController
   # request/:id
   # メールに添付されているURLを謳歌した場合に実行される
   def confirm
-
-    # TODO: ロジックが複雑なので、簡潔にしたい。
     @log = RequestLog.find_by(hashed_key: params[:id])
     # Check exist
     return redirect_to deny_path if @log.nil?
@@ -80,7 +78,7 @@ class RequestController < ApplicationController
       user.reply_log.create!(request_log: log, result: true)
 
       # Write data to spread sheet
-      # Google::AuthorizeWithWriteByServiceAccount.do(row(user, event, log))
+      Google::AuthorizeWithWriteByServiceAccount.do(row(user, event, log))
 
       redirect_to thanks_path
     else
