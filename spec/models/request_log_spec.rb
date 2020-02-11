@@ -1,6 +1,32 @@
 require 'rails_helper'
 
 RSpec.describe RequestLog, type: :model do
+  describe 'is_rejected_all?' do
+    it '全てが未回答状態の場合は、false' do
+      request_log = FactoryBot.create(:request_log)
+      user = FactoryBot.create(:user)
+      FactoryBot.create(:reply_log, request_log: request_log, user: user)
+      FactoryBot.create(:reply_log, request_log: request_log, user: user)
+      expect(request_log.is_rejected_all?).to eq false
+    end
+
+    it '2つのうち1つ拒否されている場合は、false' do
+      request_log = FactoryBot.create(:request_log)
+      user = FactoryBot.create(:user)
+      FactoryBot.create(:reply_log, request_log: request_log, user: user, answer_status: :rejected)
+      FactoryBot.create(:reply_log, request_log: request_log, user: user)
+      expect(request_log.is_rejected_all?).to eq false
+    end
+
+    it '全て拒否されている場合は、true' do
+      request_log = FactoryBot.create(:request_log)
+      user = FactoryBot.create(:user)
+      FactoryBot.create(:reply_log, request_log: request_log, user: user, answer_status: :rejected)
+      FactoryBot.create(:reply_log, request_log: request_log, user: user, answer_status: :rejected)
+      expect(request_log.is_rejected_all?).to eq true
+    end
+  end
+
   describe 'is_already_replied_by_user?' do
     context 'ReplyLogが存在しない場合' do
       it 'falseになること' do
@@ -10,12 +36,12 @@ RSpec.describe RequestLog, type: :model do
         expect(request_log.is_already_replied_by_user?(user.id)).to eq false
       end
     end
-    context 'ReplyLogが存在する場合' do
+    context 'ReplyLogが存在する場合かつanswer_statusが :no_answerでない場合' do
       it 'trueになること' do
         hash = "hash"
         request_log = FactoryBot.create(:request_log, hashed_key: hash, created_at: Date.current)
         user = FactoryBot.create(:user)
-        reply_log = FactoryBot.create(:reply_log, request_log: request_log, user: user, result: true)
+        reply_log = FactoryBot.create(:reply_log, request_log: request_log, user: user, result: true, answer_status: :accepted)
         expect(request_log.is_already_replied_by_user?(user.id)).to eq true
       end
     end
