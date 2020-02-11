@@ -18,6 +18,7 @@ class RequestController < ApplicationController
 
   def reject
     # TODO: resultを削除する
+    # MEMO: reply_logが生成される前の@logが存在する可能性があるためfind_or_initialize_byにしている
     reply_log = @log.reply_log.find_or_initialize_by(user: @user)
     reply_log.update_attributes!(user: @user, result: false, answer_status: :rejected)
 
@@ -66,6 +67,7 @@ class RequestController < ApplicationController
       CommonMailer.notify_to_candidate(event).deliver_now
 
       # TODO: resultを消す
+      # MEMO: reply_logが生成される前の@logが存在する可能性があるためfind_or_initialize_byにしている
       reply_log = @log.reply_log.find_or_initialize_by(user: user)
       reply_log.update_attributes!(user: user, result: true, answer_status: :accepted)
 
