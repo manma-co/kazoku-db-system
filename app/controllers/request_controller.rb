@@ -1,42 +1,46 @@
 class RequestController < ApplicationController
-
   layout 'public'
 
-  # request/:id
-  # メールに添付されているURLを謳歌した場合に実行される
+  before_action :set_request_log_by_hash, only: [:confirm, :reply, :reject]
+  before_action :set_user_by_email, only: [:confirm, :reply, :reject]
+  before_action :set_days, only: [:confirm, :reply]
+
+  before_action :set_request_log_by_id, only: [:event_create]
+
+  # request/:id メールに添付されているURLを押下した場合に実行される
   def confirm
-    @log = RequestLog.find_by(hashed_key: params[:id])
-    # Check exist
-    return redirect_to deny_path if @log.nil?
-
-    @days = @log.request_day unless @log.nil?
-    contact = Contact.find_by(email_pc: params[:email])
-    @user = contact.user if contact
-
-    if @user
-      # 回答済みの場合はリダイレクト
-      reply = ReplyLog.find_by(request_log_id: @log.id, user_id: @user.id)
-      return redirect_to deny_path if reply
-
-      # 7日経っていたら回答URLを閉鎖
-      return redirect_to deny_path if EmailQueue.find_by(request_log_id: @log.id, email_type: Settings.email_type.readjustment)
-
-      # すでにマッチングが成立していたらリダイレクト
-      event = EventDate.find_by(request_log_id: @log)
-      return redirect_to sorry_path if event
-
-    else
-      # ユーザーが存在しなかったらリダイレクト
-      redirect_to deny_path
-    end
   end
 
   # 受け入れる を選択した場合
   def reply
-    @log = RequestLog.find_by(hashed_key: params[:id])
-    @days = @log.request_day
-    @user = Contact.find_by(email_pc: params[:email]).user
     @event = EventDate.new
+  end
+
+  def reject
+    # TODO: resultという名前はやめる。answer_statusだろうか
+    reply = ReplyLog.create!(user: @user, request_log: @log, result: false)
+    CommonMailer.deny(@user).deliver_now
+
+    # 何件リクエストしたかを取得
+    # TODO: EmailQueueはロジックに依存させないようにするため、廃止
+    # TODO: ReplyLogを事前に作成しておき、statusで管理する、未回答、承認、拒否
+    # TODO: いろんなテストが落ちるので対応
+    request_emails = EmailQueue.where(
+        email_type: Settings.email_type.request,
+        request_log: @log,
+        sent_status: true
+    )
+    request_count = request_emails.count
+
+    # すでに送信している件数がリクエスト件数に達しているか確認
+    reply_count = @log.reply_log.count
+
+    if reply_count >= request_count
+      # 再打診候補を参加者に送信する。
+      CommonMailer.readjustment_to_candidate(@log).deliver_now
+    end
+
+    redirect_to deny_path
   end
 
   def event_create
@@ -47,11 +51,11 @@ class RequestController < ApplicationController
     e_time = day + ' ' + selected_date.split(' ')[3]
 
     # Get dates
-    log = RequestLog.find(event_params[:request_log_id])
     user = User.find(event_params[:user_id])
 
+    # TODO: すべてRequestLogに移す
     event = user.event_dates.build
-    event.request_log = log
+    event.request_log = @log
     event.hold_date = day
     event.start_time = s_time.to_time(:utc)
     event.end_time = e_time.to_time(:utc)
@@ -75,7 +79,7 @@ class RequestController < ApplicationController
       CommonMailer.notify_to_candidate(event).deliver_now
 
       # Save new reply log
-      user.reply_log.create!(request_log: log, result: true)
+      user.reply_log.create!(request_log: @log, result: true)
 
       # Write data to spread sheet
       Google::AuthorizeWithWriteByServiceAccount.do(row(user, event, log))
@@ -83,43 +87,6 @@ class RequestController < ApplicationController
       redirect_to thanks_path
     else
       redirect_to reply_path
-    end
-  end
-
-  def deny
-    # Save reply log to DB
-    log_id = params[:log_id]
-    if params[:email] && log_id
-      user = Contact.find_by(email_pc: params[:email]).user
-      reply = ReplyLog.new(
-        user: user,
-        result: false,
-        request_log_id: log_id
-      )
-
-      reply.save!
-      # Send mail to family.
-      CommonMailer.deny(user).deliver_now
-
-      # Check if this reply is last requested family.
-      # 何件リクエストしたかを取得
-      request_emails = EmailQueue.where(
-          email_type: Settings.email_type.request,
-          request_log_id: log_id,
-          sent_status: true
-      )
-      request_count = request_emails.count
-
-      # すでに送信している件数がリクエスト件数に達しているか確認
-      reply_count = ReplyLog.where(request_log_id: log_id).count
-
-      if reply_count >= request_count
-        # 再打診候補を参加者に送信する。
-        log = RequestLog.find(log_id)
-        CommonMailer.readjustment_to_candidate(log).deliver_now
-      end
-
-      redirect_to :deny
     end
   end
 
@@ -133,10 +100,46 @@ class RequestController < ApplicationController
     end
   end
 
+  # ご回答いただきありがとうございました
+  def deny
+  end
+
+  # すでにマッチングが成立しています
   def sorry
   end
 
   private
+
+  def validate_request_log
+    # TODO: 404にしたい
+    return redirect_to deny_path if @log.nil? || @log.is_after_seven_days?
+
+    return redirect_to sorry_path if @log.is_matched?
+  end
+
+  def set_request_log_by_hash
+    @log = RequestLog.find_by(hashed_key: params[:id])
+    validate_request_log
+  end
+
+  def set_user_by_email
+    contact = Contact.find_by(email_pc: params[:email])
+    # TODO: 404にしたい
+    return redirect_to deny_path if contact.nil? || contact.user.nil?
+
+    return redirect_to deny_path if @log.is_already_replied_by_user?(contact.user.id)
+
+    @user = contact.user
+  end
+
+  def set_days
+    @days = @log.request_day
+  end
+
+  def set_request_log_by_id
+    @log = RequestLog.find(event_params[:request_log_id])
+    validate_request_log
+  end
 
   def event_params
     params.require(:event_date).permit(
