@@ -17,26 +17,15 @@ class RequestController < ApplicationController
   end
 
   def reject
-    # TODO: resultという名前はやめる。answer_statusだろうか
-    reply = ReplyLog.create!(user: @user, request_log: @log, result: false)
+    # TODO: resultを削除する
+    # MEMO: reply_logが生成される前の@logが存在する可能性があるためfind_or_initialize_byにしている
+    reply_log = @log.reply_log.find_or_initialize_by(user: @user)
+    reply_log.update_attributes!(user: @user, result: false, answer_status: :rejected)
+
     CommonMailer.deny(@user).deliver_now
 
-    # 何件リクエストしたかを取得
-    # TODO: EmailQueueはロジックに依存させないようにするため、廃止
-    # TODO: ReplyLogを事前に作成しておき、statusで管理する、未回答、承認、拒否
-    # TODO: いろんなテストが落ちるので対応
-    request_emails = EmailQueue.where(
-        email_type: Settings.email_type.request,
-        request_log: @log,
-        sent_status: true
-    )
-    request_count = request_emails.count
-
-    # すでに送信している件数がリクエスト件数に達しているか確認
-    reply_count = @log.reply_log.count
-
-    if reply_count >= request_count
-      # 再打診候補を参加者に送信する。
+    if @log.is_rejected_all?
+      # 再打診候補を参加者に送信する
       CommonMailer.readjustment_to_candidate(@log).deliver_now
     end
 
@@ -53,7 +42,6 @@ class RequestController < ApplicationController
     # Get dates
     user = User.find(event_params[:user_id])
 
-    # TODO: すべてRequestLogに移す
     event = user.event_dates.build
     event.request_log = @log
     event.hold_date = day
@@ -78,8 +66,10 @@ class RequestController < ApplicationController
       # Send email to candidate.
       CommonMailer.notify_to_candidate(event).deliver_now
 
-      # Save new reply log
-      user.reply_log.create!(request_log: @log, result: true)
+      # TODO: resultを消す
+      # MEMO: reply_logが生成される前の@logが存在する可能性があるためfind_or_initialize_byにしている
+      reply_log = @log.reply_log.find_or_initialize_by(user: user)
+      reply_log.update_attributes!(user: user, result: true, answer_status: :accepted)
 
       # Write data to spread sheet
       Google::AuthorizeWithWriteByServiceAccount.do(row(user, event, @log))

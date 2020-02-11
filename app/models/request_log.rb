@@ -6,8 +6,12 @@ class RequestLog < ApplicationRecord
   has_one :event_date, dependent: :destroy
   has_one :reminder, dependent: :destroy
 
+  def is_rejected_all?
+    self.reply_log.where(answer_status: :rejected).count == self.reply_log.count
+  end
+
   def is_matched?
-    self.reply_log.where(result: true).exists?
+    self.reply_log.where(answer_status: :accepted).exists? || self.reply_log.where(result: true).exists?
   end
 
   def is_after_seven_days?
@@ -15,7 +19,7 @@ class RequestLog < ApplicationRecord
   end
 
   def is_already_replied_by_user?(user_id)
-    self.reply_log.where(user_id: user_id).exists?
+    self.reply_log.where(user_id: user_id).where.not(answer_status: :no_answer).exists?
   end
 
   # 留学リクエスト中の留学情報を取得する
@@ -28,7 +32,8 @@ class RequestLog < ApplicationRecord
     request_log
   end
 
-  # まだリマインドメールを送信していない7日前のRequestQueueを取得する(readjustmentでないEmailQueueを持っている)
+  # 7日前のRequestQueueを取得する(readjustmentでないEmailQueueを持っている)
+  # 7日経ってもマッチングしなかった場合は、再打診するかどうか確認するメールを送信する
   def self.get_all_seven_days_before_for_remind
     request_logs = []
     RequestLog.includes(:event_date, :email_queue).where(event_dates: { id: nil }, created_at: 7.days.ago.all_day).each do |request_log|
