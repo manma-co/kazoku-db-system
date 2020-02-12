@@ -322,8 +322,7 @@ class CommonMailer < ApplicationMailer
     # Insert to DB
     EmailQueue.create!(
         :sender_address => 'info@manma.co',
-        :to_address => log.email,
-        :bcc_address => 'info@manma.co',
+        :to_address => 'info@manma.co',
         :subject => title,
         :body_text => body,
         :request_log => log,
@@ -332,7 +331,7 @@ class CommonMailer < ApplicationMailer
         :email_type => Settings.email_type.readjustment_to_manma
     )
     begin
-      mail(to: log.email, subject: title)
+      mail(to: 'info@manma.co', subject: title)
     rescue => e
       p "エラー: #{e.message}"
       mail(to: 'info@manma.co', subject: "エラーが発生しました。#{e.message} at: #{Time.now}")
@@ -352,7 +351,6 @@ class CommonMailer < ApplicationMailer
 
   # リマインダーメールの送信に使う
   def reminder_three_days(user, log)
-
     root = default_host_url
     @user = user
     @log = log
