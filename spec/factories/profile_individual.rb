@@ -1,11 +1,11 @@
 FactoryBot.define do
   factory :mother, class: ProfileIndividual do
-    role {'mother'}
+    role { 'mother' }
     association :job_domain
   end
 
   factory :father, class: ProfileIndividual do
-    role {'father'}
+    role { 'father' }
     association :job_domain
   end
 end

@@ -4,10 +4,10 @@ RSpec.describe Admin::FamilyController, type: :controller do
   describe 'GET #index' do
     let(:users) { FactoryBot.create_list :user, 2 }
     context 'index' do
-      before {
+      before do
         login_admin
         get :index
-      }
+      end
       it { expect(response).to have_http_status(:ok) }
       it { expect(response).to render_template :index }
       it { expect(assigns(:users)).to eq users }
@@ -19,10 +19,10 @@ RSpec.describe Admin::FamilyController, type: :controller do
   end
 
   describe 'GET #show' do
-    before {
+    before do
       login_admin
       get :show, params: { id: user.id }
-    }
+    end
     shared_examples_for 'common' do
       it { expect(response).to have_http_status(:ok) }
       it { expect(response).to render_template :show }

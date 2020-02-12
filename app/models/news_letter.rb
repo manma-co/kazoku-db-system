@@ -3,9 +3,8 @@ class NewsLetter < ApplicationRecord
   validates :content,      presence: true
   validates :distribution, presence: true
 
-
   def send_to_ja
-    self.send_to == 'participant' ? '参加者' : '家庭'
+    send_to == 'participant' ? '参加者' : '家庭'
   end
 
   # TODO: scope がうまく使えないので調査
@@ -29,7 +28,6 @@ class NewsLetter < ApplicationRecord
     where('send_to = ?', 'participant')
   }
 
-
   # 月に1回学生会員にメールを送信
   scope :monthly_news, -> {
     can_be_sent.monthly_news.to_participant
@@ -40,26 +38,24 @@ class NewsLetter < ApplicationRecord
     can_be_sent.to_family
   }
 
-
   # メール送信のスケジュールタスクを実行する機能
   # 月に1回学生会員にメールを送信
   def self.monthly_news_letter
-
     # 送信すべきニュースレターが存在するかをチェックする
-    news_letter = NewsLetter.
-        where('is_save = ?', false).
-        where('is_monthly = ? ', true).
-        where('distribution <= ?', Time.now).
-        where('send_to = ?', 'participant').first
+    news_letter = NewsLetter
+                  .where('is_save = ?', false)
+                  .where('is_monthly = ? ', true)
+                  .where('distribution <= ?', Time.now)
+                  .where('send_to = ?', 'participant').first
     # nil check
     return if news_letter.nil?
 
     # すべての参加者情報を取得する
     # TODO: 受信設定に応じて取得するユーザーを変更する。
     users = Participant.all
-    bcc_address = ""
+    bcc_address = ''
     users.each do |user|
-      bcc_address += user.email + ", "
+      bcc_address += user.email + ', '
     end
 
     # manma.co 宛にも送信
@@ -71,21 +67,18 @@ class NewsLetter < ApplicationRecord
     # 配信予定日を翌月にする。
     # 送信済みにする
     news_letter.update(
-        is_sent: true,
-        distribution: news_letter.distribution.next_month
+      is_sent: true,
+      distribution: news_letter.distribution.next_month
     )
-
   end
-
 
   # メール送信のスケジュールタスクを実行する機能
   # メールを一斉送信
   def self.send_news_letter
-
     # 送信すべきニュースレターが存在するかをチェックする
-    news_letter = NewsLetter.
-        where('distribution <= ? AND is_save = ? AND is_sent = ?', Time.now, false, false).
-        where('is_monthly = ? ', false).first
+    news_letter = NewsLetter
+                  .where('distribution <= ? AND is_save = ? AND is_sent = ?', Time.now, false, false)
+                  .where('is_monthly = ? ', false).first
 
     # nil check
     return if news_letter.nil?
@@ -93,18 +86,18 @@ class NewsLetter < ApplicationRecord
     # すべての参加者情報を取得する
     # メールの送信先に応じてメールアドレスの取得先を変更する。
     # TODO: 受信設定に応じて取得するユーザーを変更する。
-    bcc_address = ""
+    bcc_address = ''
     if news_letter.send_to == 'family'
       p 'Sending a news mail to family...'
       users = User.all
       users.each do |user|
-        bcc_address += user.contact.email_pc + ", "
+        bcc_address += user.contact.email_pc + ', '
       end
     else
       p 'Sending a news mail to participants...'
       participants = Participant.all
       participants.each do |participant|
-        bcc_address += participant.email + ", "
+        bcc_address += participant.email + ', '
       end
     end
 
@@ -117,5 +110,4 @@ class NewsLetter < ApplicationRecord
     # 送信済みにする
     news_letter.update(is_sent: true)
   end
-
 end

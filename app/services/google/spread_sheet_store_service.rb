@@ -18,7 +18,7 @@ module Google
           name: r[Settings.sheet.name],
           kana: r[Settings.sheet.kana],
           gender: 0, # フォームに存在しない情報
-          is_family: true,
+          is_family: true
         }
         user = User.find_or_initialize_by(spread_sheets_timestamp: r[Settings.sheet.timestamp])
         user.update_attributes(user_query)
@@ -53,35 +53,31 @@ module Google
 
         # 男性NG情報のパース
         is_male_ok = r[Settings.sheet.is_male]
-        if is_male_ok.blank? or is_male_ok == Settings.is_male.str.all_participant
-          is_male_ok = Settings.is_male.ok
-        else
-          is_male_ok = Settings.is_male.ng
-        end
+        is_male_ok = if is_male_ok.blank? || (is_male_ok == Settings.is_male.str.all_participant)
+                       Settings.is_male.ok
+                     else
+                       Settings.is_male.ng
+                     end
 
         # SNSへの写真アップロード許可情報のパース
         is_photo = r[Settings.sheet.is_photo]
-        if is_photo == Settings.is_photo.str.ng
-          is_photo = Settings.is_photo.ng
-        elsif is_photo == Settings.is_photo.str.ok
-          is_photo = Settings.is_photo.ok
-        elsif is_photo == Settings.is_photo.str.caution
-          is_photo = Settings.is_photo.caution
-        else
-          is_photo = nil
-        end
+        is_photo = if is_photo == Settings.is_photo.str.ng
+                     Settings.is_photo.ng
+                   elsif is_photo == Settings.is_photo.str.ok
+                     Settings.is_photo.ok
+                   elsif is_photo == Settings.is_photo.str.caution
+                     Settings.is_photo.caution
+                   end
 
         # 家族留学レポート許可情報のパース
         is_report = r[Settings.sheet.is_report]
-        if is_report == Settings.is_report.str.ng
-          is_report = Settings.is_report.ng
-        elsif is_report == Settings.is_report.str.ok
-          is_report = Settings.is_report.ok
-        elsif is_report == Settings.is_report.str.caution
-          is_report = Settings.is_report.caution
-        else
-          is_report = nil
-        end
+        is_report = if is_report == Settings.is_report.str.ng
+                      Settings.is_report.ng
+                    elsif is_report == Settings.is_report.str.ok
+                      Settings.is_report.ok
+                    elsif is_report == Settings.is_report.str.caution
+                      Settings.is_report.caution
+                    end
 
         # 家族情報のパース
         family_query = {
@@ -124,16 +120,16 @@ module Google
           job_domain_id: 1, # TODO: job_domain廃止しましょう
         }
 
-        mothers_profile = ProfileIndividual.find_or_initialize_by({
+        mothers_profile = ProfileIndividual.find_or_initialize_by(
           profile_family_id: family.id,
           role: 'mother'
-        })
+        )
         mothers_profile.update_attributes(mothers_query)
 
-        fathers_profile = ProfileIndividual.find_or_initialize_by({
+        fathers_profile = ProfileIndividual.find_or_initialize_by(
           profile_family_id: family.id,
           role: 'father'
-        })
+        )
         fathers_profile.update_attributes(fathers_query)
 
         # デバッグモード(1行のみ処理)
@@ -151,7 +147,7 @@ module Google
           name: r[Settings.participant.name],
           kana: r[Settings.participant.kana],
           belong: r[Settings.participant.belong],
-          email: r[Settings.participant.email],
+          email: r[Settings.participant.email]
         }
         # 存在チェック
         participant = Participant.find_or_initialize_by(query)

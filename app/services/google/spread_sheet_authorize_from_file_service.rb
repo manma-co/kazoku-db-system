@@ -8,7 +8,6 @@ require 'multi_json'
 # ファイルからGoogleの認証を通す
 module Google
   class SpreadSheetAuthorizeFromFileService
-
     SCOPE = Google::Apis::SheetsV4::AUTH_SPREADSHEETS
     # 認証用IDとSECRETの生成
     AUTH_CONFIG = {
@@ -16,7 +15,7 @@ module Google
         client_id: ENV['SPREAD_SHEET_CLIENT_ID'],
         client_secret: ENV['SPREAD_SHEET_CLIENT_SECRET']
       }
-    }
+    }.freeze
 
     def self.do(user_id)
       # ライブラリを参考にjsonを再読込
@@ -33,6 +32,5 @@ module Google
       credentials = authorizer.get_credentials(user_id)
       [authorizer, credentials]
     end
-
   end
 end

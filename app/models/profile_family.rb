@@ -57,5 +57,4 @@ class ProfileFamily < ApplicationRecord
     "#{Settings.is_male.str.ng}": 0,
     "#{Settings.is_male.str.ok}": 1
   }
-
 end

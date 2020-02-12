@@ -1,14 +1,12 @@
 class Admin::ParticipantsController < Admin::AdminController
-  before_action :create_params, only: [:show, :edit, :update, :destroy]
+  before_action :create_params, only: %i[show edit update destroy]
   def index
     @participant_list = Participant.all
   end
 
-  def show
-  end
+  def show; end
 
-  def edit
-  end
+  def edit; end
 
   def update
     if @participant.update(participant_params)

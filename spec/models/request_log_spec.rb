@@ -30,7 +30,7 @@ RSpec.describe RequestLog, type: :model do
   describe 'is_already_replied_by_user?' do
     context 'ReplyLogが存在しない場合' do
       it 'falseになること' do
-        hash = "hash"
+        hash = 'hash'
         request_log = FactoryBot.create(:request_log, hashed_key: hash, created_at: Date.current)
         user = FactoryBot.create(:user)
         expect(request_log.is_already_replied_by_user?(user.id)).to eq false
@@ -38,7 +38,7 @@ RSpec.describe RequestLog, type: :model do
     end
     context 'ReplyLogが存在する場合かつanswer_statusが :no_answerでない場合' do
       it 'trueになること' do
-        hash = "hash"
+        hash = 'hash'
         request_log = FactoryBot.create(:request_log, hashed_key: hash, created_at: Date.current)
         user = FactoryBot.create(:user)
         reply_log = FactoryBot.create(:reply_log, request_log: request_log, user: user, result: true, answer_status: :accepted)
@@ -50,21 +50,21 @@ RSpec.describe RequestLog, type: :model do
   describe 'self.requesting' do
     context 'ReplyLogが存在しない場合' do
       it '正常系: 経過日数が今日の場合、nilを返すこと' do
-        hash = "hash"
+        hash = 'hash'
         given = FactoryBot.create(:request_log, hashed_key: hash, created_at: Date.current)
         expected = RequestLog.requesting(hash)
         expect(expected).to eq given
       end
 
       it '正常系: 経過日数が7日の場合、nilを返すこと' do
-        hash = "hash"
+        hash = 'hash'
         given = FactoryBot.create(:request_log, hashed_key: hash, created_at: Date.current - 7.days)
         expected = RequestLog.requesting(hash)
         expect(expected).to eq given
       end
 
       it '正常系: 経過日数が8日の場合、nilを返すこと' do
-        hash = "hash"
+        hash = 'hash'
         given = FactoryBot.create(:request_log, hashed_key: hash, created_at: Date.current - 8.days)
         expected = RequestLog.requesting(hash)
         expect(expected).to eq nil
@@ -73,7 +73,7 @@ RSpec.describe RequestLog, type: :model do
 
     context 'ReplyLogが存在する場合' do
       it '正常系: 少なくとも1つがマッチング成立していれば(resultがtrue)nilを返すこと' do
-        hash = "hash"
+        hash = 'hash'
         request_log = FactoryBot.create(:request_log, hashed_key: hash, created_at: Date.current)
         user = FactoryBot.create(:user)
         reply_log = FactoryBot.create(:reply_log, request_log: request_log, user: user, result: true)
@@ -82,7 +82,7 @@ RSpec.describe RequestLog, type: :model do
       end
 
       it '正常系: マッチングが成立していなければ(resultがfalse)取得できること' do
-        hash = "hash"
+        hash = 'hash'
         request_log = FactoryBot.create(:request_log, hashed_key: hash, created_at: Date.current)
         user = FactoryBot.create(:user)
         reply_log = FactoryBot.create(:reply_log, request_log: request_log, user: user, result: false)
