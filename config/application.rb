@@ -21,6 +21,6 @@ end
 # TO see more info or additional more options.
 # See here: https://docs.sentry.io/clients/ruby/config/
 Raven.configure do |config|
-  config.dsn = 'https://442c94c03cf4479abef3c993a1e3a652:cc29f160535647cba9ec43064f0750c5@sentry.io/197206'
+  config.dsn = 'https://67dc2b7e66c845899ca74441e3ef3bf6:54bff7c7d3554cf1b48381e7d974b623@sentry.io/2471304'
   config.environments = %w[production]
 end
