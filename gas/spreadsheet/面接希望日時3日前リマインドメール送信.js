@@ -219,7 +219,7 @@ function getMailContent(name, interview_date) {
     + "http://manma.co/student/\n"
     + "\n"
     + "ご不明な点がございましたら\n"
-    + "info@manma.co（久保）までお気軽にご連絡ください。\n"
+    + "info@manma.co（マッチング担当）までお気軽にご連絡ください。\n"
     + "\n"
     + "お会いできますことを、楽しみにしております。\n"
 }

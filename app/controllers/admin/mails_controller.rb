@@ -131,7 +131,7 @@ class Admin::MailsController < Admin::AdminController
       ・  最初に受け入れ可能とご連絡いたただいたご家庭が発生した時点で、マッチング成立となり、このURLは無効となりますので、予めご了承くださいませ。
 
 
-      何かご不明な点がございましたら、info@manma.co(担当：久保)までご連絡ください。
+      何かご不明な点がございましたら、info@manma.co(マッチング担当)までご連絡ください。
 
 
       manma

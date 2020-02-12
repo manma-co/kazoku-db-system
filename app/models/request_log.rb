@@ -33,7 +33,7 @@ class RequestLog < ApplicationRecord
 
   # 7日前のRequestQueueを取得する(readjustmentでないEmailQueueを持っている)
   # 7日経ってもマッチングしなかった場合は、再打診するかどうか確認するメールを送信する
-  def self.get_all_seven_days_before_for_remind
+  def self.all_seven_days_before_for_remind
     request_logs = []
     RequestLog.includes(:event_date).where(event_dates: { id: nil }, created_at: 7.days.ago.all_day).find_each do |request_log|
       request_logs << request_log
@@ -41,7 +41,7 @@ class RequestLog < ApplicationRecord
     request_logs
   end
 
-  def self.get_all_three_days_before_for_remind
+  def self.all_three_days_before_for_remind
     request_logs = []
     RequestLog.includes(:event_date, reply_log: { user: :contact }).where(event_dates: { id: nil }, created_at: 3.days.ago.all_day).find_each do |request_log|
       request_logs << request_log
