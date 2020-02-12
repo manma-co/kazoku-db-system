@@ -36,48 +36,17 @@ class RequestLog < ApplicationRecord
   # 7日経ってもマッチングしなかった場合は、再打診するかどうか確認するメールを送信する
   def self.get_all_seven_days_before_for_remind
     request_logs = []
-    RequestLog.includes(:event_date, :email_queue).where(event_dates: { id: nil }, created_at: 7.days.ago.all_day).each do |request_log|
-      request_logs << request_log if request_log.email_queue.where(email_type: Settings.email_type.readjustment).size == 0
+    RequestLog.includes(:event_date).where(event_dates: { id: nil }, created_at: 7.days.ago.all_day).each do |request_log|
+      request_logs << request_log
     end
     request_logs
   end
 
-  # 3日たった時にリマインドメールを送る
-  def self.three_days_reminder
-    # Find families to send a reminder email.
-    # The way how it works is
-    # 1. Find request log that has not been approved, using event table.
-
-    logs = RequestLog.includes(:event_date)
-    logs.each do |log|
-
-      # Check if there is event date.
-      # Execute reminder mail functions in case of event date nil
-      # RequestLog の中から EventDate のないものを探す。
-      # 且つ3日たち、リマインドメールを送っていない場合
-
-      # Check remind statu
-      past_three_days = log.created_at + 3.days < Time.now
-      if log.event_date == nil && past_three_days && log.reminder == nil
-
-        # リマインドメールを送る家庭を探すために、ReplyLog から何もアクションをしていない家庭を探す。
-        # すべての送信履歴を参照
-        mail_queues = EmailQueue.where(request_log_id: log.id, email_type: Settings.email_type.request).select(:to_address)
-
-        # 返信履歴（ReplyLog）の中に、送信履歴（EmailQueue）から割り出した家庭が存在していないものを取り出す。
-        # つまりは、返信していない家庭の割り出し。
-        mail_queues.each do |mail_queue|
-          contact = Contact.find_by(email_pc: mail_queue.to_address)
-          rl = ReplyLog.find_by(request_log_id: log.id, user_id: contact.user_id)
-
-          # Send reminder.
-          CommonMailer.reminder_three_days(contact.user, log).deliver_now if rl.nil?
-        end
-
-        # Insert to DB to check reminder was send.
-        Reminder.create!(request_log: log)
-      end
+  def self.get_all_three_days_before_for_remind
+    request_logs = []
+    RequestLog.includes(:event_date, reply_log: { user: :contact }).where(event_dates: { id: nil }, created_at: 3.days.ago.all_day).each do |request_log|
+      request_logs << request_log
     end
+    request_logs
   end
-
 end
