@@ -11,11 +11,6 @@ Lint/RescueException:
   Exclude:
     - 'app/controllers/admin/locations_controller.rb'
 
-# Offense count: 8
-Lint/UselessAssignment:
-  Exclude:
-    - 'spec/models/request_log_spec.rb'
-
 # Offense count: 38
 Metrics/AbcSize:
   Max: 174
