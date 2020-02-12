@@ -8,8 +8,7 @@ require 'multi_json'
 module Google
   # SpreadSheetFetchService
   class SpreadSheetFetchService
-
-    APPLICATION_NAME = 'Fetch from manma\'s spread sheet'
+    APPLICATION_NAME = 'Fetch from manma\'s spread sheet'.freeze
 
     # スプレッドシート情報の取得(家庭向け)
     # response.value でスプレッドシートから取得したデータを全てを配列で取得することが可能

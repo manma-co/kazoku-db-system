@@ -5,17 +5,15 @@ class EventDate < ApplicationRecord
   include ActiveModel::Model
   attr_accessor :event_time
 
-
   def nil_replace
-    self.information == "" ? "特にありません" : self.information
+    information == '' ? '特にありません' : information
   end
 
   def is_first?
-    self.is_first_time ? "初めて" : "初めてではない"
+    is_first_time ? '初めて' : '初めてではない'
   end
 
   def is_amazon_card?
-    self.is_amazon_card ? "受け取る" : "受け取らない"
+    is_amazon_card ? '受け取る' : '受け取らない'
   end
-
 end

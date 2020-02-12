@@ -1,7 +1,17 @@
+inherit_from: .rubocop_todo.yml
+
 Rails:
-  Enaled: true
+  Enabled: true
 AllCops:
-  TargetRubyVersion: 2.4.0
+  TargetRubyVersion: 2.5.5
+  Exclude:
+    - 'db/schema.rb'
+    - 'vendor/**/*'
+# 日本語でのコメントを許可
+AsciiComments:
+  Enabled: false
 Metrics/BlockLength:
   Exclude:
     - 'spec/**/*'
+Style/FrozenStringLiteralComment:
+  Enabled: false

@@ -7,7 +7,6 @@ require 'multi_json'
 
 module Google
   class SpreadSheetAuthorizeService
-
     SCOPE = Google::Apis::SheetsV4::AUTH_SPREADSHEETS
 
     # 認証用IDとSECRETの生成
@@ -16,7 +15,7 @@ module Google
         client_id: ENV['SPREAD_SHEET_CLIENT_ID'],
         client_secret: ENV['SPREAD_SHEET_CLIENT_SECRET']
       }
-    }
+    }.freeze
 
     # @params request
     # @params user_id Unique ID for authorize

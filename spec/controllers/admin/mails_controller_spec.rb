@@ -20,20 +20,20 @@ RSpec.describe Admin::MailsController, type: :controller do
     let(:users) { FactoryBot.create_list :user, 2 }
     before do
       login_admin
-      body = <<-EOS
-[manma_user_name]さまのお宅への家族留学を希望されている方がいらっしゃいます。
+      body = <<~EOS
+        [manma_user_name]さまのお宅への家族留学を希望されている方がいらっしゃいます。
 
-○  参加者プロフィール
-氏名：[manma_template_student_name]
-所属：[manma_template_student_belongs_to]
-最寄り駅：[manma_template_station]
-参加動機：[manma_template_motivation]
+        ○  参加者プロフィール
+        氏名：[manma_template_student_name]
+        所属：[manma_template_student_belongs_to]
+        最寄り駅：[manma_template_station]
+        参加動機：[manma_template_motivation]
 
-【候補日】
-[manma_template_dates]
+        【候補日】
+        [manma_template_dates]
 
-【回答用URL】
-[manma_request_link]
+        【回答用URL】
+        [manma_request_link]
 EOS
       post :confirm, params: {
         user_id: users.pluck(:id),
@@ -53,7 +53,7 @@ EOS
         start_time1: '11:00',
         finish_time0: '20:00',
         finish_time1: '21:00',
-        body: body,
+        body: body
       }
     end
     context 'confirm' do

@@ -16,7 +16,7 @@ class Admin::LocationsController < Admin::AdminController
   end
 
   def search
-    return unless params[:address].present?
+    return if params[:address].blank?
 
     @address = params[:address]
     family_list = family_params
@@ -65,5 +65,4 @@ class Admin::LocationsController < Admin::AdminController
     end
     family.includes(user: [:location, :contact, { reply_log: { request_log: :email_queue } }])
   end
-
 end

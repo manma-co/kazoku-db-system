@@ -7,14 +7,13 @@ require 'fileutils'
 require 'multi_json'
 
 class Admin::SpreadSheetsController < Admin::AdminController
-
   # スプレッドシートへのアクセス認証後、家庭情報を取得する
   def fetch_family
     user_id = ENV['SPREAD_SHEET_AUTH_UNIQUE_ID']
     authorizer, credentials = Google::SpreadSheetAuthorizeService.do(request, user_id)
     if credentials.nil?
       # redirect_to(...) and return としないとDoubleRenderErrorがスローされるので注意
-      redirect_to authorizer.get_authorization_url(login_hint: user_id, request: request) and return
+      redirect_to(authorizer.get_authorization_url(login_hint: user_id, request: request)) && return
     end
 
     # スプレッドシートの情報取得(家庭向け)
@@ -34,7 +33,7 @@ class Admin::SpreadSheetsController < Admin::AdminController
     authorizer, credentials = Google::SpreadSheetAuthorizeService.do(request, user_id)
     if credentials.nil?
       # redirect_to(...) and return としないとDoubleRenderErrorがスローされるので注意
-      redirect_to authorizer.get_authorization_url(login_hint: user_id, request: request) and return
+      redirect_to(authorizer.get_authorization_url(login_hint: user_id, request: request)) && return
     end
 
     # スプレッドシートの情報取得(参加者向け)
@@ -51,5 +50,4 @@ class Admin::SpreadSheetsController < Admin::AdminController
     target_url = Google::Auth::WebUserAuthorizer.handle_auth_callback_deferred(request)
     redirect_to target_url
   end
-
 end

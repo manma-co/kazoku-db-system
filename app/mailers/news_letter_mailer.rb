@@ -1,7 +1,6 @@
 class NewsLetterMailer < ApplicationMailer
-
   # Development の時はyoshihito.meからとりあえず送る設定。
-  if Rails.env == 'development'
+  if Rails.env.development?
     default from: 'manma <localhost:3000>'
   else
     default from: 'manma <info@manma.co>'
@@ -15,28 +14,28 @@ class NewsLetterMailer < ApplicationMailer
     subject = news_letter.subject
     # Insert to DB
     EmailQueue.create!(
-        :sender_address => 'info@manma.co',
-        :to_address => 'info@manma.co',
-        :bcc_address => bcc_address,
-        :subject => subject,
-        :body_text => '',
-        :request_log => RequestLog.first,
-        :retry_count => 0,
-        :sent_status => false,
-        :email_type => 'send_news_letter'
+      sender_address: 'info@manma.co',
+      to_address: 'info@manma.co',
+      bcc_address: bcc_address,
+      subject: subject,
+      body_text: '',
+      request_log: RequestLog.first,
+      retry_count: 0,
+      sent_status: false,
+      email_type: 'send_news_letter'
     )
 
     begin
       mail(to: 'info@manma.co', bcc: bcc_address, subject: subject)
-    rescue => e
+    rescue StandardError => e
       p "エラー: #{e.message}"
     else
       queue = EmailQueue.where(
-          to_address: 'info@manma.co',
-          request_log: RequestLog.first,
-          subject: subject,
-          sent_status: false,
-          email_type: 'send_news_letter'
+        to_address: 'info@manma.co',
+        request_log: RequestLog.first,
+        subject: subject,
+        sent_status: false,
+        email_type: 'send_news_letter'
       ).limit(1)
       queue.update(sent_status: true, time_delivered: Time.now)
     end

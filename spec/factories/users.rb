@@ -22,7 +22,7 @@ FactoryBot.define do
       transient { has_requests { true } }
     end
 
-    factory :perfect_user, traits: [:with_contact, :with_profile_family]
+    factory :perfect_user, traits: %i[with_contact with_profile_family]
 
     after :build do |user, evaluator|
       if evaluator.has_contact

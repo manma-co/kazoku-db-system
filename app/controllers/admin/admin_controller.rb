@@ -33,5 +33,4 @@ class Admin::AdminController < ApplicationController
   def admin_params
     params.permit(:email)
   end
-
 end

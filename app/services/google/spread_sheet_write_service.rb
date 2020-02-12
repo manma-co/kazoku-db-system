@@ -7,8 +7,7 @@ require 'multi_json'
 
 module Google
   class SpreadSheetWriteService
-
-    APPLICATION_NAME = 'Write from manma\'s spread sheet'
+    APPLICATION_NAME = 'Write from manma\'s spread sheet'.freeze
 
     # スプレッドシートに書き込みをする
     # @param [authorize] authorize 認証情報
@@ -21,15 +20,15 @@ module Google
       service.authorization = authorize
 
       case ENV['RAILS_ENV']
-        when 'development', 'test'
-          # テスト用SpreadSheet
-          spreadsheet_id = '1Mj7LlJjNwnUGpXisGEsuMJPKWZKpBSSada4KQsZP9bw'
-        when 'production'
-          # 本番用SpreadSheet
-          spreadsheet_id = ENV['SPREAD_SHEETS_FOR_WRITE_ID']
+      when 'development', 'test'
+        # テスト用SpreadSheet
+        spreadsheet_id = '1Mj7LlJjNwnUGpXisGEsuMJPKWZKpBSSada4KQsZP9bw'
+      when 'production'
+        # 本番用SpreadSheet
+        spreadsheet_id = ENV['SPREAD_SHEETS_FOR_WRITE_ID']
       end
       sheet_name = 'フォームの回答'
-      range = "#{sheet_name}"
+      range = sheet_name.to_s
       value = Google::Apis::SheetsV4::ValueRange.new
 
       # 電話番号の先頭の0が消えてしまう問題は、spread sheetの書式設定の変更で解決する

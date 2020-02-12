@@ -1,5 +1,5 @@
 class Admin::FamilyController < Admin::AdminController
-  before_action :create_params, only: [:show, :edit, :update]
+  before_action :create_params, only: %i[show edit update]
   def index
     @users = User.includes(:contact).where(is_family: true)
   end
@@ -15,15 +15,14 @@ class Admin::FamilyController < Admin::AdminController
     # TODO: user.timestamp発行機能
   end
 
-  def edit
-  end
+  def edit; end
 
   def update
-    if @user.update(family_params) and
-       @user.contact.update(contact_params) and
-       @user.location.update(location_params) and
-       @user.profile_family.update(profile_family_params) and
-       @mother.update(mother_params) and
+    if @user.update(family_params) &&
+       @user.contact.update(contact_params) &&
+       @user.location.update(location_params) &&
+       @user.profile_family.update(profile_family_params) &&
+       @mother.update(mother_params) &&
        @father.update(father_params)
       redirect_to edit_admin_family_path(params[:id]), notice: '更新成功'
     else
@@ -112,5 +111,4 @@ class Admin::FamilyController < Admin::AdminController
     p.delete(is_abroad)
     p
   end
-
 end

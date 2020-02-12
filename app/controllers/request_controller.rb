@@ -1,15 +1,14 @@
 class RequestController < ApplicationController
   layout 'public'
 
-  before_action :set_request_log_by_hash, only: [:confirm, :reply, :reject]
-  before_action :set_user_by_email, only: [:confirm, :reply, :reject]
-  before_action :set_days, only: [:confirm, :reply]
+  before_action :set_request_log_by_hash, only: %i[confirm reply reject]
+  before_action :set_user_by_email, only: %i[confirm reply reject]
+  before_action :set_days, only: %i[confirm reply]
 
   before_action :set_request_log_by_id, only: [:event_create]
 
   # request/:id メールに添付されているURLを押下した場合に実行される
-  def confirm
-  end
+  def confirm; end
 
   # 受け入れる を選択した場合
   def reply
@@ -86,12 +85,10 @@ class RequestController < ApplicationController
   end
 
   # ご回答いただきありがとうございました
-  def deny
-  end
+  def deny; end
 
   # すでにマッチングが成立しています
-  def sorry
-  end
+  def sorry; end
 
   private
 
@@ -135,7 +132,7 @@ class RequestController < ApplicationController
       :is_first_time,
       :information,
       :event_time,
-      :is_amazon_card,
+      :is_amazon_card
     )
   end
 
@@ -161,5 +158,4 @@ class RequestController < ApplicationController
       event.meeting_place
     ]
   end
-
 end

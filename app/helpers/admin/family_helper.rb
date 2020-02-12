@@ -1,5 +1,4 @@
 module Admin::FamilyHelper
-
   # 働き方の文字列を取得する
   # @param [int] job_style 働き方ステータス
   # @return [String] 働き方文字列
@@ -46,5 +45,4 @@ module Admin::FamilyHelper
       Settings.is_report.str.caution
     end
   end
-
 end
