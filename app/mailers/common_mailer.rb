@@ -47,7 +47,7 @@ class CommonMailer < ApplicationMailer
       mail(to: mail, subject: title)
     rescue StandardError => e
       p "エラー: #{e.message}"
-      mail(to: 'info@manma.co', subject: "エラーが発生しました。#{e.message} at: #{Time.now}")
+      mail(to: 'info@manma.co', subject: "エラーが発生しました。#{e.message} at: #{Time.zone.now}")
     else
       queue = EmailQueue.where(
         to_address: mail,
@@ -56,7 +56,7 @@ class CommonMailer < ApplicationMailer
         sent_status: false,
         email_type: Settings.email_type.request
       ).limit(1)
-      queue.update(sent_status: true, time_delivered: Time.now)
+      queue.update(sent_status: true, time_delivered: Time.zone.now)
     end
   end
 
@@ -92,7 +92,7 @@ class CommonMailer < ApplicationMailer
       mail(to: 'info@manma.co', subject: title)
     rescue StandardError => e
       p "エラー: #{e.message}"
-      mail(to: 'info@manma.co', subject: "エラーが発生しました。#{e.message} at: #{Time.now}")
+      mail(to: 'info@manma.co', subject: "エラーが発生しました。#{e.message} at: #{Time.zone.now}")
     else
       # Update email queue status
       queue = EmailQueue.where(
@@ -102,7 +102,7 @@ class CommonMailer < ApplicationMailer
         sent_status: false,
         email_type: Settings.email_type.manma
       ).order('id desc').limit(1)
-      queue.update(sent_status: true, time_delivered: Time.now)
+      queue.update(sent_status: true, time_delivered: Time.zone.now)
     end
   end
 
@@ -134,7 +134,7 @@ class CommonMailer < ApplicationMailer
       mail(to: mail, subject: title)
     rescue StandardError => e
       p "エラー: #{e.message}"
-      mail(to: 'info@manma.co', subject: "エラーが発生しました。#{e.message} at: #{Time.now}")
+      mail(to: 'info@manma.co', subject: "エラーが発生しました。#{e.message} at: #{Time.zone.now}")
     else
       # Update email queue status
       queue = EmailQueue.where(
@@ -144,7 +144,7 @@ class CommonMailer < ApplicationMailer
         sent_status: false,
         email_type: Settings.email_type.family_matched
       ).limit(1)
-      queue.update(sent_status: true, time_delivered: Time.now)
+      queue.update(sent_status: true, time_delivered: Time.zone.now)
     end
   end
 
@@ -174,7 +174,7 @@ class CommonMailer < ApplicationMailer
       mail(to: @log.email, subject: title)
     rescue StandardError => e
       p "エラー: #{e.message}"
-      mail(to: 'info@manma.co', subject: "エラーが発生しました。#{e.message} at: #{Time.now}")
+      mail(to: 'info@manma.co', subject: "エラーが発生しました。#{e.message} at: #{Time.zone.now}")
     else
       # Update email queue status
       queue = EmailQueue.where(
@@ -184,7 +184,7 @@ class CommonMailer < ApplicationMailer
         sent_status: false,
         email_type: Settings.email_type.candidate
       ).limit(1)
-      queue.update(sent_status: true, time_delivered: Time.now)
+      queue.update(sent_status: true, time_delivered: Time.zone.now)
     end
   end
 
@@ -210,7 +210,7 @@ class CommonMailer < ApplicationMailer
       mail(to: request_log.email, subject: title)
     rescue StandardError => e
       p "エラー: #{e.message}"
-      mail(to: 'info@manma.co', subject: "エラーが発生しました。#{e.message} at: #{Time.now}")
+      mail(to: 'info@manma.co', subject: "エラーが発生しました。#{e.message} at: #{Time.zone.now}")
     else
       # Update email queue status
       queue = EmailQueue.where(
@@ -220,7 +220,7 @@ class CommonMailer < ApplicationMailer
         sent_status: false,
         email_type: Settings.email_type.matching_start
       ).limit(1)
-      queue.update(sent_status: true, time_delivered: Time.now)
+      queue.update(sent_status: true, time_delivered: Time.zone.now)
     end
   end
 
@@ -248,7 +248,7 @@ class CommonMailer < ApplicationMailer
       mail(to: mail, subject: title)
     rescue StandardError => e
       p "エラー: #{e.message}"
-      mail(to: 'info@manma.co', subject: "エラーが発生しました。#{e.message} at: #{Time.now}")
+      mail(to: 'info@manma.co', subject: "エラーが発生しました。#{e.message} at: #{Time.zone.now}")
     else
       queue = EmailQueue.where(
         to_address: mail,
@@ -257,7 +257,7 @@ class CommonMailer < ApplicationMailer
         sent_status: false,
         email_type: Settings.email_type.deny
       ).limit(1)
-      queue.update(sent_status: true, time_delivered: Time.now)
+      queue.update(sent_status: true, time_delivered: Time.zone.now)
     end
   end
 
@@ -284,7 +284,7 @@ class CommonMailer < ApplicationMailer
       mail(to: log.email, subject: title)
     rescue StandardError => e
       p "エラー: #{e.message}"
-      mail(to: 'info@manma.co', subject: "エラーが発生しました。#{e.message} at: #{Time.now}")
+      mail(to: 'info@manma.co', subject: "エラーが発生しました。#{e.message} at: #{Time.zone.now}")
     else
       queue = EmailQueue.where(
         to_address: log.email,
@@ -293,7 +293,7 @@ class CommonMailer < ApplicationMailer
         sent_status: false,
         email_type: Settings.email_type.readjustment
       ).limit(1)
-      queue.update(sent_status: true, time_delivered: Time.now)
+      queue.update(sent_status: true, time_delivered: Time.zone.now)
     end
   end
 
@@ -319,7 +319,7 @@ class CommonMailer < ApplicationMailer
       mail(to: 'info@manma.co', subject: title)
     rescue StandardError => e
       p "エラー: #{e.message}"
-      mail(to: 'info@manma.co', subject: "エラーが発生しました。#{e.message} at: #{Time.now}")
+      mail(to: 'info@manma.co', subject: "エラーが発生しました。#{e.message} at: #{Time.zone.now}")
     else
       queue = EmailQueue.where(
         to_address: 'info@manma.co',
@@ -328,7 +328,7 @@ class CommonMailer < ApplicationMailer
         sent_status: false,
         email_type: Settings.email_type.readjustment_to_manma
       ).limit(1)
-      queue.update(sent_status: true, time_delivered: Time.now)
+      queue.update(sent_status: true, time_delivered: Time.zone.now)
     end
   end
 
@@ -362,7 +362,7 @@ class CommonMailer < ApplicationMailer
       mail(to: mail, subject: title)
     rescue StandardError => e
       p "エラー: #{e.message}"
-      mail(to: 'info@manma.co', subject: "エラーが発生しました。#{e.message} at: #{Time.now}")
+      mail(to: 'info@manma.co', subject: "エラーが発生しました。#{e.message} at: #{Time.zone.now}")
     else
       queue = EmailQueue.where(
         to_address: mail,
@@ -371,7 +371,7 @@ class CommonMailer < ApplicationMailer
         sent_status: false,
         email_type: Settings.email_type.three_days
       ).limit(1)
-      queue.update(sent_status: true, time_delivered: Time.now)
+      queue.update(sent_status: true, time_delivered: Time.zone.now)
     end
   end
 end

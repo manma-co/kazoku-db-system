@@ -5,6 +5,7 @@ FactoryBot.define do
     cc_address { 'sample@sample.com' }
     bcc_address { 'sample@sample.com' }
     subject { 'メールタイトル' }
+
     body_text { 'テキストテキスト' }
     retry_count { 0 }
     sent_status { false }

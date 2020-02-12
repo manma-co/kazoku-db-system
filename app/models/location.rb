@@ -15,6 +15,7 @@ class Location < ApplicationRecord
     locations.each do |loc|
       next if loc.nil?
       next if loc.latitude.nil? || loc.longitude.nil?
+
       # 目的地
       dist = { lat: loc.latitude, lng: loc.longitude }
       distance = distance_of_two_points(dept, dist)

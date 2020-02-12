@@ -20,7 +20,7 @@ class MailerBody
       電話可能時間
       電話可能候補日: [tel_time]
 
-EOS
+    EOS
     body.sub!(/\[event_hold_date\]/, event.hold_date.strftime('%H時%M分').to_s)
     body.sub!(/\[event_end_time\]/, event.end_time.strftime('%H時%M分').to_s)
     body.sub!(/\[event_meeting_place\]/, event.meeting_place)

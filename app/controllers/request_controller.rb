@@ -19,10 +19,12 @@ class RequestController < ApplicationController
     # TODO: resultを削除する
     # MEMO: reply_logが生成される前の@logが存在する可能性があるためfind_or_initialize_byにしている
     reply_log = @log.reply_log.find_or_initialize_by(user: @user)
-    reply_log.update_attributes!(user: @user, result: false, answer_status: :rejected)
+    reply_log.update!(user: @user, result: false, answer_status: :rejected)
     CommonMailer.deny(@log, @user).deliver_now
     # 再打診候補を参加者に送信する
-    CommonMailer.readjustment_to_candidate(@log).deliver_now if @log.is_rejected_all?
+    if @log.is_rejected_all?
+      CommonMailer.readjustment_to_candidate(@log).deliver_now
+    end
     redirect_to deny_path
   end
 
@@ -63,10 +65,12 @@ class RequestController < ApplicationController
       # TODO: resultを消す
       # MEMO: reply_logが生成される前の@logが存在する可能性があるためfind_or_initialize_byにしている
       reply_log = @log.reply_log.find_or_initialize_by(user: user)
-      reply_log.update_attributes!(user: user, result: true, answer_status: :accepted)
+      reply_log.update!(user: user, result: true, answer_status: :accepted)
 
       # Write data to spread sheet
-      Google::AuthorizeWithWriteByServiceAccount.do(row(user, event, @log)) if Rails.env.production?
+      if Rails.env.production?
+        Google::AuthorizeWithWriteByServiceAccount.do(row(user, event, @log))
+      end
 
       redirect_to thanks_path
     else
@@ -109,7 +113,9 @@ class RequestController < ApplicationController
     # TODO: 404にしたい
     return redirect_to deny_path if contact.nil? || contact.user.nil?
 
-    return redirect_to deny_path if @log.is_already_replied_by_user?(contact.user.id)
+    if @log.is_already_replied_by_user?(contact.user.id)
+      return redirect_to deny_path
+    end
 
     @user = contact.user
   end

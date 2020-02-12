@@ -1,4 +1,3 @@
-
 # I finally detect the reason about those error below which says Authentication failure! csrf_detected: OmniAuth::Strategies::OAuth2::CallbackError, csrf_detected.
 
 # Started GET "/admins/auth/google_oauth2/callback?state=da3a8979343a061a8738b188efa04e5252e02a9e30f0de18&code=4/ValDct8VnDvQdYYTVU9bLE7ZSrWC8CBCmWbKfcvauh0" for ::1 at 2017-04-09 12:14:27 +0900

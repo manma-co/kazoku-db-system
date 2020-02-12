@@ -11,7 +11,7 @@ class User < ApplicationRecord
   validates :name, presence: true, length: { maximum: 20 }
   validates :gender, presence: true
 
-  enum genders:  {
+  enum genders: {
     "#{Settings.gender.str.woman}": 0,
     "#{Settings.gender.str.man}": 1,
     "#{Settings.gender.str.unknown}": 2

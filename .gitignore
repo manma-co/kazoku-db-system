@@ -23,4 +23,4 @@
 .byebug_history
 .envrc
 run.sh
-vendor/bundler
+vendor/bundle

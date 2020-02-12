@@ -77,15 +77,14 @@ group :development, :test do
   gem 'sqlite3', '~> 1.3.6'
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platform: :mri
-  # hirb
   gem 'database_cleaner'
   gem 'factory_bot_rails'
-  gem 'hirb'
-  gem 'hirb-unicode'
   gem 'rails-controller-testing'
   gem 'rspec-rails'
   gem 'rspec_junit_formatter'
-  gem 'rubocop'
+  gem 'rubocop-performance'
+  gem 'rubocop-rails'
+  gem 'rubocop-rspec'
 end
 
 group :development do

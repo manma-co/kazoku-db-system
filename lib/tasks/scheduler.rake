@@ -6,7 +6,9 @@ task three_days_reminder_task: :environment do
   request_logs = RequestLog.get_all_three_days_before_for_remind
   request_logs.each do |request_log|
     request_log.reply_log.each do |reply_log|
-      CommonMailer.reminder_three_days(reply_log.user, request_log).deliver_now if reply_log.no_answer?
+      if reply_log.no_answer?
+        CommonMailer.reminder_three_days(reply_log.user, request_log).deliver_now
+      end
     end
   end
   puts 'done.'
