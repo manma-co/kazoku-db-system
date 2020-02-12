@@ -8,6 +8,7 @@ RSpec.describe Admin::MailsController, type: :controller do
       login_admin
       get :new, params: { user_id: users.pluck(:id) }
     end
+
     context 'new' do
       it { expect(response).to have_http_status(:ok) }
       it { expect(response).to render_template :new }
@@ -18,6 +19,7 @@ RSpec.describe Admin::MailsController, type: :controller do
 
   describe 'POST #confirm' do
     let(:users) { FactoryBot.create_list :user, 2 }
+
     before do
       login_admin
       body = <<~EOS
@@ -34,7 +36,7 @@ RSpec.describe Admin::MailsController, type: :controller do
 
         【回答用URL】
         [manma_request_link]
-EOS
+      EOS
       post :confirm, params: {
         user_id: users.pluck(:id),
         title: 'Sample Title',
@@ -56,6 +58,7 @@ EOS
         body: body
       }
     end
+
     context 'confirm' do
       it { expect(response).to have_http_status(:ok) }
       it { expect(response).to render_template :confirm }

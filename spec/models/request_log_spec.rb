@@ -36,6 +36,7 @@ RSpec.describe RequestLog, type: :model do
         expect(request_log.is_already_replied_by_user?(user.id)).to eq false
       end
     end
+
     context 'ReplyLogが存在する場合かつanswer_statusが :no_answerでない場合' do
       it 'trueになること' do
         hash = 'hash'
@@ -52,21 +53,21 @@ RSpec.describe RequestLog, type: :model do
       it '正常系: 経過日数が今日の場合、nilを返すこと' do
         hash = 'hash'
         given = FactoryBot.create(:request_log, hashed_key: hash, created_at: Date.current)
-        expected = RequestLog.requesting(hash)
+        expected = described_class.requesting(hash)
         expect(expected).to eq given
       end
 
       it '正常系: 経過日数が7日の場合、nilを返すこと' do
         hash = 'hash'
         given = FactoryBot.create(:request_log, hashed_key: hash, created_at: Date.current - 7.days)
-        expected = RequestLog.requesting(hash)
+        expected = described_class.requesting(hash)
         expect(expected).to eq given
       end
 
       it '正常系: 経過日数が8日の場合、nilを返すこと' do
         hash = 'hash'
         given = FactoryBot.create(:request_log, hashed_key: hash, created_at: Date.current - 8.days)
-        expected = RequestLog.requesting(hash)
+        expected = described_class.requesting(hash)
         expect(expected).to eq nil
       end
     end
@@ -77,7 +78,7 @@ RSpec.describe RequestLog, type: :model do
         request_log = FactoryBot.create(:request_log, hashed_key: hash, created_at: Date.current)
         user = FactoryBot.create(:user)
         reply_log = FactoryBot.create(:reply_log, request_log: request_log, user: user, result: true)
-        expected = RequestLog.requesting(hash)
+        expected = described_class.requesting(hash)
         expect(expected).to eq nil
       end
 
@@ -86,7 +87,7 @@ RSpec.describe RequestLog, type: :model do
         request_log = FactoryBot.create(:request_log, hashed_key: hash, created_at: Date.current)
         user = FactoryBot.create(:user)
         reply_log = FactoryBot.create(:reply_log, request_log: request_log, user: user, result: false)
-        expected = RequestLog.requesting(hash)
+        expected = described_class.requesting(hash)
         expect(expected).to eq request_log
       end
     end
@@ -97,7 +98,7 @@ RSpec.describe RequestLog, type: :model do
       given = FactoryBot.create(:request_log, created_at: 3.days.ago)
       user = FactoryBot.create(:user)
       FactoryBot.create(:event_date, user: user, request_log: given)
-      expected = RequestLog.get_all_three_days_before_for_remind
+      expected = described_class.get_all_three_days_before_for_remind
       expect(expected).to eq []
     end
 
@@ -105,7 +106,7 @@ RSpec.describe RequestLog, type: :model do
       given = FactoryBot.create(:request_log, created_at: 3.days.ago)
       user = FactoryBot.create(:user)
       reply_log = FactoryBot.create(:reply_log, user: user, request_log: given)
-      expected = RequestLog.get_all_three_days_before_for_remind
+      expected = described_class.get_all_three_days_before_for_remind
       expect(expected).to eq [given]
       expect(expected[0].reply_log).to eq given.reply_log
     end
@@ -115,7 +116,7 @@ RSpec.describe RequestLog, type: :model do
       user = FactoryBot.create(:user)
       FactoryBot.create(:reply_log, user: user, request_log: given, answer_status: :rejected)
       FactoryBot.create(:reply_log, user: user, request_log: given, answer_status: :no_answer)
-      expected = RequestLog.get_all_three_days_before_for_remind
+      expected = described_class.get_all_three_days_before_for_remind
       expect(expected).to eq [given]
     end
   end
@@ -125,26 +126,26 @@ RSpec.describe RequestLog, type: :model do
       given = FactoryBot.create(:request_log, created_at: 7.days.ago)
       user = FactoryBot.create(:user)
       FactoryBot.create(:event_date, user: user, request_log: given)
-      expected = RequestLog.get_all_seven_days_before_for_remind
+      expected = described_class.get_all_seven_days_before_for_remind
       expect(expected).to eq []
     end
 
     it '正常系: EventDateが存在しない場合、7日前のRequestLogが取得できること' do
       given = FactoryBot.create(:request_log, created_at: 7.days.ago)
       user = FactoryBot.create(:user)
-      expected = RequestLog.get_all_seven_days_before_for_remind
+      expected = described_class.get_all_seven_days_before_for_remind
       expect(expected).to eq [given]
     end
 
     it '正常系: 6日前のRequestLogは取得できないこと' do
       given = FactoryBot.create(:request_log, created_at: 6.days.ago)
-      expected = RequestLog.get_all_seven_days_before_for_remind
+      expected = described_class.get_all_seven_days_before_for_remind
       expect(expected).to eq []
     end
 
     it '正常系: 8日前のRequestLogは取得できないこと' do
       given = FactoryBot.create(:request_log, created_at: 8.days.ago)
-      expected = RequestLog.get_all_seven_days_before_for_remind
+      expected = described_class.get_all_seven_days_before_for_remind
       expect(expected).to eq []
     end
   end

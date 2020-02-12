@@ -18,6 +18,7 @@ describe RequestController, type: :request do
       expect(request_log.reply_log.first.rejected?).to eq true
     end
   end
+
   describe 'GET #confirm' do
     before do
       user = FactoryBot.create(:user)

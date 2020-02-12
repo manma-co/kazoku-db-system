@@ -9,32 +9,32 @@ class NewsLetter < ApplicationRecord
 
   # TODO: scope がうまく使えないので調査
   # 送信可能なメールを探す（保存ではないもの）
-  scope :can_be_sent, -> {
-    where('distribution <= ? AND is_save = ? AND is_sent = ?', Time.now, false, false)
+  scope :can_be_sent, lambda {
+    where('distribution <= ? AND is_save = ? AND is_sent = ?', Time.zone.now, false, false)
   }
 
   # 月一回送信かのチェック
-  scope :monthly_news, -> {
+  scope :monthly_news, lambda {
     where('is_monthly = ? ', true)
   }
 
   # 家庭向け
-  scope :to_family, -> {
+  scope :to_family, lambda {
     where('send_to = ?', 'family')
   }
 
   # 参加者向け
-  scope :to_participant, -> {
+  scope :to_participant, lambda {
     where('send_to = ?', 'participant')
   }
 
   # 月に1回学生会員にメールを送信
-  scope :monthly_news, -> {
+  scope :monthly_news, lambda {
     can_be_sent.monthly_news.to_participant
   }
 
   # 家庭にメールを一斉送信
-  scope :news_letter, -> {
+  scope :news_letter, lambda {
     can_be_sent.to_family
   }
 
@@ -45,7 +45,7 @@ class NewsLetter < ApplicationRecord
     news_letter = NewsLetter
                   .where('is_save = ?', false)
                   .where('is_monthly = ? ', true)
-                  .where('distribution <= ?', Time.now)
+                  .where('distribution <= ?', Time.zone.now)
                   .where('send_to = ?', 'participant').first
     # nil check
     return if news_letter.nil?
@@ -77,7 +77,7 @@ class NewsLetter < ApplicationRecord
   def self.send_news_letter
     # 送信すべきニュースレターが存在するかをチェックする
     news_letter = NewsLetter
-                  .where('distribution <= ? AND is_save = ? AND is_sent = ?', Time.now, false, false)
+                  .where('distribution <= ? AND is_save = ? AND is_sent = ?', Time.zone.now, false, false)
                   .where('is_monthly = ? ', false).first
 
     # nil check

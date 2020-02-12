@@ -75,6 +75,7 @@ class Admin::MailsController < Admin::AdminController
       finish_time_key = "finish_time#{i}".to_sym
 
       next if params[date_key].empty?
+
       date = parse_date(params[date_key])
       start_time = params[start_time_key]
       finish_time = params[finish_time_key]
@@ -86,6 +87,7 @@ class Admin::MailsController < Admin::AdminController
   # 「2018年06月20日 土曜日」という文字列を2018/06/20 に変換する
   def parse_date(date_str)
     return nil if date_str.empty?
+
     date = date_str.split(' ')[0]
     date.sub!('年', '/')
     date.sub!('月', '/')
@@ -133,6 +135,6 @@ class Admin::MailsController < Admin::AdminController
 
 
       manma
-EOS
+    EOS
   end
 end

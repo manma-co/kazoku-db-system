@@ -37,7 +37,7 @@ class NewsLetterMailer < ApplicationMailer
         sent_status: false,
         email_type: 'send_news_letter'
       ).limit(1)
-      queue.update(sent_status: true, time_delivered: Time.now)
+      queue.update(sent_status: true, time_delivered: Time.zone.now)
     end
   end
 end

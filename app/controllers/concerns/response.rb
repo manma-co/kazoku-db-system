@@ -4,7 +4,7 @@ module Response
       meta: {
         requesturi: request.fullpath,
         method: request.method,
-        time: Time.now,
+        time: Time.zone.now,
         extra: ''
       },
       data: object,

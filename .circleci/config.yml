@@ -6,8 +6,7 @@ version: 2
 jobs:
   build:
     docker:
-      # specify the version you desire here
-       - image: circleci/ruby:2.4.1-node-browsers
+       - image: circleci/ruby:2.5.5-node-browsers
 
       # Specify service dependencies here if necessary
       # CircleCI maintains a library of pre-built images
@@ -19,13 +18,17 @@ jobs:
     steps:
       - checkout
 
-      # Download and cache dependencies
       - restore_cache:
           keys:
           - v1-dependencies-{{ checksum "Gemfile.lock" }}
           # fallback to using the latest cache if no exact match is found
           - v1-dependencies-
 
+      - run:
+          name: update bundler
+          command: |
+            gem update --system
+            gem install bundler
       - run:
           name: install dependencies
           command: |
@@ -35,6 +38,8 @@ jobs:
           paths:
             - ./vendor/bundle
           key: v1-dependencies-{{ checksum "Gemfile.lock" }}
+
+      - run: bundle exec rubocop
 
       # Database setup
       - run: bundle exec rake db:create
