@@ -197,19 +197,17 @@ class CommonMailer < ApplicationMailer
   end
 
   # マッチング開始時に参加者に向けて送る
-  def matching_start(email)
-
+  def matching_start(request_log)
     body = MailerBody.matching_start
     title = '【manma】家族留学の打診を開始いたしました'
-    log = RequestLog.first
     # Insert to DB
     EmailQueue.create!(
         :sender_address => 'info@manma.co',
-        :to_address => email,
+        :to_address => request_log.email,
         :bcc_address => 'info@manma.co',
         :subject => title,
         :body_text => body,
-        :request_log => log,
+        :request_log => request_log,
         :retry_count => 0,
         :sent_status => false,
         :email_type => Settings.email_type.matching_start,
@@ -217,32 +215,30 @@ class CommonMailer < ApplicationMailer
 
     begin
       # Send a mail
-      mail(to: email, subject: title)
+      mail(to: request_log.email, subject: title)
     rescue => e
       p "エラー: #{e.message}"
       mail(to: 'info@manma.co', subject: "エラーが発生しました。#{e.message} at: #{Time.now}")
     else
       # Update email queue status
       queue = EmailQueue.where(
-          to_address: email,
-          request_log: log,
+          to_address: request_log.email,
+          request_log: request_log,
           subject: title,
           sent_status: false,
           email_type: Settings.email_type.matching_start
       ).limit(1)
       queue.update(sent_status: true, time_delivered: Time.now)
     end
-
   end
 
   # マッチングを断った場合に家庭に送る
-  def deny(user)
+  def deny(request_log, user)
     @user = user
     title = "【manma】家族留学受け入れ可否のご回答をありがとうございました"
 
     body = MailerBody.deny(@user)
     mail = user.contact.email_pc
-    log = RequestLog.first
 
     # Insert to DB
     EmailQueue.create!(
@@ -251,7 +247,7 @@ class CommonMailer < ApplicationMailer
         :bcc_address => 'info@manma.co',
         :subject => title,
         :body_text => body,
-        :request_log => log,
+        :request_log => request_log,
         :retry_count => 0,
         :sent_status => false,
         :email_type => Settings.email_type.deny
@@ -264,7 +260,7 @@ class CommonMailer < ApplicationMailer
     else
       queue = EmailQueue.where(
           to_address: mail,
-          request_log: log,
+          request_log: request_log,
           subject: title,
           sent_status: false,
           email_type: Settings.email_type.deny

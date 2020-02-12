@@ -22,14 +22,13 @@ class Admin::MailsController < Admin::AdminController
     @title = params[:title]
 
     @users.each do |user|
-      # reply_logを事前に生成しておく (answer_status: :no_answer)
+      # MEMO: reply_logを事前に生成しておく (answer_status: :no_answer)
       # ↑リマインドメールの送信やリクエスト受入/拒否の判定をするため
       log.reply_log.create!(user: user)
       CommonMailer.request_email_to_family(@title, @body, user, hash, root_url(only_path: false), log).deliver_now
     end
 
-    email = log.email
-    CommonMailer.matching_start(email).deliver_now if email
+    CommonMailer.matching_start(log).deliver_now
   end
 
   def histories
