@@ -9,6 +9,6 @@ FactoryBot.define do
     information { 'information text' }
     is_amazon_card { false }
     # user_id
-    # request_log_id
+    # study_abroad_id
   end
 end

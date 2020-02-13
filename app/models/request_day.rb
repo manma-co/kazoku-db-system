@@ -1,5 +1,5 @@
 class RequestDay < ApplicationRecord
-  belongs_to :request_log
+  belongs_to :study_abroad
 
-  validates :request_log_id, presence: true
+  validates :study_abroad_id, presence: true
 end

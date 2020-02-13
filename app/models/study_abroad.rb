@@ -1,5 +1,4 @@
-# TODO: テーブル名をStudyAbroad(留学) に変更する
-class RequestLog < ApplicationRecord
+class StudyAbroad < ApplicationRecord
   has_many :request_day, dependent: :destroy
   has_many :reply_log, dependent: :destroy
   has_many :email_queue, dependent: :destroy
@@ -23,29 +22,29 @@ class RequestLog < ApplicationRecord
 
   # 留学リクエスト中の留学情報を取得する
   def self.requesting(hashed_key)
-    request_log = RequestLog.includes(:reply_log).find_by(hashed_key: hashed_key)
-    return nil if request_log.nil?
+    study_abroad = StudyAbroad.includes(:reply_log).find_by(hashed_key: hashed_key)
+    return nil if study_abroad.nil?
 
-    return nil if request_log.is_matched? || request_log.is_after_seven_days?
+    return nil if study_abroad.is_matched? || study_abroad.is_after_seven_days?
 
-    request_log
+    study_abroad
   end
 
   # 7日前のRequestQueueを取得する(readjustmentでないEmailQueueを持っている)
   # 7日経ってもマッチングしなかった場合は、再打診するかどうか確認するメールを送信する
   def self.all_seven_days_before_for_remind
-    request_logs = []
-    RequestLog.includes(:event_date).where(event_dates: { id: nil }, created_at: 7.days.ago.all_day).find_each do |request_log|
-      request_logs << request_log
+    study_abroads = []
+    StudyAbroad.includes(:event_date).where(event_dates: { id: nil }, created_at: 7.days.ago.all_day).find_each do |study_abroad|
+      study_abroads << study_abroad
     end
-    request_logs
+    study_abroads
   end
 
   def self.all_three_days_before_for_remind
-    request_logs = []
-    RequestLog.includes(:event_date, reply_log: { user: :contact }).where(event_dates: { id: nil }, created_at: 3.days.ago.all_day).find_each do |request_log|
-      request_logs << request_log
+    study_abroads = []
+    StudyAbroad.includes(:event_date, reply_log: { user: :contact }).where(event_dates: { id: nil }, created_at: 3.days.ago.all_day).find_each do |study_abroad|
+      study_abroads << study_abroad
     end
-    request_logs
+    study_abroads
   end
 end

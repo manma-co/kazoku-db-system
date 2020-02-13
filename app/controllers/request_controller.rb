@@ -1,11 +1,11 @@
 class RequestController < ApplicationController
   layout 'public'
 
-  before_action :set_request_log_by_hash, only: %i[confirm reply reject]
+  before_action :set_study_abroad_by_hash, only: %i[confirm reply reject]
   before_action :set_user_by_email, only: %i[confirm reply reject]
   before_action :set_days, only: %i[confirm reply]
 
-  before_action :set_request_log_by_id, only: [:event_create]
+  before_action :set_study_abroad_by_id, only: [:event_create]
 
   # request/:id メールに添付されているURLを押下した場合に実行される
   def confirm; end
@@ -17,13 +17,13 @@ class RequestController < ApplicationController
 
   def reject
     # TODO: resultを削除する
-    # MEMO: reply_logが生成される前の@logが存在する可能性があるためfind_or_initialize_byにしている
-    reply_log = @log.reply_log.find_or_initialize_by(user: @user)
+    # MEMO: reply_logが生成される前の@study_abroadが存在する可能性があるためfind_or_initialize_byにしている
+    reply_log = @study_abroad.reply_log.find_or_initialize_by(user: @user)
     reply_log.update!(user: @user, result: false, answer_status: :rejected)
-    CommonMailer.deny(@log, @user).deliver_now
+    CommonMailer.deny(@study_abroad, @user).deliver_now
     # 再打診候補を参加者に送信する
-    if @log.is_rejected_all?
-      CommonMailer.readjustment_to_candidate(@log).deliver_now
+    if @study_abroad.is_rejected_all?
+      CommonMailer.readjustment_to_candidate(@study_abroad).deliver_now
     end
     redirect_to deny_path
   end
@@ -39,7 +39,7 @@ class RequestController < ApplicationController
     user = User.find(event_params[:user_id])
 
     event = user.event_dates.build
-    event.request_log = @log
+    event.study_abroad = @study_abroad
     event.hold_date = day
     event.start_time = s_time.to_time(:utc)
     event.end_time = e_time.to_time(:utc)
@@ -63,13 +63,13 @@ class RequestController < ApplicationController
       CommonMailer.notify_to_candidate(event).deliver_now
 
       # TODO: resultを消す
-      # MEMO: reply_logが生成される前の@logが存在する可能性があるためfind_or_initialize_byにしている
-      reply_log = @log.reply_log.find_or_initialize_by(user: user)
+      # MEMO: reply_logが生成される前の@study_abroadが存在する可能性があるためfind_or_initialize_byにしている
+      reply_log = @study_abroad.reply_log.find_or_initialize_by(user: user)
       reply_log.update!(user: user, result: true, answer_status: :accepted)
 
       # Write data to spread sheet
       if Rails.env.production?
-        Google::AuthorizeWithWriteByServiceAccount.do(row(user, event, @log))
+        Google::AuthorizeWithWriteByServiceAccount.do(row(user, event, @study_abroad))
       end
 
       redirect_to thanks_path
@@ -96,16 +96,16 @@ class RequestController < ApplicationController
 
   private
 
-  def validate_request_log
+  def validate_study_abroad
     # TODO: 404にしたい
-    return redirect_to deny_path if @log.nil? || @log.is_after_seven_days?
+    return redirect_to deny_path if @study_abroad.nil? || @study_abroad.is_after_seven_days?
 
-    return redirect_to sorry_path if @log.is_matched?
+    return redirect_to sorry_path if @study_abroad.is_matched?
   end
 
-  def set_request_log_by_hash
-    @log = RequestLog.find_by(hashed_key: params[:id])
-    validate_request_log
+  def set_study_abroad_by_hash
+    @study_abroad = StudyAbroad.find_by(hashed_key: params[:id])
+    validate_study_abroad
   end
 
   def set_user_by_email
@@ -113,7 +113,7 @@ class RequestController < ApplicationController
     # TODO: 404にしたい
     return redirect_to deny_path if contact.nil? || contact.user.nil?
 
-    if @log.is_already_replied_by_user?(contact.user.id)
+    if @study_abroad.is_already_replied_by_user?(contact.user.id)
       return redirect_to deny_path
     end
 
@@ -121,18 +121,18 @@ class RequestController < ApplicationController
   end
 
   def set_days
-    @days = @log.request_day
+    @days = @study_abroad.request_day
   end
 
-  def set_request_log_by_id
-    @log = RequestLog.find(event_params[:request_log_id])
-    validate_request_log
+  def set_study_abroad_by_id
+    @study_abroad = StudyAbroad.find(event_params[:study_abroad_id])
+    validate_study_abroad
   end
 
   def event_params
     params.require(:event_date).permit(
       :user_id,
-      :request_log_id,
+      :study_abroad_id,
       :meeting_place,
       :emergency_contact,
       :is_first_time,
@@ -142,9 +142,9 @@ class RequestController < ApplicationController
     )
   end
 
-  def row(user, event, log)
-    participant_names = log.name.split(',')
-    participant_emails = log.email.split(',')
+  def row(user, event, study_abroad)
+    participant_names = study_abroad.name.split(',')
+    participant_emails = study_abroad.email.split(',')
     [
       DateTime.current.strftime('%Y/%m/%d %H:%M:%S'),
       'manma-system',

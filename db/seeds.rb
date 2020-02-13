@@ -103,7 +103,7 @@ manma_accounts.each do |ac|
 end
 
 # リクエストログを参照しない場合のログを用意しておく。
-RequestLog.create!
+StudyAbroad.create!
 
 participants = [
   { name: '仮名', kana: 'かな', email: 'shino@cps.im.dendai.ac.jp', belong: 'hogheoge' },

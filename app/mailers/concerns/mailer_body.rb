@@ -124,7 +124,7 @@ class MailerBody
     body
   end
 
-  def self.notify_to_candidate(event, log, user)
+  def self.notify_to_candidate(event, study_abroad, user)
     body = <<~EOS
 
       [log_name] 様
@@ -161,7 +161,7 @@ class MailerBody
 
     EOS
 
-    body.sub!(/\[log_name\]/, log.name)
+    body.sub!(/\[log_name\]/, study_abroad.name)
     body.sub!(/\[user_name\]/, user.name)
     body.sub!(/\[user_job_style_str\]/, user.job_style_str)
     body.sub!(/\[user_contact_email_pc\]/, user.contact.email_pc)
@@ -197,7 +197,7 @@ class MailerBody
     body
   end
 
-  def self.readjustment_to_candidate(log)
+  def self.readjustment_to_candidate(study_abroad)
     body = <<~EOS
       [log_name] 様
 
@@ -248,13 +248,13 @@ class MailerBody
 
     EOS
 
-    body.sub!(/\[log_name\]/, log.name)
+    body.sub!(/\[log_name\]/, study_abroad.name)
 
     # Return
     body
   end
 
-  def self.readjustment_to_manma(log)
+  def self.readjustment_to_manma(study_abroad)
     body = <<~EOS
 
       こちらは自動送信メールです。
@@ -293,13 +293,13 @@ class MailerBody
 
     EOS
 
-    body.sub!(/\[log_name\]/, log.name)
+    body.sub!(/\[log_name\]/, study_abroad.name)
 
     # Return
     body
   end
 
-  def self.reminder_three_days(user, log, days, url)
+  def self.reminder_three_days(user, study_abroad, days, url)
     body = <<~EOS
       [user_name_top] さま
 
@@ -353,10 +353,10 @@ class MailerBody
 
     body.sub!(/\[user_name_top\]/, user.name)
     body.sub!(/\[user_name\]/, user.name)
-    body.sub!(/\[log_name\]/, log.name)
-    body.sub!(/\[log_belongs\]/, log.belongs)
-    body.sub!(/\[log_station\]/, log.station)
-    body.sub!(/\[log_motivation\]/, log.motivation)
+    body.sub!(/\[log_name\]/, study_abroad.name)
+    body.sub!(/\[log_belongs\]/, study_abroad.belongs)
+    body.sub!(/\[log_station\]/, study_abroad.station)
+    body.sub!(/\[log_motivation\]/, study_abroad.motivation)
     body.sub!(/\[url\]/, url)
 
     br = <<-EOS

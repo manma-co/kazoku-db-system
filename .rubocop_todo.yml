@@ -73,7 +73,7 @@ Naming/PredicateName:
     - 'app/helpers/admin/family_helper.rb'
     - 'app/models/event_date.rb'
     - 'app/models/profile_family.rb'
-    - 'app/models/request_log.rb'
+    - 'app/models/study_abroad.rb'
 
 # Offense count: 9
 # Configuration parameters: Prefixes.
@@ -82,13 +82,13 @@ RSpec/ContextWording:
   Exclude:
     - 'spec/controllers/admin/family_controller_spec.rb'
     - 'spec/controllers/admin/mails_controller_spec.rb'
-    - 'spec/models/request_log_spec.rb'
+    - 'spec/models/study_abroad_spec.rb'
 
 # Offense count: 6
 # Configuration parameters: Max.
 RSpec/ExampleLength:
   Exclude:
-    - 'spec/models/request_log_spec.rb'
+    - 'spec/models/study_abroad_spec.rb'
     - 'spec/requests/request_controller_spec.rb'
 
 # Offense count: 7
