@@ -17,9 +17,9 @@ class RequestController < ApplicationController
 
   def reject
     # TODO: resultを削除する
-    # MEMO: reply_logが生成される前の@study_abroadが存在する可能性があるためfind_or_initialize_byにしている
-    reply_log = @study_abroad.reply_log.find_or_initialize_by(user: @user)
-    reply_log.update!(user: @user, result: false, answer_status: :rejected)
+    # MEMO: study_abroad_requestが生成される前の@study_abroadが存在する可能性があるためfind_or_initialize_byにしている
+    study_abroad_request = @study_abroad.study_abroad_request.find_or_initialize_by(user: @user)
+    study_abroad_request.update!(user: @user, result: false, answer_status: :rejected)
     CommonMailer.deny(@study_abroad, @user).deliver_now
     # 再打診候補を参加者に送信する
     if @study_abroad.is_rejected_all?
@@ -63,9 +63,9 @@ class RequestController < ApplicationController
       CommonMailer.notify_to_candidate(event).deliver_now
 
       # TODO: resultを消す
-      # MEMO: reply_logが生成される前の@study_abroadが存在する可能性があるためfind_or_initialize_byにしている
-      reply_log = @study_abroad.reply_log.find_or_initialize_by(user: user)
-      reply_log.update!(user: user, result: true, answer_status: :accepted)
+      # MEMO: study_abroad_requestが生成される前の@study_abroadが存在する可能性があるためfind_or_initialize_byにしている
+      study_abroad_request = @study_abroad.study_abroad_request.find_or_initialize_by(user: user)
+      study_abroad_request.update!(user: user, result: true, answer_status: :accepted)
 
       # Write data to spread sheet
       if Rails.env.production?

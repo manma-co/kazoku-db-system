@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20200213160455) do
+ActiveRecord::Schema.define(version: 20200213163120) do
 
   create_table "admins", force: :cascade do |t|
     t.string   "email",              default: "", null: false
@@ -142,18 +142,6 @@ ActiveRecord::Schema.define(version: 20200213160455) do
     t.index ["profile_family_id"], name: "index_profile_individuals_on_profile_family_id"
   end
 
-  create_table "reply_logs", force: :cascade do |t|
-    t.boolean  "result"
-    t.integer  "study_abroad_id"
-    t.integer  "user_id"
-    t.datetime "created_at",                  null: false
-    t.datetime "updated_at",                  null: false
-    t.integer  "answer_status",   default: 0
-    t.index ["answer_status"], name: "index_reply_logs_on_answer_status"
-    t.index ["study_abroad_id"], name: "index_reply_logs_on_study_abroad_id"
-    t.index ["user_id"], name: "index_reply_logs_on_user_id"
-  end
-
   create_table "request_days", force: :cascade do |t|
     t.integer  "study_abroad_id"
     t.date     "day"
@@ -162,6 +150,18 @@ ActiveRecord::Schema.define(version: 20200213160455) do
     t.datetime "created_at",                      null: false
     t.datetime "updated_at",                      null: false
     t.index ["study_abroad_id"], name: "index_request_days_on_study_abroad_id"
+  end
+
+  create_table "study_abroad_requests", force: :cascade do |t|
+    t.boolean  "result"
+    t.integer  "study_abroad_id"
+    t.integer  "user_id"
+    t.datetime "created_at",                  null: false
+    t.datetime "updated_at",                  null: false
+    t.integer  "answer_status",   default: 0
+    t.index ["answer_status"], name: "index_study_abroad_requests_on_answer_status"
+    t.index ["study_abroad_id"], name: "index_study_abroad_requests_on_study_abroad_id"
+    t.index ["user_id"], name: "index_study_abroad_requests_on_user_id"
   end
 
   create_table "study_abroads", force: :cascade do |t|

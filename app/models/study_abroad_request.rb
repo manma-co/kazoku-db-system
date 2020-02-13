@@ -1,4 +1,4 @@
-class ReplyLog < ApplicationRecord
+class StudyAbroadRequest < ApplicationRecord
   belongs_to :user
   belongs_to :study_abroad
 

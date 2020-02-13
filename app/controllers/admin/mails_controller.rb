@@ -21,9 +21,9 @@ class Admin::MailsController < Admin::AdminController
     @title = params[:title]
 
     @users.each do |user|
-      # MEMO: reply_logを事前に生成しておく (answer_status: :no_answer)
+      # MEMO: study_abroad_requestを事前に生成しておく (answer_status: :no_answer)
       # ↑リマインドメールの送信やリクエスト受入/拒否の判定をするため
-      study_abroad.reply_log.create!(user: user)
+      study_abroad.study_abroad_request.create!(user: user)
       CommonMailer.request_email_to_family(@title, @body, user, hash, root_url(only_path: false), study_abroad).deliver_now
     end
 

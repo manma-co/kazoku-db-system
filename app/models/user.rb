@@ -6,7 +6,7 @@ class User < ApplicationRecord
   has_one :location, dependent: :destroy
   has_one :contact, dependent: :destroy
   has_many :event_dates, dependent: :destroy
-  has_many :reply_log, dependent: :destroy
+  has_many :study_abroad_request, dependent: :destroy
 
   validates :name, presence: true, length: { maximum: 20 }
   validates :gender, presence: true

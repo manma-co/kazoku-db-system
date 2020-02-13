@@ -63,6 +63,6 @@ class Admin::LocationsController < Admin::AdminController
     else
       family = family.where(is_male_ok: @is_male_ok)
     end
-    family.includes(user: [:location, :contact, { reply_log: { study_abroad: :email_queue } }])
+    family.includes(user: [:location, :contact, { study_abroad_request: { study_abroad: :email_queue } }])
   end
 end
