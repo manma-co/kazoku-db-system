@@ -11,7 +11,7 @@ module Google
     # @param [array] response スプレッドシートから取得した情報の配列
     # @param [bool] is_debug trueなら1行のみ処理を行う(動作確認用)
     # TODO: スレッド処理したい pallarelを使う？
-    def self.store_family(response, is_debug: false)
+    def self.store_family_to_db(response, is_debug: false)
       response.values.map do |r|
         # ユーザ情報のパース
         user_query = {
@@ -140,7 +140,7 @@ module Google
     # レスポンス情報からユーザ情報の保存をする
     # @param [array] response スプレッドシートから取得した情報の配列
     # @param [bool] is_debug trueなら1行のみ処理を行う(動作確認用)
-    def self.store_participant(response, is_debug: false)
+    def self.store_participant_to_db(response, is_debug: false)
       response.values.map do |r|
         query = {
           # ユーザ情報のパース

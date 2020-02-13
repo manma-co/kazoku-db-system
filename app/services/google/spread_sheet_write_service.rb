@@ -13,11 +13,12 @@ module Google
     # @param [authorize] authorize 認証情報
     # @param [row] 書き込み情報 2重配列で表現すること
     # 例: [["hoge", "fuga"], ["piyo", "mag"]] 空行にhoge、隣の列にfugaが挿入される。次の空行にpiyo、隣の列にmagが挿入される
-    def self.do(authorize, row)
+    def self.do(row)
+      credentials = Google::SpreadSheetAuthorizeService.credentials
       # Initialize the API
       service = Google::Apis::SheetsV4::SheetsService.new
       service.client_options.application_name = APPLICATION_NAME
-      service.authorization = authorize
+      service.authorization = credentials
 
       case ENV['RAILS_ENV']
       when 'development', 'test'
