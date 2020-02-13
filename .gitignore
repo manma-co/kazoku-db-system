@@ -24,3 +24,5 @@
 .envrc
 run.sh
 vendor/bundle
+
+erd.*

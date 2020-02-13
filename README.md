@@ -37,3 +37,10 @@ You need Heroku account. Please ask maintaineer about account.
 ```
 git push heroku release:master
 ```
+
+## Generate ER
+
+```
+bundle exec erd --inheritance --direct --attributes=foreign_keys,content --filetype=dot
+dot -Tpng erd.dot -o erd.png
+```
