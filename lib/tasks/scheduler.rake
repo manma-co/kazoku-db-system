@@ -3,11 +3,11 @@
 desc 'This task is called by the Heroku scheduler add-on'
 task three_days_reminder_task: :environment do
   puts 'Run all_three_days_before_for_remind funtion for families...'
-  request_logs = RequestLog.all_three_days_before_for_remind
-  request_logs.each do |request_log|
-    request_log.reply_log.each do |reply_log|
+  study_abroads = StudyAbroad.all_three_days_before_for_remind
+  study_abroads.each do |study_abroad|
+    study_abroad.reply_log.each do |reply_log|
       if reply_log.no_answer?
-        CommonMailer.reminder_three_days(reply_log.user, request_log).deliver_now
+        CommonMailer.reminder_three_days(reply_log.user, study_abroad).deliver_now
       end
     end
   end
@@ -16,11 +16,11 @@ end
 
 task seven_days_over_task: :environment do
   puts 'Run seven_days_over funtion for families...'
-  request_logs = RequestLog.all_seven_days_before_for_remind
-  request_logs.each do |request_log|
+  study_abroads = StudyAbroad.all_seven_days_before_for_remind
+  study_abroads.each do |study_abroad|
     # 参加希望者に対して再打診をするかどうかのメールを送信
-    CommonMailer.readjustment_to_candidate(request_log).deliver_now
-    CommonMailer.readjustment_to_manma(request_log).deliver_now
+    CommonMailer.readjustment_to_candidate(study_abroad).deliver_now
+    CommonMailer.readjustment_to_manma(study_abroad).deliver_now
   end
   puts 'done.'
 end

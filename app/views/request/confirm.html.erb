@@ -9,11 +9,11 @@
     <tbody>
     <tr>
       <th>名前</th>
-      <td><%= @log.name %></td>
+      <td><%= @study_abroad.name %></td>
     </tr>
     <tr>
       <th>所属</th>
-      <td><%= @log.belongs %></td>
+      <td><%= @study_abroad.belongs %></td>
     </tr>
     <% @days.each_with_index do |day, i| %>
         <tr>
@@ -23,11 +23,11 @@
     <% end %>
     <tr>
       <th>最寄駅</th>
-      <td><%= @log.station %></td>
+      <td><%= @study_abroad.station %></td>
     </tr>
     <tr>
       <th>希望理由</th>
-      <td><%= @log.motivation %></td>
+      <td><%= @study_abroad.motivation %></td>
     </tr>
     </tbody>
   </table>

@@ -12,12 +12,12 @@ module Admin::AdminHelper
     session[:emergency]    = params[:emergency]
   end
 
-  def save_request_log
+  def save_study_abroad
     # Hash key を作成
     hashed_key = SecureRandom.random_number(36**24).to_s(36).rjust(24, '0')
 
-    # Save log data
-    @log = RequestLog.create(
+    # Save study_abroad data
+    @study_abroad = StudyAbroad.create(
       hashed_key: hashed_key,
       name: session[:student_name],
       belongs: session[:belongs_to],
@@ -36,10 +36,10 @@ module Admin::AdminHelper
     session[:emergency]     = nil
 
     # 日付保存のためにデータを返却
-    [@log, hashed_key]
+    [@study_abroad, hashed_key]
   end
 
-  def save_request_day(log)
+  def save_request_day(study_abroad)
     br = <<-EOS
 
     EOS
@@ -48,7 +48,7 @@ module Admin::AdminHelper
       dnt = d.split(' ', 2)
       date = dnt[0]
       time = dnt[1]
-      log.request_day.create!(
+      study_abroad.request_day.create!(
         day: date,
         time: time,
         decided: false

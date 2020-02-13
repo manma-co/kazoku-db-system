@@ -19,7 +19,7 @@ class NewsLetterMailer < ApplicationMailer
       bcc_address: bcc_address,
       subject: subject,
       body_text: '',
-      request_log: RequestLog.first,
+      study_abroad: StudyAbroad.first,
       retry_count: 0,
       sent_status: false,
       email_type: 'send_news_letter'
@@ -28,7 +28,7 @@ class NewsLetterMailer < ApplicationMailer
     mail(to: 'info@manma.co', bcc: bcc_address, subject: subject)
     queue = EmailQueue.where(
       to_address: 'info@manma.co',
-      request_log: RequestLog.first,
+      study_abroad: StudyAbroad.first,
       subject: subject,
       sent_status: false,
       email_type: 'send_news_letter'

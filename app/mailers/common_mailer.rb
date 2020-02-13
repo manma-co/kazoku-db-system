@@ -14,7 +14,7 @@ class CommonMailer < ApplicationMailer
   end
 
   # 家庭向けに家族留学希望者がいることを知らせるメール。
-  def request_email_to_family(title, body, user, hash, root_url, log)
+  def request_email_to_family(title, body, user, hash, root_url, study_abroad)
     # Disable memory pointer with dup method.
     mail_body = body.dup
 
@@ -37,7 +37,7 @@ class CommonMailer < ApplicationMailer
       bcc_address: 'info@manma.co',
       subject: title,
       body_text: mail_body,
-      request_log: log,
+      study_abroad: study_abroad,
       retry_count: 0,
       sent_status: false,
       email_type: Settings.email_type.request
@@ -46,7 +46,7 @@ class CommonMailer < ApplicationMailer
     mail(to: mail, subject: title)
     queue = EmailQueue.where(
       to_address: mail,
-      request_log: log,
+      study_abroad: study_abroad,
       subject: title,
       sent_status: false,
       email_type: Settings.email_type.request
@@ -67,7 +67,7 @@ class CommonMailer < ApplicationMailer
     title || title += @event.start_time.strftime('%Y年%m月%d日')
 
     body = MailerBody.notify_to_manma(@tel_time, @event, @user)
-    log = RequestLog.find(@event.request_log_id)
+    study_abroad = StudyAbroad.find(@event.study_abroad_id)
 
     # Insert to DB
     EmailQueue.create!(
@@ -76,7 +76,7 @@ class CommonMailer < ApplicationMailer
       bcc_address: 'info@manma.co',
       subject: title,
       body_text: body,
-      request_log: log,
+      study_abroad: study_abroad,
       retry_count: 0,
       sent_status: false,
       email_type: Settings.email_type.manma
@@ -86,7 +86,7 @@ class CommonMailer < ApplicationMailer
     # Update email queue status
     queue = EmailQueue.where(
       to_address: 'info@manma.co',
-      request_log: log,
+      study_abroad: study_abroad,
       subject: title,
       sent_status: false,
       email_type: Settings.email_type.manma
@@ -97,11 +97,11 @@ class CommonMailer < ApplicationMailer
   # マッチング成立時に家庭に向けて送る
   def notify_to_family_matched(event)
     @user = User.find(event.user_id)
-    request_log = RequestLog.find(event.request_log_id)
+    study_abroad = StudyAbroad.find(event.study_abroad_id)
     mail = @user.contact.email_pc
     title = '【manma】家族留学を受け入れてくださりありがとうございます'
-    @student = request_log
-    @event = EventDate.find_by(request_log_id: request_log.id)
+    @student = study_abroad
+    @event = EventDate.find_by(study_abroad_id: study_abroad.id)
 
     body = MailerBody.notify_to_family_matched(@user, @student, @event)
 
@@ -112,7 +112,7 @@ class CommonMailer < ApplicationMailer
       bcc_address: 'info@manma.co',
       subject: title,
       body_text: body,
-      request_log: request_log,
+      study_abroad: study_abroad,
       retry_count: 0,
       sent_status: false,
       email_type: Settings.email_type.family_matched
@@ -122,7 +122,7 @@ class CommonMailer < ApplicationMailer
     # Update email queue status
     queue = EmailQueue.where(
       to_address: mail,
-      request_log: request_log,
+      study_abroad: study_abroad,
       subject: title,
       sent_status: false,
       email_type: Settings.email_type.family_matched
@@ -133,29 +133,29 @@ class CommonMailer < ApplicationMailer
   # マッチング成立時に参加者に向けて送る
   def notify_to_candidate(event)
     @event = event
-    @log = RequestLog.find(event.request_log_id)
+    @study_abroad = StudyAbroad.find(event.study_abroad_id)
     @user = User.find(event.user_id)
     title = '【manma】家族留学のマッチングが成立いたしました'
 
-    body = MailerBody.notify_to_candidate(@event, @log, @user)
+    body = MailerBody.notify_to_candidate(@event, @study_abroad, @user)
 
     # Insert to DB
     EmailQueue.create!(
       sender_address: 'info@manma.co',
-      to_address: @log.email,
+      to_address: @study_abroad.email,
       bcc_address: 'info@manma.co',
       subject: title,
       body_text: body,
-      request_log: @log,
+      study_abroad: @study_abroad,
       retry_count: 0,
       sent_status: false,
       email_type: Settings.email_type.candidate
     )
-    mail(to: @log.email, subject: title)
+    mail(to: @study_abroad.email, subject: title)
     # Update email queue status
     queue = EmailQueue.where(
-      to_address: @log.email,
-      request_log: @log,
+      to_address: @study_abroad.email,
+      study_abroad: @study_abroad,
       subject: title,
       sent_status: false,
       email_type: Settings.email_type.candidate
@@ -164,28 +164,28 @@ class CommonMailer < ApplicationMailer
   end
 
   # マッチング開始時に参加者に向けて送る
-  def matching_start(request_log)
+  def matching_start(study_abroad)
     body = MailerBody.matching_start
     title = '【manma】家族留学の打診を開始いたしました'
     # Insert to DB
     EmailQueue.create!(
       sender_address: 'info@manma.co',
-      to_address: request_log.email,
+      to_address: study_abroad.email,
       bcc_address: 'info@manma.co',
       subject: title,
       body_text: body,
-      request_log: request_log,
+      study_abroad: study_abroad,
       retry_count: 0,
       sent_status: false,
       email_type: Settings.email_type.matching_start
     )
 
     # Send a mail
-    mail(to: request_log.email, subject: title)
+    mail(to: study_abroad.email, subject: title)
     # Update email queue status
     queue = EmailQueue.where(
-      to_address: request_log.email,
-      request_log: request_log,
+      to_address: study_abroad.email,
+      study_abroad: study_abroad,
       subject: title,
       sent_status: false,
       email_type: Settings.email_type.matching_start
@@ -194,7 +194,7 @@ class CommonMailer < ApplicationMailer
   end
 
   # マッチングを断った場合に家庭に送る
-  def deny(request_log, user)
+  def deny(study_abroad, user)
     @user = user
     title = '【manma】家族留学受け入れ可否のご回答をありがとうございました'
 
@@ -208,7 +208,7 @@ class CommonMailer < ApplicationMailer
       bcc_address: 'info@manma.co',
       subject: title,
       body_text: body,
-      request_log: request_log,
+      study_abroad: study_abroad,
       retry_count: 0,
       sent_status: false,
       email_type: Settings.email_type.deny
@@ -216,7 +216,7 @@ class CommonMailer < ApplicationMailer
     mail(to: mail, subject: title)
     queue = EmailQueue.where(
       to_address: mail,
-      request_log: request_log,
+      study_abroad: study_abroad,
       subject: title,
       sent_status: false,
       email_type: Settings.email_type.deny
@@ -225,28 +225,28 @@ class CommonMailer < ApplicationMailer
   end
 
   # 参加者向けに再打診候補日程をもらうメール
-  def readjustment_to_candidate(log)
-    @log = log
+  def readjustment_to_candidate(study_abroad)
+    @study_abroad = study_abroad
     title = '【要返信】家族留学の再打診に関しまして'
 
-    body = MailerBody.readjustment_to_candidate(@log)
+    body = MailerBody.readjustment_to_candidate(@study_abroad)
 
     # Insert to DB
     EmailQueue.create!(
       sender_address: 'info@manma.co',
-      to_address: log.email,
+      to_address: study_abroad.email,
       bcc_address: 'info@manma.co',
       subject: title,
       body_text: body,
-      request_log: log,
+      study_abroad: study_abroad,
       retry_count: 0,
       sent_status: false,
       email_type: Settings.email_type.readjustment
     )
-    mail(to: log.email, subject: title)
+    mail(to: study_abroad.email, subject: title)
     queue = EmailQueue.where(
-      to_address: log.email,
-      request_log: log,
+      to_address: study_abroad.email,
+      study_abroad: study_abroad,
       subject: title,
       sent_status: false,
       email_type: Settings.email_type.readjustment
@@ -255,11 +255,11 @@ class CommonMailer < ApplicationMailer
   end
 
   # 再打診メールを info@manma.co にもお知らせする。
-  def readjustment_to_manma(log)
-    @log = log
+  def readjustment_to_manma(study_abroad)
+    @study_abroad = study_abroad
     title = '自動送信 →【要返信】家族留学の再打診に関しまして'
 
-    body = MailerBody.readjustment_to_manma(@log)
+    body = MailerBody.readjustment_to_manma(@study_abroad)
 
     # Insert to DB
     EmailQueue.create!(
@@ -267,7 +267,7 @@ class CommonMailer < ApplicationMailer
       to_address: 'info@manma.co',
       subject: title,
       body_text: body,
-      request_log: log,
+      study_abroad: study_abroad,
       retry_count: 0,
       sent_status: false,
       email_type: Settings.email_type.readjustment_to_manma
@@ -275,7 +275,7 @@ class CommonMailer < ApplicationMailer
     mail(to: 'info@manma.co', subject: title)
     queue = EmailQueue.where(
       to_address: 'info@manma.co',
-      request_log: log,
+      study_abroad: study_abroad,
       subject: title,
       sent_status: false,
       email_type: Settings.email_type.readjustment_to_manma
@@ -286,15 +286,15 @@ class CommonMailer < ApplicationMailer
   include ApplicationHelper
 
   # リマインダーメールの送信に使う
-  def reminder_three_days(user, log)
+  def reminder_three_days(user, study_abroad)
     root = default_host_url
     @user = user
-    @log = log
-    @days = RequestDay.where(request_log: log)
-    @url = root + 'request/' + @log.hashed_key + '?email=' + user.contact.email_pc
+    @study_abroad = study_abroad
+    @days = RequestDay.where(study_abroad: study_abroad)
+    @url = root + 'request/' + @study_abroad.hashed_key + '?email=' + user.contact.email_pc
     title = '【リマインド】家族留学受け入れのお願い'
 
-    body = MailerBody.reminder_three_days(@user, @log, @days, @url)
+    body = MailerBody.reminder_three_days(@user, @study_abroad, @days, @url)
     mail = user.contact.email_pc
 
     # Insert to DB
@@ -304,7 +304,7 @@ class CommonMailer < ApplicationMailer
       bcc_address: 'info@manma.co',
       subject: title,
       body_text: body,
-      request_log: log,
+      study_abroad: study_abroad,
       retry_count: 0,
       sent_status: false,
       email_type: Settings.email_type.three_days
@@ -312,7 +312,7 @@ class CommonMailer < ApplicationMailer
     mail(to: mail, subject: title)
     queue = EmailQueue.where(
       to_address: mail,
-      request_log: log,
+      study_abroad: study_abroad,
       subject: title,
       sent_status: false,
       email_type: Settings.email_type.three_days

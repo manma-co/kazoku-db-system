@@ -5,8 +5,8 @@ describe RequestController, type: :request do
     before do
       user = FactoryBot.create(:user)
       FactoryBot.create(:contact, user: user, email_pc: 'test@test.com')
-      request_log = FactoryBot.create(:request_log, hashed_key: 'hash')
-      FactoryBot.create(:reply_log, request_log: request_log, user: user)
+      study_abroad = FactoryBot.create(:study_abroad, hashed_key: 'hash')
+      FactoryBot.create(:reply_log, study_abroad: study_abroad, user: user)
     end
 
     it '受入拒否をした場合、answer_statusが rejectedとなっていること' do
@@ -14,8 +14,8 @@ describe RequestController, type: :request do
       expect(response).to redirect_to deny_path
       expect(response.status).to eq 302
 
-      request_log = RequestLog.find_by(hashed_key: 'hash')
-      expect(request_log.reply_log.first.rejected?).to eq true
+      study_abroad = StudyAbroad.find_by(hashed_key: 'hash')
+      expect(study_abroad.reply_log.first.rejected?).to eq true
     end
   end
 
@@ -23,7 +23,7 @@ describe RequestController, type: :request do
     before do
       user = FactoryBot.create(:user)
       FactoryBot.create(:contact, user: user, email_pc: 'test@test.com')
-      FactoryBot.create(:request_log, hashed_key: 'hash')
+      FactoryBot.create(:study_abroad, hashed_key: 'hash')
     end
 
     # TODO: 404にしたい
@@ -41,9 +41,9 @@ describe RequestController, type: :request do
     end
 
     it '存在するhashだが既にマッチング済みの場合、sorry' do
-      request_log = RequestLog.find_by(hashed_key: 'hash')
+      study_abroad = StudyAbroad.find_by(hashed_key: 'hash')
       user = User.first
-      FactoryBot.create(:reply_log, request_log: request_log, user: user, result: true)
+      FactoryBot.create(:reply_log, study_abroad: study_abroad, user: user, result: true)
       get '/request/hash', params: { email: 'dummy@dummy.com' }
 
       expect(response).to redirect_to sorry_path
@@ -51,9 +51,9 @@ describe RequestController, type: :request do
     end
 
     it '存在するhashだが既に回答済みの場合、deny' do
-      request_log = RequestLog.find_by(hashed_key: 'hash')
+      study_abroad = StudyAbroad.find_by(hashed_key: 'hash')
       user = User.first
-      FactoryBot.create(:reply_log, request_log: request_log, user: user, result: false, answer_status: :rejected)
+      FactoryBot.create(:reply_log, study_abroad: study_abroad, user: user, result: false, answer_status: :rejected)
       get '/request/hash', params: { email: 'test@test.com' }
 
       expect(response).to redirect_to deny_path

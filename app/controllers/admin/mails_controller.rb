@@ -15,19 +15,19 @@ class Admin::MailsController < Admin::AdminController
 
   def complete
     user_params
-    log, hash = save_request_log
-    save_request_day log
+    study_abroad, hash = save_study_abroad
+    save_request_day study_abroad
     @body = params[:body]
     @title = params[:title]
 
     @users.each do |user|
       # MEMO: reply_logを事前に生成しておく (answer_status: :no_answer)
       # ↑リマインドメールの送信やリクエスト受入/拒否の判定をするため
-      log.reply_log.create!(user: user)
-      CommonMailer.request_email_to_family(@title, @body, user, hash, root_url(only_path: false), log).deliver_now
+      study_abroad.reply_log.create!(user: user)
+      CommonMailer.request_email_to_family(@title, @body, user, hash, root_url(only_path: false), study_abroad).deliver_now
     end
 
-    CommonMailer.matching_start(log).deliver_now
+    CommonMailer.matching_start(study_abroad).deliver_now
   end
 
   def histories

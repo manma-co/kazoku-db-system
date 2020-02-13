@@ -1,5 +1,5 @@
 FactoryBot.define do
-  factory :request_log do
+  factory :study_abroad do
     hashed_key { 'hashed' }
     name { 'name' }
     belongs { '所属' }
