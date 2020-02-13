@@ -5,24 +5,24 @@ RSpec.describe StudyAbroad, type: :model do
     it '全てが未回答状態の場合は、false' do
       study_abroad = FactoryBot.create(:study_abroad)
       user = FactoryBot.create(:user)
-      FactoryBot.create(:reply_log, study_abroad: study_abroad, user: user)
-      FactoryBot.create(:reply_log, study_abroad: study_abroad, user: user)
+      FactoryBot.create(:study_abroad_request, study_abroad: study_abroad, user: user)
+      FactoryBot.create(:study_abroad_request, study_abroad: study_abroad, user: user)
       expect(study_abroad.is_rejected_all?).to eq false
     end
 
     it '2つのうち1つ拒否されている場合は、false' do
       study_abroad = FactoryBot.create(:study_abroad)
       user = FactoryBot.create(:user)
-      FactoryBot.create(:reply_log, study_abroad: study_abroad, user: user, answer_status: :rejected)
-      FactoryBot.create(:reply_log, study_abroad: study_abroad, user: user)
+      FactoryBot.create(:study_abroad_request, study_abroad: study_abroad, user: user, answer_status: :rejected)
+      FactoryBot.create(:study_abroad_request, study_abroad: study_abroad, user: user)
       expect(study_abroad.is_rejected_all?).to eq false
     end
 
     it '全て拒否されている場合は、true' do
       study_abroad = FactoryBot.create(:study_abroad)
       user = FactoryBot.create(:user)
-      FactoryBot.create(:reply_log, study_abroad: study_abroad, user: user, answer_status: :rejected)
-      FactoryBot.create(:reply_log, study_abroad: study_abroad, user: user, answer_status: :rejected)
+      FactoryBot.create(:study_abroad_request, study_abroad: study_abroad, user: user, answer_status: :rejected)
+      FactoryBot.create(:study_abroad_request, study_abroad: study_abroad, user: user, answer_status: :rejected)
       expect(study_abroad.is_rejected_all?).to eq true
     end
   end
@@ -42,7 +42,7 @@ RSpec.describe StudyAbroad, type: :model do
         hash = 'hash'
         study_abroad = FactoryBot.create(:study_abroad, hashed_key: hash, created_at: Date.current)
         user = FactoryBot.create(:user)
-        FactoryBot.create(:reply_log, study_abroad: study_abroad, user: user, result: true, answer_status: :accepted)
+        FactoryBot.create(:study_abroad_request, study_abroad: study_abroad, user: user, result: true, answer_status: :accepted)
         expect(study_abroad.is_already_replied_by_user?(user.id)).to eq true
       end
     end
@@ -77,7 +77,7 @@ RSpec.describe StudyAbroad, type: :model do
         hash = 'hash'
         study_abroad = FactoryBot.create(:study_abroad, hashed_key: hash, created_at: Date.current)
         user = FactoryBot.create(:user)
-        FactoryBot.create(:reply_log, study_abroad: study_abroad, user: user, result: true)
+        FactoryBot.create(:study_abroad_request, study_abroad: study_abroad, user: user, result: true)
         expected = described_class.requesting(hash)
         expect(expected).to eq nil
       end
@@ -86,7 +86,7 @@ RSpec.describe StudyAbroad, type: :model do
         hash = 'hash'
         study_abroad = FactoryBot.create(:study_abroad, hashed_key: hash, created_at: Date.current)
         user = FactoryBot.create(:user)
-        FactoryBot.create(:reply_log, study_abroad: study_abroad, user: user, result: false)
+        FactoryBot.create(:study_abroad_request, study_abroad: study_abroad, user: user, result: false)
         expected = described_class.requesting(hash)
         expect(expected).to eq study_abroad
       end
@@ -105,17 +105,17 @@ RSpec.describe StudyAbroad, type: :model do
     it '正常系: ReplyLogのanswer_statusが全て未回答で3日たった場合、StudyAbroadが取得できること' do
       given = FactoryBot.create(:study_abroad, created_at: 3.days.ago)
       user = FactoryBot.create(:user)
-      FactoryBot.create(:reply_log, user: user, study_abroad: given)
+      FactoryBot.create(:study_abroad_request, user: user, study_abroad: given)
       expected = described_class.all_three_days_before_for_remind
       expect(expected).to eq [given]
-      expect(expected[0].reply_log).to eq given.reply_log
+      expect(expected[0].study_abroad_request).to eq given.study_abroad_request
     end
 
     it '正常系: ReplyLogのanswer_statusの少なくとも1つが :rejectedの場合、StudyAbroadは取得できること' do
       given = FactoryBot.create(:study_abroad, created_at: 3.days.ago)
       user = FactoryBot.create(:user)
-      FactoryBot.create(:reply_log, user: user, study_abroad: given, answer_status: :rejected)
-      FactoryBot.create(:reply_log, user: user, study_abroad: given, answer_status: :no_answer)
+      FactoryBot.create(:study_abroad_request, user: user, study_abroad: given, answer_status: :rejected)
+      FactoryBot.create(:study_abroad_request, user: user, study_abroad: given, answer_status: :no_answer)
       expected = described_class.all_three_days_before_for_remind
       expect(expected).to eq [given]
     end

@@ -5,9 +5,9 @@ task three_days_reminder_task: :environment do
   puts 'Run all_three_days_before_for_remind funtion for families...'
   study_abroads = StudyAbroad.all_three_days_before_for_remind
   study_abroads.each do |study_abroad|
-    study_abroad.reply_log.each do |reply_log|
-      if reply_log.no_answer?
-        CommonMailer.reminder_three_days(reply_log.user, study_abroad).deliver_now
+    study_abroad.study_abroad_request.each do |study_abroad_request|
+      if study_abroad_request.no_answer?
+        CommonMailer.reminder_three_days(study_abroad_request.user, study_abroad).deliver_now
       end
     end
   end
