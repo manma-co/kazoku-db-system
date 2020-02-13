@@ -119,7 +119,6 @@ class CommonMailer < ApplicationMailer
     )
     # Send a mail
     mail(to: mail, subject: title)
-    Raven.capture_exception(e)
     # Update email queue status
     queue = EmailQueue.where(
       to_address: mail,
