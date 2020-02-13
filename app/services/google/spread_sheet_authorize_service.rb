@@ -7,33 +7,17 @@ require 'multi_json'
 
 module Google
   class SpreadSheetAuthorizeService
-    SCOPE = Google::Apis::SheetsV4::AUTH_SPREADSHEETS
-
-    # 認証用IDとSECRETの生成
-    AUTH_CONFIG = {
-      web: {
-        client_id: ENV['SPREAD_SHEET_CLIENT_ID'],
-        client_secret: ENV['SPREAD_SHEET_CLIENT_SECRET']
-      }
-    }.freeze
-
-    # @params request
-    # @params user_id Unique ID for authorize
-    # @return [authorizer, credentials] [認証情報, 認証済み情報]
-    def self.do(request, user_id)
-      # ライブラリを参考にjsonを再読込
-      auth_config = MultiJson.load(AUTH_CONFIG.to_json)
-      client_id = Google::Auth::ClientId.from_hash(auth_config)
-      path = File.join(Rails.root, '.credentials')
-
-      # ディレクトリが存在しなければ作成
-      FileUtils.mkdir_p(path) unless FileTest.exist?(path)
-      credential_path = File.join(Rails.root, '.credentials', 'sheet.yaml')
-
-      token_store = Google::Auth::Stores::FileTokenStore.new(file: credential_path)
-      authorizer = Google::Auth::WebUserAuthorizer.new(client_id, SCOPE, token_store, '/admin/spread_sheets/oauth2callback')
-      credentials = authorizer.get_credentials(user_id, request)
-      [authorizer, credentials]
+    # @return credentials
+    def self.credentials
+      # MEMO: 下記環境変数の設定が必要
+      # "GOOGLE_CLIENT_ID",
+      # "GOOGLE_CLIENT_EMAIL",
+      # "GOOGLE_ACCOUNT_TYPE",
+      # "GOOGLE_PRIVATE_KEY"
+      Google::Auth::ServiceAccountCredentials.make_creds(scope: [
+                                                           'https://www.googleapis.com/auth/drive',
+                                                           'https://www.googleapis.com/auth/spreadsheets'
+                                                         ])
     end
   end
 end

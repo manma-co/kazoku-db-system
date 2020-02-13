@@ -68,9 +68,7 @@ class RequestController < ApplicationController
       study_abroad_request.update!(user: user, result: true, answer_status: :accepted)
 
       # Write data to spread sheet
-      if Rails.env.production?
-        Google::AuthorizeWithWriteByServiceAccount.do(row(user, event, @study_abroad))
-      end
+      Google::AuthorizeWithWriteByServiceAccount.do(row(user, event, @study_abroad))
 
       redirect_to thanks_path
     else
