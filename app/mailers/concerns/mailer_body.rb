@@ -171,7 +171,6 @@ class MailerBody
     body.sub!(/\[event_meeting_place\]/, event.meeting_place)
     body.sub!(/\[event_information\]/, event.information)
 
-    # Return
     body
   end
 

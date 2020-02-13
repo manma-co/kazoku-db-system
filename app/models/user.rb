@@ -19,7 +19,9 @@ class User < ApplicationRecord
 
   # 働き方の文字列を取得する
   def job_style_str
-    job_style = profile_family.job_style
+    return '' if profile_family.nil?
+
+    job_style = profile_family&.job_style
     if job_style == Settings.job_style.both
       Settings.job_style.str.both
     elsif job_style == Settings.job_style.both_single
