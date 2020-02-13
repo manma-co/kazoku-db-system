@@ -25,19 +25,14 @@ class NewsLetterMailer < ApplicationMailer
       email_type: 'send_news_letter'
     )
 
-    begin
-      mail(to: 'info@manma.co', bcc: bcc_address, subject: subject)
-    rescue StandardError => e
-      p "エラー: #{e.message}"
-    else
-      queue = EmailQueue.where(
-        to_address: 'info@manma.co',
-        request_log: RequestLog.first,
-        subject: subject,
-        sent_status: false,
-        email_type: 'send_news_letter'
-      ).limit(1)
-      queue.update(sent_status: true, time_delivered: Time.zone.now)
-    end
+    mail(to: 'info@manma.co', bcc: bcc_address, subject: subject)
+    queue = EmailQueue.where(
+      to_address: 'info@manma.co',
+      request_log: RequestLog.first,
+      subject: subject,
+      sent_status: false,
+      email_type: 'send_news_letter'
+    ).limit(1)
+    queue.update(sent_status: true, time_delivered: Time.zone.now)
   end
 end

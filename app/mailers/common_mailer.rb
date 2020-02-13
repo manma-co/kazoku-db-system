@@ -43,21 +43,15 @@ class CommonMailer < ApplicationMailer
       email_type: Settings.email_type.request
     )
     @body = mail_body
-    begin
-      mail(to: mail, subject: title)
-    rescue StandardError => e
-      p "エラー: #{e.message}"
-      mail(to: 'info@manma.co', subject: "エラーが発生しました。#{e.message} at: #{Time.zone.now}")
-    else
-      queue = EmailQueue.where(
-        to_address: mail,
-        request_log: log,
-        subject: title,
-        sent_status: false,
-        email_type: Settings.email_type.request
-      ).limit(1)
-      queue.update(sent_status: true, time_delivered: Time.zone.now)
-    end
+    mail(to: mail, subject: title)
+    queue = EmailQueue.where(
+      to_address: mail,
+      request_log: log,
+      subject: title,
+      sent_status: false,
+      email_type: Settings.email_type.request
+    ).limit(1)
+    queue.update(sent_status: true, time_delivered: Time.zone.now)
   end
 
   # マッチング成立時にmanmaに送るメール。
@@ -87,23 +81,17 @@ class CommonMailer < ApplicationMailer
       sent_status: false,
       email_type: Settings.email_type.manma
     )
-    begin
-      # Send a mail
-      mail(to: 'info@manma.co', subject: title)
-    rescue StandardError => e
-      p "エラー: #{e.message}"
-      mail(to: 'info@manma.co', subject: "エラーが発生しました。#{e.message} at: #{Time.zone.now}")
-    else
-      # Update email queue status
-      queue = EmailQueue.where(
-        to_address: 'info@manma.co',
-        request_log: log,
-        subject: title,
-        sent_status: false,
-        email_type: Settings.email_type.manma
-      ).order('id desc').limit(1)
-      queue.update(sent_status: true, time_delivered: Time.zone.now)
-    end
+    # Send a mail
+    mail(to: 'info@manma.co', subject: title)
+    # Update email queue status
+    queue = EmailQueue.where(
+      to_address: 'info@manma.co',
+      request_log: log,
+      subject: title,
+      sent_status: false,
+      email_type: Settings.email_type.manma
+    ).order('id desc').limit(1)
+    queue.update(sent_status: true, time_delivered: Time.zone.now)
   end
 
   # マッチング成立時に家庭に向けて送る
@@ -129,23 +117,17 @@ class CommonMailer < ApplicationMailer
       sent_status: false,
       email_type: Settings.email_type.family_matched
     )
-    begin
-      # Send a mail
-      mail(to: mail, subject: title)
-    rescue StandardError => e
-      p "エラー: #{e.message}"
-      mail(to: 'info@manma.co', subject: "エラーが発生しました。#{e.message} at: #{Time.zone.now}")
-    else
-      # Update email queue status
-      queue = EmailQueue.where(
-        to_address: mail,
-        request_log: request_log,
-        subject: title,
-        sent_status: false,
-        email_type: Settings.email_type.family_matched
-      ).limit(1)
-      queue.update(sent_status: true, time_delivered: Time.zone.now)
-    end
+    # Send a mail
+    mail(to: mail, subject: title)
+    # Update email queue status
+    queue = EmailQueue.where(
+      to_address: mail,
+      request_log: request_log,
+      subject: title,
+      sent_status: false,
+      email_type: Settings.email_type.family_matched
+    ).limit(1)
+    queue.update(sent_status: true, time_delivered: Time.zone.now)
   end
 
   # マッチング成立時に参加者に向けて送る
@@ -169,23 +151,16 @@ class CommonMailer < ApplicationMailer
       sent_status: false,
       email_type: Settings.email_type.candidate
     )
-    begin
-      # Send a mail
-      mail(to: @log.email, subject: title)
-    rescue StandardError => e
-      p "エラー: #{e.message}"
-      mail(to: 'info@manma.co', subject: "エラーが発生しました。#{e.message} at: #{Time.zone.now}")
-    else
-      # Update email queue status
-      queue = EmailQueue.where(
-        to_address: @log.email,
-        request_log: @log,
-        subject: title,
-        sent_status: false,
-        email_type: Settings.email_type.candidate
-      ).limit(1)
-      queue.update(sent_status: true, time_delivered: Time.zone.now)
-    end
+    mail(to: @log.email, subject: title)
+    # Update email queue status
+    queue = EmailQueue.where(
+      to_address: @log.email,
+      request_log: @log,
+      subject: title,
+      sent_status: false,
+      email_type: Settings.email_type.candidate
+    ).limit(1)
+    queue.update(sent_status: true, time_delivered: Time.zone.now)
   end
 
   # マッチング開始時に参加者に向けて送る
@@ -205,23 +180,17 @@ class CommonMailer < ApplicationMailer
       email_type: Settings.email_type.matching_start
     )
 
-    begin
-      # Send a mail
-      mail(to: request_log.email, subject: title)
-    rescue StandardError => e
-      p "エラー: #{e.message}"
-      mail(to: 'info@manma.co', subject: "エラーが発生しました。#{e.message} at: #{Time.zone.now}")
-    else
-      # Update email queue status
-      queue = EmailQueue.where(
-        to_address: request_log.email,
-        request_log: request_log,
-        subject: title,
-        sent_status: false,
-        email_type: Settings.email_type.matching_start
-      ).limit(1)
-      queue.update(sent_status: true, time_delivered: Time.zone.now)
-    end
+    # Send a mail
+    mail(to: request_log.email, subject: title)
+    # Update email queue status
+    queue = EmailQueue.where(
+      to_address: request_log.email,
+      request_log: request_log,
+      subject: title,
+      sent_status: false,
+      email_type: Settings.email_type.matching_start
+    ).limit(1)
+    queue.update(sent_status: true, time_delivered: Time.zone.now)
   end
 
   # マッチングを断った場合に家庭に送る
@@ -244,21 +213,15 @@ class CommonMailer < ApplicationMailer
       sent_status: false,
       email_type: Settings.email_type.deny
     )
-    begin
-      mail(to: mail, subject: title)
-    rescue StandardError => e
-      p "エラー: #{e.message}"
-      mail(to: 'info@manma.co', subject: "エラーが発生しました。#{e.message} at: #{Time.zone.now}")
-    else
-      queue = EmailQueue.where(
-        to_address: mail,
-        request_log: request_log,
-        subject: title,
-        sent_status: false,
-        email_type: Settings.email_type.deny
-      ).limit(1)
-      queue.update(sent_status: true, time_delivered: Time.zone.now)
-    end
+    mail(to: mail, subject: title)
+    queue = EmailQueue.where(
+      to_address: mail,
+      request_log: request_log,
+      subject: title,
+      sent_status: false,
+      email_type: Settings.email_type.deny
+    ).limit(1)
+    queue.update(sent_status: true, time_delivered: Time.zone.now)
   end
 
   # 参加者向けに再打診候補日程をもらうメール
@@ -280,21 +243,15 @@ class CommonMailer < ApplicationMailer
       sent_status: false,
       email_type: Settings.email_type.readjustment
     )
-    begin
-      mail(to: log.email, subject: title)
-    rescue StandardError => e
-      p "エラー: #{e.message}"
-      mail(to: 'info@manma.co', subject: "エラーが発生しました。#{e.message} at: #{Time.zone.now}")
-    else
-      queue = EmailQueue.where(
-        to_address: log.email,
-        request_log: log,
-        subject: title,
-        sent_status: false,
-        email_type: Settings.email_type.readjustment
-      ).limit(1)
-      queue.update(sent_status: true, time_delivered: Time.zone.now)
-    end
+    mail(to: log.email, subject: title)
+    queue = EmailQueue.where(
+      to_address: log.email,
+      request_log: log,
+      subject: title,
+      sent_status: false,
+      email_type: Settings.email_type.readjustment
+    ).limit(1)
+    queue.update(sent_status: true, time_delivered: Time.zone.now)
   end
 
   # 再打診メールを info@manma.co にもお知らせする。
@@ -315,21 +272,15 @@ class CommonMailer < ApplicationMailer
       sent_status: false,
       email_type: Settings.email_type.readjustment_to_manma
     )
-    begin
-      mail(to: 'info@manma.co', subject: title)
-    rescue StandardError => e
-      p "エラー: #{e.message}"
-      mail(to: 'info@manma.co', subject: "エラーが発生しました。#{e.message} at: #{Time.zone.now}")
-    else
-      queue = EmailQueue.where(
-        to_address: 'info@manma.co',
-        request_log: log,
-        subject: title,
-        sent_status: false,
-        email_type: Settings.email_type.readjustment_to_manma
-      ).limit(1)
-      queue.update(sent_status: true, time_delivered: Time.zone.now)
-    end
+    mail(to: 'info@manma.co', subject: title)
+    queue = EmailQueue.where(
+      to_address: 'info@manma.co',
+      request_log: log,
+      subject: title,
+      sent_status: false,
+      email_type: Settings.email_type.readjustment_to_manma
+    ).limit(1)
+    queue.update(sent_status: true, time_delivered: Time.zone.now)
   end
 
   include ApplicationHelper
@@ -358,20 +309,14 @@ class CommonMailer < ApplicationMailer
       sent_status: false,
       email_type: Settings.email_type.three_days
     )
-    begin
-      mail(to: mail, subject: title)
-    rescue StandardError => e
-      p "エラー: #{e.message}"
-      mail(to: 'info@manma.co', subject: "エラーが発生しました。#{e.message} at: #{Time.zone.now}")
-    else
-      queue = EmailQueue.where(
-        to_address: mail,
-        request_log: log,
-        subject: title,
-        sent_status: false,
-        email_type: Settings.email_type.three_days
-      ).limit(1)
-      queue.update(sent_status: true, time_delivered: Time.zone.now)
-    end
+    mail(to: mail, subject: title)
+    queue = EmailQueue.where(
+      to_address: mail,
+      request_log: log,
+      subject: title,
+      sent_status: false,
+      email_type: Settings.email_type.three_days
+    ).limit(1)
+    queue.update(sent_status: true, time_delivered: Time.zone.now)
   end
 end

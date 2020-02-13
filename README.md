@@ -1,7 +1,9 @@
+[![CircleCI](https://circleci.com/gh/manma-co/kazoku-db-system.svg?style=svg)](https://circleci.com/gh/manma-co/kazoku-db-system)
+
 # KAZOKU DB SYSTEM
 
 ## ENVIRONMENT
-- Ruby version: 2.4.6
+- Ruby version: 2.5.5
 - Rails version: 5.0.7.2
 - Configuration: Need to have secret.yml
 - Database creation: Use sqlite3 for development environment
