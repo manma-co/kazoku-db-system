@@ -1,4 +1,5 @@
 [![CircleCI](https://circleci.com/gh/manma-co/kazoku-db-system.svg?style=svg)](https://circleci.com/gh/manma-co/kazoku-db-system)
+[![codecov](https://codecov.io/gh/manma-co/kazoku-db-system/branch/master/graph/badge.svg)](https://codecov.io/gh/manma-co/kazoku-db-system)
 
 # KAZOKU DB SYSTEM
 
