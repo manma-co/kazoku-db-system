@@ -65,4 +65,7 @@ RSpec.configure do |config|
   config.include Devise::Test::ControllerHelpers, type: :view
   config.include Devise::Test::IntegrationHelpers, type: :request
   config.include ControllerMacros, type: :controller
+
+  require 'codeclimate-test-reporter'
+  CodeClimate::TestReporter.start
 end

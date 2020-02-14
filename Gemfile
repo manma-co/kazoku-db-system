@@ -93,7 +93,9 @@ group :development, :test do
 end
 
 group :test do
+  gem 'codeclimate-test-reporter', require: false
   gem 'codecov', require: false
+  gem 'simplecov', '~> 0.10', '< 0.18'
 end
 
 group :development do
