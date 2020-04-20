@@ -73,7 +73,7 @@
               </div>
             </div>
             <p>
-              <small>※希望時間は5時間以上で記入してください</small>
+              <small>※訪問の場合5時間以上、オンラインの場合2時間程度の時間を記載ください。</small>
               <br>
               <small>※例）リクエスト 9:00 ~ 20:00 → 回答 10:00 ~ 18:00</small>
             </p>
@@ -92,7 +92,7 @@
           <%= f.text_field :meeting_place, :placeholder => '東京駅 南中央出口', :required => true, :class => 'form-control' %>
         </div>
         <div>
-          <small>※できるだけ詳しく記入してください。</small>
+          <small>※オンライン実施の場合は、希望の接続方法を記載ください。（Skype、LINE、Facebook Messenger、Zoom等）</small>
         </div>
       </div>
 
@@ -138,6 +138,7 @@
         <small class="col-md-6">
           ※「受け入れ準備代・食事代」として参加者の参加費より500円分をAmazonギフトカードでお渡しいたします。
           受け取りを希望する場合は「はい」をご選択ください。
+          大変恐縮ですが、お渡しできるのは通常の家族留学のみになっております。ご了承いただければ幸いです。
         </small>
         <div class="col-md-12">
           <%= f.radio_button :is_amazon_card, true, :id => "yes", :checked => false %>
