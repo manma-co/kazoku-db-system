@@ -127,7 +127,7 @@ class MailerBody
   def self.notify_to_candidate(event, study_abroad, user)
     body = <<~EOS
 
-      [log_name] 様
+      #{study_abroad.name} 様
 
       この度、家族留学のマッチングが成立いたしましたのでご連絡させていただきます。</p>
 
@@ -142,14 +142,16 @@ class MailerBody
 
       ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
 
-      受け入れ家庭のお名前: [user_name]
-      受け入れ家庭の家族構成: [user_job_style_str]
-      受け入れ家庭の緊急連絡先: [user_contact_email_pc]
-      実施日時: [event_hold_date]
-      実施開始時間: [event_start_time]
-      実施終了時間: [event_end_time]
-      集合場所: [event_meeting_place]
-      備考: [event_information]
+    EOS
+    body += "受け入れ家庭のお名前: #{user.name}\n"
+    body += "受け入れ家庭の家族構成: #{user.job_style_str}\n" if user.job_style_str.present?
+    body += "受け入れ家庭の緊急連絡先: #{user.contact.email_pc}\n"
+    body += "実施日時: #{event.hold_date.strftime('%H時%M分')}\n"
+    body += "実施開始時間: #{event.start_time.strftime('%H時%M分')}\n"
+    body += "実施終了時間: #{event.end_time.strftime('%H時%M分')}\n"
+    body += "集合場所: #{event.meeting_place}\n"
+    body += "備考: #{event.information}\n"
+    body += <<~EOS
       ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
 
       また、ご質問等ございましたら
@@ -160,16 +162,6 @@ class MailerBody
       manma
 
     EOS
-
-    body.sub!(/\[log_name\]/, study_abroad.name)
-    body.sub!(/\[user_name\]/, user.name)
-    body.sub!(/\[user_job_style_str\]/, user.job_style_str)
-    body.sub!(/\[user_contact_email_pc\]/, user.contact.email_pc)
-    body.sub!(/\[event_hold_date\]/, event.hold_date.strftime('%H時%M分').to_s)
-    body.sub!(/\[event_start_time\]/, event.start_time.strftime('%H時%M分').to_s)
-    body.sub!(/\[event_end_time\]/, event.end_time.strftime('%H時%M分').to_s)
-    body.sub!(/\[event_meeting_place\]/, event.meeting_place)
-    body.sub!(/\[event_information\]/, event.information)
 
     body
   end
