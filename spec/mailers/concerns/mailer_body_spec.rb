@@ -13,8 +13,8 @@ RSpec.describe MailerBody do
           :event_date,
           study_abroad: study_abroad,
           user: user,
-          start_time: Time.mktime(2020, 6, 29, 10, 15, 0),
-          end_time: Time.mktime(2020, 6, 29, 12, 15, 0)
+          start_time: Time.utc(2010, 6, 29, 10, 15, 0),
+          end_time: Time.utc(2010, 6, 29, 12, 15, 0)
         )
         body = described_class.notify_to_candidate(event_date, study_abroad, user)
         expected_body = <<~EOS
@@ -38,8 +38,8 @@ RSpec.describe MailerBody do
           受け入れ家庭の家族構成: 共働き
           受け入れ家庭の緊急連絡先: test1@example.com
           実施日時: 00時00分
-          実施開始時間: 01時15分
-          実施終了時間: 03時15分
+          実施開始時間: 10時15分
+          実施終了時間: 12時15分
           集合場所: 東京駅
           備考: information text
           ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
@@ -65,8 +65,8 @@ RSpec.describe MailerBody do
           :event_date,
           study_abroad: study_abroad,
           user: user,
-          start_time: Time.mktime(2020, 6, 29, 10, 15, 0),
-          end_time: Time.mktime(2020, 6, 29, 12, 15, 0)
+          start_time: Time.utc(2010, 6, 29, 10, 15, 0),
+          end_time: Time.utc(2010, 6, 29, 12, 15, 0)
         )
         body = described_class.notify_to_candidate(event_date, study_abroad, user)
         expected_body = <<~EOS
@@ -89,8 +89,8 @@ RSpec.describe MailerBody do
           受け入れ家庭のお名前: 受け入れ太郎
           受け入れ家庭の緊急連絡先: test1@example.com
           実施日時: 00時00分
-          実施開始時間: 01時15分
-          実施終了時間: 03時15分
+          実施開始時間: 10時15分
+          実施終了時間: 12時15分
           集合場所: 東京駅
           備考: information text
           ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
