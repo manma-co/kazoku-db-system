@@ -28,6 +28,8 @@ class User < ApplicationRecord
       Settings.job_style.str.both_single
     elsif job_style == Settings.job_style.homemaker
       Settings.job_style.str.homemaker
+    else
+      ''
     end
   end
 
