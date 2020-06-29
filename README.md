@@ -44,6 +44,8 @@ You need Heroku account. Please ask maintaineer about account.
 git push heroku release:master
 ```
 
+when merge to master, deploying automatically (it is be configured on Heroku).
+
 ## Generate ER
 
 ```bash
