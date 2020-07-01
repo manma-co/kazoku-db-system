@@ -26,3 +26,5 @@ run.sh
 vendor/bundle
 
 erd.*
+
+converage

@@ -5,9 +5,6 @@
 
 ## ENVIRONMENT
 
-- Ruby version: 2.5.5
-- Rails version: 5.0.7.2
-- Configuration: Need to have secret.yml
 - Database creation: Use sqlite3 for development environment
 
 Run those command to run application
@@ -43,6 +40,8 @@ You need Heroku account. Please ask maintaineer about account.
 ```bash
 git push heroku release:master
 ```
+
+when merge to master, deploying automatically (it is be configured on Heroku).
 
 ## Generate ER
 
