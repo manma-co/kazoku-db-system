@@ -94,7 +94,7 @@ RSpec.describe StudyAbroad, type: :model do
   end
 
   describe 'self.all_three_days_before_for_remind' do
-    it '正常系EventDateが存在する場合、StudyAbroadが取得できないこと' do
+    it '正常系: EventDateが存在する場合、StudyAbroadが取得できないこと' do
       given = FactoryBot.create(:study_abroad, created_at: 3.days.ago)
       user = FactoryBot.create(:user)
       FactoryBot.create(:event_date, user: user, study_abroad: given)
@@ -147,6 +147,14 @@ RSpec.describe StudyAbroad, type: :model do
       FactoryBot.create(:study_abroad, created_at: 8.days.ago)
       expected = described_class.all_seven_days_before_for_remind
       expect(expected).to eq []
+    end
+
+    it '7日前の情報が取得できること' do
+      study_abroad = FactoryBot.create(:study_abroad, created_at: Time.utc(2020, 6, 23, 2, 27, 6))
+      travel_to Time.utc(2020, 6, 30, 11, 0, 0) do
+        expected = described_class.all_seven_days_before_for_remind
+        expect(expected).to eq [study_abroad]
+      end
     end
   end
 end

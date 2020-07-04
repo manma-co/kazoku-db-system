@@ -11,6 +11,11 @@ task three_days_reminder_task: :environment do
       end
     end
   end
+  Raven.capture_message(
+    'Run three_days_before',
+    level: :debug,
+    extra: { study_abroads: study_abroads }
+  )
   puts 'done.'
 end
 
@@ -22,6 +27,11 @@ task seven_days_over_task: :environment do
     CommonMailer.readjustment_to_candidate(study_abroad).deliver_now
     CommonMailer.readjustment_to_manma(study_abroad).deliver_now
   end
+  Raven.capture_message(
+    'Run serven_days_over',
+    level: :debug,
+    extra: { study_abroads: study_abroads }
+  )
   puts 'done.'
 end
 
