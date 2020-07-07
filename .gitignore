@@ -27,4 +27,4 @@ vendor/bundle
 
 erd.*
 
-converage
+/converage/*

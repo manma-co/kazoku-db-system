@@ -104,7 +104,7 @@ function remind(opt) {
     EMAIL: 5, // F2: メールアドレス
     INTERVIEW_DATE: 15,  // P1: 面談希望日時（場所：JR大塚駅付近）
     INTERVIEW_DATE_ONLINE: 17, // R1: 面談希望日時
-    IS_REMIND: 21  // V1: リマインドメール送信済み確認(システム利用)
+    IS_REMIND: 24  // W1: リマインドメール送信済み確認(システム利用)
   }
 
   // DI
@@ -140,7 +140,7 @@ function remind(opt) {
     var interviewDateOnlineStr = row[COLUMN.INTERVIEW_DATE_ONLINE]
 
     if (interviewDateStr === '' && interviewDateOnlineStr === '') {
-      logger.log('日付が空なのでスルー')
+      // logger.log('日付が空なのでスルー')
       continue
     }
 
@@ -151,8 +151,11 @@ function remind(opt) {
     if (interviewDateOnlineStr !== '') {
       targetDateStr = interviewDateOnlineStr
     }
+    logger.log('検証対象:' + targetDateStr)
     // 2017年7月1日 10:00~ という文字列を 2017/7/1 10:00 に変換する
+    // logger.log(interviewDateOnlineStr)
     var interviewDate = convertDate(targetDateStr)
+    // logger.log(interviewDate)
     interviewDate = m().timeModule.convertDatetimeToDate(interviewDate)
 
     var isNeedRemind = m().utilModule.isRemind(currentDate, interviewDate, 3)
@@ -166,6 +169,7 @@ function remind(opt) {
     var email = row[COLUMN.EMAIL]
     logger.log(email)
     var content = getMailContent(name, targetDateStr)
+    logger.log(content)
     gmailApp.sendEmail(email, SUBJECT, content, { name: 'manma', cc: MANMA_MAIL });
     sheet.getRange(startRow + i, COLUMN.IS_REMIND + 1).setValue(
       m().timeModule.formatDate('YYYY/MM/DD', currentDate)
@@ -200,8 +204,9 @@ function getMailContent(name, interview_date) {
     + "〒170-0005 東京都豊島区南大塚3-36-7 南大塚T&Tビル５F\n"
     + "※到着されましたら「507」の呼び鈴を鳴らしてください\n"
     + "▼オンライン\n"
-    + "  ご記入頂いたSkypeもしくはFacebookをオンラインにしてお待ち下さい\n"
-    + "\n"
+    + " ご記入頂いたSkypeもしくはFacebookをオンラインにしてお待ち下さい\n"
+    + "オンライン家族留学の場合は、以下の説明資料を事前説明会の際ご用意ください。\n"
+    + "https://drive.google.com/file/d/14qYbuweBesDCVQyOtj-ykSBnWi8Zsvxj/view?usp=sharing\n"
     + "・持ち物\n"
     + "  身分証明書（初回参加の方のみ）\n"
     + "\n"
@@ -219,7 +224,7 @@ function getMailContent(name, interview_date) {
     + "http://manma.co/student/\n"
     + "\n"
     + "ご不明な点がございましたら\n"
-    + "info@manma.co（マッチング担当）までお気軽にご連絡ください。\n"
+    + "info@manma.co（砂川）までお気軽にご連絡ください。\n"
     + "\n"
     + "お会いできますことを、楽しみにしております。\n"
 }
