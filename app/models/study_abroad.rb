@@ -33,7 +33,7 @@ class StudyAbroad < ApplicationRecord
   # 7日経ってもマッチングが成立しなかった場合は、再打診するかどうか確認するメールを送信する
   def self.all_seven_days_before_for_remind
     study_abroads = []
-    StudyAbroad.includes(:event_date).where(event_dates: { id: nil }, created_at: 7.days.ago.all_day).find_each do |study_abroad|
+    StudyAbroad.includes(:event_date).where(event_dates: { id: nil }, created_at: Time.current.ago(7.days).all_day).find_each do |study_abroad|
       study_abroads << study_abroad
     end
     study_abroads
@@ -42,7 +42,7 @@ class StudyAbroad < ApplicationRecord
   # 3日経ってもマッチングが成立しなかった場合は、家庭にリマインドメールを送信する
   def self.all_three_days_before_for_remind
     study_abroads = []
-    StudyAbroad.includes(:event_date, study_abroad_request: { user: :contact }).where(event_dates: { id: nil }, created_at: 3.days.ago.all_day).find_each do |study_abroad|
+    StudyAbroad.includes(:event_date, study_abroad_request: { user: :contact }).where(event_dates: { id: nil }, created_at: Time.current.ago(3.days).all_day).find_each do |study_abroad|
       study_abroads << study_abroad
     end
     study_abroads
