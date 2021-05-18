@@ -149,7 +149,9 @@ GEM
       sass (~> 3.3)
     memoist (0.16.2)
     method_source (1.0.0)
-    mimemagic (0.3.5)
+    mimemagic (0.3.10)
+      nokogiri (~> 1)
+      rake
     mini_mime (1.0.2)
     mini_portile2 (2.4.0)
     minitest (5.14.1)
@@ -187,7 +189,8 @@ GEM
       ast (~> 2.4.1)
     pg (0.21.0)
     public_suffix (4.0.5)
-    puma (3.12.6)
+    puma (4.3.8)
+      nio4r (~> 2.0)
     rack (2.2.3)
     rack-test (1.1.0)
       rack (>= 1.0, < 3)
@@ -377,7 +380,7 @@ DEPENDENCIES
   omniauth-rails_csrf_protection
   paranoia
   pg (~> 0.18)
-  puma (~> 3.12)
+  puma (~> 4.3)
   rails (~> 5.0)
   rails-assets-sweetalert2 (~> 5.1.1)!
   rails-controller-testing
