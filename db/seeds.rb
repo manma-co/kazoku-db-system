@@ -5,6 +5,9 @@
 #
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
+Admin.create(
+  email: 'go55555og@gmail.com'
+)
 
 domains = %w[
   専業主婦・専業主夫（パート・アルバイトは除く）
@@ -29,17 +32,18 @@ domains.each_with_index do |domain, _i|
 end
 
 locations = [
-  '東京都墨田区押上1丁目1−2', # スカイツリー
-  '千葉県千葉市美浜区中瀬2−1', # 幕張メッセ
-  '京都府京都市北区金閣寺町1', # 金寺
-  '広島県広島市中区大手町1−10', # 原爆ドーム
-  '石川県金沢市丸の内1-1', # 金沢城
-  '東京都足立区千住東2-17-1'
+  {address:'東京都墨田区押上1丁目1−2', latitude: 35.7100069, longitude: 139.8108103 }, # スカイツリー
+  {address:'千葉県千葉市美浜区中瀬2−1', latitude: 35.646835, longitude: 140.034431 }, # 幕張メッセ
+  {address:'京都府京都市北区金閣寺町1', latitude: 35.0394312, longitude: 135.7292082 }, # 金閣寺
+  {address:'広島県広島市中区大手町1−10', latitude: 34.3954331, longitude: 132.4535483 }, # 原爆ドーム
+  {address:'石川県金沢市丸の内1-1', latitude: 36.5660557, longitude: 136.6596256 }, # 金沢城
+  {address:'東京都足立区千住東2-17-1', latitude: 35.745951, longitude: 139.809068 }
 ]
+
 
 locations.each_with_index do |location, i|
   user = User.create(name: "no_name_#{i + 1}", kana: 'no_name', gender: 0, is_family: true)
-  Location.create(user_id: user.id, address: location)
+  Location.create(user_id: user.id, address: location[:address], latitude: location[:latitude], longitude: location[:longitude])
   Contact.create(user_id: user.id, email_pc: "abc#{i + 1}@pc.com", email_phone: "abc#{i + 1}@phone.com", phone_number: '000-0000')
 
   profile_family = ProfileFamily.create(
@@ -60,7 +64,7 @@ locations.each_with_index do |location, i|
   )
 end
 
-dev_accounts = %w[shino@cps.im.dendai.ac.jp harimanmon@gmail.com ricken0203@gmail.com yoshihito522@gmail.com]
+dev_accounts = %w[shino@cps.im.dendai.ac.jp harimanmon@gmail.com ricken0203@gmail.com yoshihito522@gmail.com go55555og@gmail.com]
 dev_accounts.each do |dac|
   user = User.create(name: 'test', kana: 'test', gender: 0, is_family: true)
   Location.create(user_id: user.id, address: locations[0])
