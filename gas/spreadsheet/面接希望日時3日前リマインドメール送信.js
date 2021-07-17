@@ -2,7 +2,7 @@
  * Created by shino on 2018/04/25.
  */
 
-function m() {
+ function m() {
   /* timeModule */
   const timeModule = (function () {
     const getCurrentTimeMilliSecond = function (currentDate) {
@@ -199,21 +199,18 @@ function getMailContent(name, interview_date) {
     + interview_date + " \n"
     + "\n"
     + "・面談場所\n"
-    + "▼対面\n"
-    + "  RYOZAN PARK 大塚\n"
-    + "〒170-0005 東京都豊島区南大塚3-36-7 南大塚T&Tビル５F\n"
-    + "※到着されましたら「507」の呼び鈴を鳴らしてください\n"
-    + "▼オンライン\n"
-    + " ご記入頂いたSkypeもしくはFacebookをオンラインにしてお待ち下さい\n"
-    + "オンライン家族留学の場合は、以下の説明資料を事前説明会の際ご用意ください。\n"
-    + "https://drive.google.com/file/d/14qYbuweBesDCVQyOtj-ykSBnWi8Zsvxj/view?usp=sharing\n"
-    + "・持ち物\n"
-    + "  身分証明書（初回参加の方のみ）\n"
     + "\n"
+    + "▼オンライン\n"
+    + "manmaより別途お送りしますZoomURLにアクセスしてお待ちください。\n"
+    + "当日は下記の資料を使いますので、こちらも準備いただくようお願い致します。\n"
+    + "https://drive.google.com/file/d/19J4ws9nqUTmZGRHSAQWJFC-XboUadj1C/view?usp=sharing\n"
+    + "・持ち物\n"
+    + " 身分証明書（初回参加の方のみ）\n"
+    + "ご自身のスケジュールが分かるもの（参加希望日確認のため）\n"
     + "・内容\n"
     + "①事前説明会（初回参加の方のみ）\n"
     + "②家族留学マッチング\n"
-    + "※条件をお伺いし、面談日から３週間～２ヶ月の日程で家族留学を調整致します\n"
+    + "※条件をお伺いし、面談日から2週間～2か月の日程で家族留学を調整致します\n"
     + "\n"
     + "・参加費\n"
     + "  実施日が確定次第お振込頂きます\n"
@@ -224,12 +221,7 @@ function getMailContent(name, interview_date) {
     + "http://manma.co/student/\n"
     + "\n"
     + "ご不明な点がございましたら\n"
-    + "info@manma.co（砂川）までお気軽にご連絡ください。\n"
+    + "info@manma.co（家族留学担当）までお気軽にご連絡ください。\n"
     + "\n"
     + "お会いできますことを、楽しみにしております。\n"
-}
-
-module.exports = {
-  remind,
-  convertDate,
 }
