@@ -9,6 +9,15 @@
 
 Run those command to run application
 
+
+for develop
+```bash
+bundle install --without production
+rails db:migrate
+rails db:seed
+rails s
+```
+
 ```bash
 bundle install
 rails db:migrate
