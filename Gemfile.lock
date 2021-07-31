@@ -182,12 +182,14 @@ GEM
     memoist (0.16.2)
     method_source (1.0.0)
     mini_mime (1.1.0)
+    mini_portile2 (2.5.3)
     minitest (5.14.4)
     multi_json (1.15.0)
     multi_xml (0.6.0)
     multipart-post (2.1.1)
     nio4r (2.5.7)
-    nokogiri (1.11.7-x86_64-linux)
+    nokogiri (1.11.7)
+      mini_portile2 (~> 2.5.0)
       racc (~> 1.4)
     oauth2 (1.4.7)
       faraday (>= 0.8, < 2.0)
@@ -219,7 +221,8 @@ GEM
       ast (~> 2.4.1)
     pg (0.21.0)
     public_suffix (4.0.6)
-    puma (3.12.6)
+    puma (4.3.8)
+      nio4r (~> 2.0)
     racc (1.5.2)
     rack (2.2.3)
     rack-protection (2.1.0)
@@ -419,7 +422,7 @@ DEPENDENCIES
   omniauth-rails_csrf_protection
   paranoia
   pg (~> 0.18)
-  puma (~> 3.12)
+  puma (~> 4.3)
   rails (~> 5.0)
   rails-assets-sweetalert2 (~> 5.1.1)!
   rails-controller-testing
