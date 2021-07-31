@@ -25,10 +25,6 @@ crumb :edit_family do |family|
   parent :families
 end
 
-crumb :participants do
-  link '参加者一覧', admin_participants_path
-end
-
 crumb :participant do |participant|
   link "参加者詳細 : #{participant.name}", admin_participant_path(participant)
   parent :participants
