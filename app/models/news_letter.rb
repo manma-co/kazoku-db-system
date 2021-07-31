@@ -55,7 +55,7 @@ class NewsLetter < ApplicationRecord
     users = Participant.all
     bcc_address = ''
     users.each do |user|
-      bcc_address += user.email + ', '
+      bcc_address += "#{user.email}, "
     end
 
     # manma.co 宛にも送信
@@ -91,13 +91,13 @@ class NewsLetter < ApplicationRecord
       p 'Sending a news mail to family...'
       users = User.all
       users.each do |user|
-        bcc_address += user.contact.email_pc + ', '
+        bcc_address += "#{user.contact.email_pc}, "
       end
     else
       p 'Sending a news mail to participants...'
       participants = Participant.all
       participants.each do |participant|
-        bcc_address += participant.email + ', '
+        bcc_address += "#{participant.email}, "
       end
     end
 

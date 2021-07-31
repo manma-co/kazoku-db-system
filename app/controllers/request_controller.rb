@@ -32,8 +32,8 @@ class RequestController < ApplicationController
     # Parse date and time
     selected_date = event_params[:event_time]
     day = selected_date.split(' ')[0]
-    s_time = day + ' ' + selected_date.split(' ')[1]
-    e_time = day + ' ' + selected_date.split(' ')[3]
+    s_time = "#{day} #{selected_date.split(' ')[1]}"
+    e_time = "#{day} #{selected_date.split(' ')[3]}"
 
     # Get dates
     user = User.find(event_params[:user_id])
