@@ -9,11 +9,11 @@
 # Offense count: 1
 Lint/RescueException:
   Exclude:
-    - 'app/controllers/admin/locations_controller.rb'
+    - "app/controllers/admin/locations_controller.rb"
 
 # Offense count: 36
 Metrics/AbcSize:
-  Max: 174
+  Max: 175
 
 # Offense count: 3
 # Configuration parameters: CountComments, ExcludedMethods.
@@ -49,17 +49,17 @@ Metrics/PerceivedComplexity:
 # ForbiddenDelimiters: (?-mix:(^|\s)(EO[A-Z]{1}|END)(\s|$))
 Naming/HeredocDelimiterNaming:
   Exclude:
-    - 'app/controllers/admin/mails_controller.rb'
-    - 'app/helpers/admin/admin_helper.rb'
-    - 'app/mailers/concerns/mailer_body.rb'
-    - 'spec/controllers/admin/mails_controller_spec.rb'
+    - "app/controllers/admin/mails_controller.rb"
+    - "app/helpers/admin/admin_helper.rb"
+    - "app/mailers/concerns/mailer_body.rb"
+    - "spec/controllers/admin/mails_controller_spec.rb"
 
 # Offense count: 1
 # Configuration parameters: MinNameLength, AllowNamesEndingInNumbers, AllowedNames, ForbiddenNames.
 # AllowedNames: io, id, to, by, on, in, at, ip, db, os
 Naming/MethodParameterName:
   Exclude:
-    - 'app/services/google/authorize_with_write_by_service_account.rb'
+    - "app/services/google/authorize_with_write_by_service_account.rb"
 
 # Offense count: 13
 # Configuration parameters: NamePrefix, ForbiddenPrefixes, AllowedMethods, MethodDefinitionMacros.
@@ -69,27 +69,27 @@ Naming/MethodParameterName:
 # MethodDefinitionMacros: define_method, define_singleton_method
 Naming/PredicateName:
   Exclude:
-    - 'spec/**/*'
-    - 'app/helpers/admin/family_helper.rb'
-    - 'app/models/event_date.rb'
-    - 'app/models/profile_family.rb'
-    - 'app/models/study_abroad.rb'
+    - "spec/**/*"
+    - "app/helpers/admin/family_helper.rb"
+    - "app/models/event_date.rb"
+    - "app/models/profile_family.rb"
+    - "app/models/study_abroad.rb"
 
 # Offense count: 9
 # Configuration parameters: Prefixes.
 # Prefixes: when, with, without
 RSpec/ContextWording:
   Exclude:
-    - 'spec/controllers/admin/family_controller_spec.rb'
-    - 'spec/controllers/admin/mails_controller_spec.rb'
-    - 'spec/models/study_abroad_spec.rb'
+    - "spec/controllers/admin/family_controller_spec.rb"
+    - "spec/controllers/admin/mails_controller_spec.rb"
+    - "spec/models/study_abroad_spec.rb"
 
 # Offense count: 6
 # Configuration parameters: Max.
 RSpec/ExampleLength:
   Exclude:
-    - 'spec/models/study_abroad_spec.rb'
-    - 'spec/requests/request_controller_spec.rb'
+    - "spec/models/study_abroad_spec.rb"
+    - "spec/requests/request_controller_spec.rb"
 
 # Offense count: 7
 # Configuration parameters: AggregateFailuresByDefault.
@@ -101,18 +101,18 @@ RSpec/MultipleExpectations:
 # SupportedStyles: strict, flexible
 Rails/Date:
   Exclude:
-    - 'app/helpers/application_helper.rb'
-    - 'spec/factories/event_date.rb'
+    - "app/helpers/application_helper.rb"
+    - "spec/factories/event_date.rb"
 
 # Offense count: 6
 # Configuration parameters: EnforcedStyle.
 # SupportedStyles: slashes, arguments
 Rails/FilePath:
   Exclude:
-    - 'app/services/google/authorize_with_write_by_service_account.rb'
-    - 'app/services/google/spread_sheet_authorize_from_file_service.rb'
-    - 'app/services/google/spread_sheet_authorize_service.rb'
-    - 'config/initializers/constants.rb'
+    - "app/services/google/authorize_with_write_by_service_account.rb"
+    - "app/services/google/spread_sheet_authorize_from_file_service.rb"
+    - "app/services/google/spread_sheet_authorize_service.rb"
+    - "config/initializers/constants.rb"
 
 # Offense count: 2
 # Cop supports --auto-correct.
@@ -120,35 +120,35 @@ Rails/FilePath:
 # Include: app/models/**/*.rb
 Rails/FindBy:
   Exclude:
-    - 'app/models/news_letter.rb'
+    - "app/models/news_letter.rb"
 
 # Offense count: 1
 # Configuration parameters: Include.
 # Include: app/models/**/*.rb
 Rails/HasManyOrHasOneDependent:
   Exclude:
-    - 'app/models/job_domain.rb'
+    - "app/models/job_domain.rb"
 
 # Offense count: 2
 # Configuration parameters: Include.
 # Include: app/helpers/**/*.rb
 Rails/HelperInstanceVariable:
   Exclude:
-    - 'app/helpers/admin/admin_helper.rb'
+    - "app/helpers/admin/admin_helper.rb"
 
 # Offense count: 6
 # Configuration parameters: Include.
 # Include: app/**/*.rb, config/**/*.rb, db/**/*.rb, lib/**/*.rb
 Rails/Output:
   Exclude:
-    - 'app/models/news_letter.rb'
-    - 'app/services/google/authorize_with_write_by_service_account.rb'
-    - 'app/services/google/spread_sheet_fetch_service.rb'
+    - "app/models/news_letter.rb"
+    - "app/services/google/authorize_with_write_by_service_account.rb"
+    - "app/services/google/spread_sheet_fetch_service.rb"
 
 # Offense count: 1
 Rails/OutputSafety:
   Exclude:
-    - 'app/helpers/text_helper.rb'
+    - "app/helpers/text_helper.rb"
 
 # Offense count: 16
 # Cop supports --auto-correct.
@@ -165,23 +165,23 @@ Style/Documentation:
 # Configuration parameters: MinBodyLength.
 Style/GuardClause:
   Exclude:
-    - 'app/controllers/admin/news_letter_controller.rb'
+    - "app/controllers/admin/news_letter_controller.rb"
 
 # Offense count: 19
 # Cop supports --auto-correct.
 Style/IfUnlessModifier:
   Exclude:
-    - 'app/controllers/api/v1/family_controller.rb'
-    - 'app/controllers/request_controller.rb'
-    - 'lib/tasks/scheduler.rake'
-    - 'spec/factories/users.rb'
-    - 'spec/rails_helper.rb'
+    - "app/controllers/api/v1/family_controller.rb"
+    - "app/controllers/request_controller.rb"
+    - "lib/tasks/scheduler.rake"
+    - "spec/factories/users.rb"
+    - "spec/rails_helper.rb"
 
 # Offense count: 2
 Style/MixinUsage:
   Exclude:
-    - 'bin/setup'
-    - 'bin/update'
+    - "bin/setup"
+    - "bin/update"
 
 # Offense count: 168
 # Cop supports --auto-correct.

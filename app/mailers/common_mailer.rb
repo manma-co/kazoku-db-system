@@ -24,7 +24,7 @@ class CommonMailer < ApplicationMailer
     @user = user
 
     # Create and insert hash link with user email
-    link = root_url + 'request/' + hash + '?email=' + mail
+    link = "#{root_url}request/#{hash}?email=#{mail}"
     mail_body.sub!(/\[manma_request_link\]/, link)
 
     # Replace user name.
@@ -291,7 +291,7 @@ class CommonMailer < ApplicationMailer
     @user = user
     @study_abroad = study_abroad
     @days = RequestDay.where(study_abroad: study_abroad)
-    @url = root + 'request/' + @study_abroad.hashed_key + '?email=' + user.contact.email_pc
+    @url = "#{root}request/#{@study_abroad.hashed_key}?email=#{user.contact.email_pc}"
     title = '【リマインド】家族留学受け入れのお願い'
 
     body = MailerBody.reminder_three_days(@user, @study_abroad, @days, @url)
