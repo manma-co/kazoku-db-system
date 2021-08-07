@@ -12,9 +12,6 @@
             <th></th>
             <th>名前</th>
             <th>候補先</th>
-            <th>働き方</th>
-            <th>子どもの数</th>
-            <th>第一子の年齢</th>
             <th>打診回数</th>
             <th>実施回数</th>
             <th>最終打診日</th>
@@ -28,11 +25,8 @@
                   <%= check_box_tag 'user_id[]', location.user.id, checked = false, :id => "user_id_#{location.user.id}" %>
                   <%= label_tag "user_id_#{location.user.id}", index + 1 %>
                 </td>
-                <td><%= link_to location.user.name, admin_family_path(location.user.id) %></td>
+                <td><%= location.user.name %></td>
                 <td><%= location.address %></td>
-                <td><%= job_style_str(location.user.profile_family.job_style) %></td>
-                <td><%= location.user.profile_family.number_of_children %></td>
-                <td><%= current_age(location.user.profile_family.child_birthday) %></td>
                 <td><%= location.user.request_times %></td>
                 <td><%= location.user.execution_number %></td>
                 <td><%= location.user.last_request_day %></td>
@@ -41,11 +35,18 @@
           <% end %>
           </tbody>
         </table>
-        <div class="row">
-          <div class="input-field col s12">
-            <button class="btn waves-effect waves-light" name="action" type="submit">メール作成<i class="material-icons left">email</i>
+        <div class="fixed-action-btn">
+            <button class="btn-floating btn-large red" name="action" type="submit"><i class="large material-icons">email</i>
             </button>
-          </div>
         </div>
+      <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        var elems = document.querySelectorAll('.fixed-action-btn');
+        var instances = M.FloatingActionButton.init(elems, options);
+      });
+      $(document).ready(function(){
+        $('.fixed-action-btn').floatingActionButton();
+      });
+    </script>        
     <% end %>
 <% end %>
