@@ -23,13 +23,14 @@ module Google
       # 家庭情報スプレッドシートID
       spreadsheet_id = ENV['SPREAD_SHEET_ID']
       sheet_name = 'フォームの回答 1'
-      range = "#{sheet_name}!A2:AM"
+      range = "#{sheet_name}!A2:AR"
       response = service.get_spreadsheet_values(spreadsheet_id, range)
       puts 'No data found.' if response.values.empty?
 
       response
     end
 
+    # ‼︎!現在未使用 参加者をシステムで管理しなくなったため 20210809
     # スプレッドシート情報の取得(参加者向け)
     # response.value でスプレッドシートから取得したデータを全てを配列で取得することが可能
     # @param [authorize] authorize 認証情報

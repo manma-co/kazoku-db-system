@@ -3,9 +3,9 @@
  */
 function convert() {
   const COLUMN = {
-    ADDRESS: 5,
-    LAT: 37,
-    LON: 38,
+    ADDRESS: 5, // F列
+    LAT: 42, // AQ列
+    LON: 43, // AR列
   }
   const sheetName = 'フォームの回答 1'
   const sheet = SpreadsheetApp.getActive().getSheetByName(sheetName)
@@ -21,6 +21,8 @@ function convert() {
 
     var latitude = row[COLUMN.LAT]
     var longitude = row[COLUMN.LON]
+    latitude = latitude || ""
+    longitude = longitude || ""
     // 既に変換済みの場合は何もしない
     if (latitude != "" || longitude != "") {
       continue
@@ -49,14 +51,14 @@ function convert() {
 var APP = APP || {
   util: {
     common: {}
-  }
+  },
 }
 
 APP.util.common = (function () {
-  /*
+  /* 
    *一定の回数になると1秒スリープし、カウンタが0になる
    * sleepMS: sleepする時間(ms)
-   * limit: スリープするタイミング
+   * limit: スリープするタイミング 
    */
   sleepByCount = function (sleepMS, limit) {
     if (typeof limit === 'undefined') {
@@ -75,36 +77,36 @@ APP.util.common = (function () {
     sleepByCount.count += 1
 
     Logger.log(sleepByCount.count)
-  }
+  },
 
-  /*
-   * 住所から緯度、経度を変換する
-   * Google Geocoding APIにはAPIキーが必要
-   * https://developers.google.com/maps/documentation/geocoding/get-api-key?hl=ja
-   * 制限について
-   * 2500リクエスト/日
-   * 50リクエスト/秒
-   * 大量に取得したい場合は、50reqごとに1秒のwaitを入れるような実装が必要
-   */
-  convertFromAddressToLocation = function (address) {
-    if (address === '') {
-      return
+    /* 
+     * 住所から緯度、経度を変換する
+     */
+    convertFromAddressToLocation = function (address) {
+      if (address === '') {
+        return
+      }
+      // Google Geocoding APIにはAPIキーが必要
+      // https://developers.google.com/maps/documentation/geocoding/get-api-key?hl=ja
+      // 制限について
+      // 2500 req/日
+      // 50 req/秒
+      // 大量に取得したい場合は、50reqごとに1秒のwaitを入れるような実装が必要
+      var api_url = "https://maps.googleapis.com/maps/api/geocode/json?address=" + encodeURI(address);
+      api_url += '&key=[見せられないよ！]'
+      var response = UrlFetchApp.fetch(api_url);
+      var result = JSON.parse(response);
+      var location = result['results'][0]
+      if (typeof location === 'undefined') {
+        return
+      }
+      location = location['geometry']['location']
+      return { lat: location['lat'], lon: location['lng'] }
     }
-
-    var api_url = "https://maps.googleapis.com/maps/api/geocode/json?address=" + encodeURI(address);
-    api_url += '&key=[見せられないよ！]'
-    var response = UrlFetchApp.fetch(api_url);
-    var result = JSON.parse(response);
-    var location = result['results'][0]
-    if (typeof location === 'undefined') {
-      return
-    }
-    location = location['geometry']['location']
-    return {lat: location['lat'], lon: location['lng']}
-  }
 
   // Public API
-  sleepByCount: sleepByCount,
-  convertAddress: convertFromAddressToLocation
+  return {
+    sleepByCount: sleepByCount,
+    convertAddress: convertFromAddressToLocation
   }
 }())
