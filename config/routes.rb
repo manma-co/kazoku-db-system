@@ -17,7 +17,6 @@ Rails.application.routes.draw do
     get 'mails/histories'
     get 'mails/history/:id', to: 'mails#history', as: 'mails_history'
     get 'spread_sheets/fetch_family'
-    get 'spread_sheets/fetch_participant'
     get 'spread_sheets/oauth2callback'
 
     get  'news_letters/history', to: 'news_letter#history', as: 'news_history'

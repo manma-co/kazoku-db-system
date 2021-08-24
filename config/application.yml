@@ -15,41 +15,10 @@ defaults: &defaults
     name: 1
     kana: 2
     email_pc: 3
-    email_phone: 4
     address: 5
-    mothers_birthday: 6
-    fathers_birthday: 7
-    job_style: 8
-    mothers_job_domain: 9
-    fathers_job_domain: 10
-    number_of_children: 11
-    is_photo: 12
-    is_report: 13
-    married_mother_age: 14
-    first_childbirth_mother_age:  15
-    child_birthday: 16
-    mothers_hometown: 17
-    fathers_hometown: 18
-    mothers_company: 19
-    fathers_company: 20
-    mothers_experience_abroad: 21
-    fathers_experience_abroad: 22
-    has_time_shortening_experience: 23
-    has_childcare_leave_experience: 24
-    has_job_change_experience: 25
-    mothers_career: 26
-    fathers_career: 27
-    opinion_or_question: 28
-    is_male: 29
-    phone_number: 30
-    married_father_age: 31
-    second_child_birthday: 32
-    third_child_birthday: 33
-    blank1: 34 # 空白
-    recognization: 35
-    blank2: 36 # 空白
-    latitude: 37
-    longitude: 38
+    phone_number: 4
+    latitude: 42
+    longitude: 43
   job_style:
     # none: 指定なし
     # both: 共働き

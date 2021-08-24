@@ -44,26 +44,7 @@ class Admin::LocationsController < Admin::AdminController
   private
 
   def family_params
-    # 働き方のステータス
-    @job_style = params[:job_style] || Settings.job_style.none
-    @job_style = @job_style.to_i
-    if @job_style == Settings.job_style.both
-      job_style = [Settings.job_style.both, Settings.job_style.both_single] # シングルも含む
-      family = ProfileFamily.where(job_style: job_style)
-    elsif @job_style == Settings.job_style.homemaker
-      job_style = Settings.job_style.homemaker
-      family = ProfileFamily.where(job_style: job_style)
-    else
-      family = ProfileFamily.all
-    end
-
-    # 男性NGかどうか
-    @is_male_ok = params[:is_male_ok].nil? ? false : true
-    if params[:is_male_ok].nil?
-      family ||= ProfileFamily.all
-    else
-      family = family.where(is_male_ok: @is_male_ok)
-    end
+    family = Location.all
     family.includes(user: [:location, :contact, { study_abroad_request: { study_abroad: :email_queue } }])
   end
 end
