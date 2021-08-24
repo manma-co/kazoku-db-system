@@ -41,7 +41,6 @@ module Google
         location = Location.find_or_initialize_by(user_id: user.id)
         location.update(location_query)
 
-
         # デバッグモード(1行のみ処理)
         break if is_debug
       end
