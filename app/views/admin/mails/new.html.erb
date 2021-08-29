@@ -16,7 +16,7 @@
 </table>
 
 <div class="row">
-  <%= form_tag(admin_mails_confirm_path, method: :post, class: 'col s12') do %>
+  <%= form_tag(admin_mails_confirm_path, method: :post, class: 'col s12',target: '_brank') do %>
       <% @users.each do |user| %>
           <%= hidden_field_tag 'user_id[]', user.id, id: "user_id_#{user.id}" %>
       <% end %>
