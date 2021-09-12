@@ -159,7 +159,8 @@ class RequestController < ApplicationController
       event.hold_date.strftime('%Y/%m/%d'), # 実施日時
       event.start_time.strftime('%H:%M:%S'),
       event.end_time.strftime('%H:%M:%S'),
-      event.meeting_place
+      event.meeting_place,
+      event.is_amazon_card ? '有' : '無'
     ]
   end
 end
