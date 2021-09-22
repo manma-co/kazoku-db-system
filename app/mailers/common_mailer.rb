@@ -194,11 +194,12 @@ class CommonMailer < ApplicationMailer
   end
 
   # マッチングを断った場合に家庭に送る
-  def deny(study_abroad, user)
+  def deny(study_abroad, user, reason)
     @user = user
+    @reason = reason
     title = '【manma】家族留学受け入れ可否のご回答をありがとうございました'
 
-    body = MailerBody.deny(@user)
+    body = MailerBody.deny(@user, @reason)
     mail = user.contact.email_pc
 
     # Insert to DB

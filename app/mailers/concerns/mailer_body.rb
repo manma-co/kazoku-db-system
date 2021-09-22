@@ -166,12 +166,14 @@ class MailerBody
     body
   end
 
-  def self.deny(user)
+  def self.deny(user, reason)
     body = <<~EOS
 
       [user_name] 様
 
       この度は、家族留学の受け入れ打診にご回答くださり、ありがとうございました。
+      以下理由にて今回は受け入れ難しい旨、承りました。
+      理由：[reason]
 
       またの機会に、ぜひ受け入れをお願いできれば幸いです。
 
@@ -183,6 +185,7 @@ class MailerBody
     EOS
 
     body.sub!(/\[user_name\]/, user.name)
+    body.sub!(/\[reason\]/, reason)
 
     # Return
     body

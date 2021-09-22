@@ -32,12 +32,21 @@
     </tbody>
   </table>
   <div class="lh-half">
-    <p class="fs15">家族留学を受け入れますか？</p>
-    <p>(家族留学実施日の時間変更は可能です)</p>
+    <p class="fs15 bold">【家族留学受け入れ回答】</p>
+    <p>▼受け入れ希望の場合はこちら（実施時間変更は可能です）</p>
   </div>
   <%= link_to '受け入れる', reply_path(params[:id], email: params[:email]), :class => 'btn btn-lg btn-pink btn-block' %>
   <%# replyとパラメータの渡し方が違うが、confirmモーダルを入れる関係で以下のようにする必要がある %>
-  <%= link_to '今回は辞退する', reject_path(id: params[:id], email: params[:email]), method: :get, :class => 'btn btn-default', data: { confirm: '本当に辞退しますか？' } %>
+  <br>
+  <div class="lh-half">
+    <p>▼受け入れ自体の場合はこちら</p>
+  </div>
+  <%= form_tag(reject_path, method: :post) do %>
+      <%= hidden_field_tag 'id', params[:id] %>
+      <%= hidden_field_tag 'email', params[:email] %>
+      <%= text_field_tag :reason, nil, :required => true, :class => 'validate form-control',placeholder: '辞退理由をご記入ください' %>
+      <%= submit_tag '今回は辞退する', :class => 'btn btn-lg btn-gray btn-block' %>
+  <% end %>  
 </div>
 
 

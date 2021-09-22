@@ -18,9 +18,10 @@ class RequestController < ApplicationController
   def reject
     # TODO: resultを削除する
     # MEMO: study_abroad_requestが生成される前の@study_abroadが存在する可能性があるためfind_or_initialize_byにしている
+    @reason = params[:reason]
     study_abroad_request = @study_abroad.study_abroad_request.find_or_initialize_by(user: @user)
     study_abroad_request.update!(user: @user, result: false, answer_status: :rejected)
-    CommonMailer.deny(@study_abroad, @user).deliver_now
+    CommonMailer.deny(@study_abroad, @user, @reason).deliver_now
     # 再打診候補を参加者に送信する
     if @study_abroad.is_rejected_all?
       CommonMailer.readjustment_to_candidate(@study_abroad).deliver_now

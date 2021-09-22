@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 describe RequestController, type: :request do
-  describe 'GET #reject' do
+  describe 'POST #reject' do
     before do
       user = FactoryBot.create(:user)
       FactoryBot.create(:contact, user: user, email_pc: 'test@test.com')
@@ -10,7 +10,7 @@ describe RequestController, type: :request do
     end
 
     it '受入拒否をした場合、answer_statusが rejectedとなっていること' do
-      get '/reject/hash', params: { email: 'test@test.com' }
+      post '/reject/hash', params: { email: 'test@test.com', reason: '〇〇✖︎✖︎のため' }
       expect(response).to redirect_to deny_path
       expect(response.status).to eq 302
 
