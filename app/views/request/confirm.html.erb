@@ -39,7 +39,7 @@
   <%# replyとパラメータの渡し方が違うが、confirmモーダルを入れる関係で以下のようにする必要がある %>
   <br>
   <div class="lh-half">
-    <p>▼受け入れ自体の場合はこちら</p>
+    <p>▼受け入れ辞退の場合はこちら</p>
   </div>
   <%= form_tag(reject_path, method: :post) do %>
       <%= hidden_field_tag 'id', params[:id] %>
