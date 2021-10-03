@@ -20,8 +20,21 @@ module Google
           gender: 0, # フォームに存在しない情報
           is_family: true
         }
-        user = User.find_or_initialize_by(spread_sheets_timestamp: r[Settings.sheet.timestamp])
+        user = User.with_deleted.find_or_initialize_by(spread_sheets_timestamp: r[Settings.sheet.timestamp])
         user.update(user_query)
+        if !user.deleted_at && r[Settings.sheet.deleted].to_s == '1'
+          if user.destroy
+            Rails.logger.info "ユーザーID：#{user.id}を削除しました。"
+          else
+            Rails.logger.info "ユーザーID：#{user.id}を削除できませんでした。"
+          end
+        elsif user.deleted_at && r[Settings.sheet.deleted].to_s != '1'
+          if user.restore
+            Rails.logger.info "ユーザーID：#{user.id}を復活しました。"
+          else
+            Rails.logger.info "ユーザーID：#{user.id}を復活できませんでした。"
+          end
+        end
 
         # 連絡先情報のパース
         contact_query = {

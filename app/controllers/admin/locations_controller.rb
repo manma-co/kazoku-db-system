@@ -44,7 +44,6 @@ class Admin::LocationsController < Admin::AdminController
   private
 
   def family_params
-    family = Location.all
-    family.includes(user: [:location, :contact, { study_abroad_request: { study_abroad: :email_queue } }])
+    Location.joins(:user).includes(user: [:location, :contact, { study_abroad_request: { study_abroad: :email_queue } }])
   end
 end

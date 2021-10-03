@@ -19,6 +19,7 @@ defaults: &defaults
     phone_number: 4
     latitude: 42
     longitude: 43
+    deleted: 44
   job_style:
     # none: 指定なし
     # both: 共働き
