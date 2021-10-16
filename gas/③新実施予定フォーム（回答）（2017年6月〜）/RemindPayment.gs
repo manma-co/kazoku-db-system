@@ -38,27 +38,33 @@ function remindPayment() {
     REPORT_2: 33,  // AH1 レポート提出確認(2人目)
     REPORT_3: 34,  // AI1 レポート提出確認(3人目)
   }
-
+  
   const mMail = (function() {
     return {
-      subject: function() { return "【manma】家族留学参加費振込みリマインド" },
+      subject: function() { return "【manma】家族留学参加費振込みのお願い" },
       body: function(name) {
         return name + "さま\n\n"
-          + "お世話になっております、manmaマッチング担当です。\n\n"
-          + "この度は家族留学にご応募いただき誠にありがとうございます。\n\n"
-          + "家族留学参加費の振込みが確認できなかったためご連絡させていただきました。\n"
-          + "至急下記の口座までお振込いただくようお願いいたします。\n\n"
-          + "●参加費\n"
-          + "社会人：3000円\n"
-          + "学生：1500円\n\n"
-          + "●振込先\n"
-          + "みずほ銀行 \n"
-          + "鷺宮支店（支店番号：172）\n"
-          + "普通口座\n"
-          + "口座番号：2103218\n"
-          + "口座名義：株式会社manma\n\n"
-          + "どうぞ宜しくお願い致します。\n\n"
-          + "manmaマッチング担当\n"
+        + "お世話になっております、マッチング担当です。\n\n"
+        + "この度は家族留学にご応募いただき誠にありがとうございます。\n\n"
+        + "家族留学参加費の振込みが確認できなかったためご連絡させていただきました。\n"
+        + "至急下記の口座までお振込いただくようお願いいたします。\n\n"
+        + "●通常参加費\n"
+        + "社会人：5000円\n"
+        + "学生：4000円\n\n"
+        + "ペアでの参加の場合はおひとりさま500円割引の値段になります。\n"
+        + "●オンライン参加費\n"
+        + "社会人：3000円\n"
+        + "学生：2000円\n"
+        + "●振込先\n"
+        + "みずほ銀行 \n"
+        + "鷺宮支店（支店番号：172）\n"
+        + "普通口座\n"
+        + "口座番号：2103218\n"
+        + "口座名義：株式会社manma\n\n"
+        + "振込いただくタイミングによっては、既に振り込み済みの方にもこちらのメールが送信される場合がございます。\n"
+        + "振込済みの場合は、お手数ですがその旨ご連絡いただけますと幸いです。\n"
+        + "どうぞ宜しくお願い致します。\n\n"
+        + "manma砂川\n"
       },
       send: function(email, subject, body) {
         if (email === ""){ return }
@@ -67,17 +73,17 @@ function remindPayment() {
       }
     }
   })()
-
+  
   const mDate = (function() {
     return {
       today: function() { return Utilities.formatDate(new Date(), 'JST', 'yyyy/MM/dd') },
-      before: function(targetDate, beforeDays) {
+      before: function(targetDate, beforeDays) { 
         // targetDateの日付からbeforeDays日前を取得する
         return Utilities.formatDate((new Date((targetDate.getTime()) - (60 * 60 * 24 * 1000) * beforeDays)), 'JST', 'yyyy/MM/dd');
       }
     }
   })()
-
+  
   const mSheet = (function() {
     const sheet = SpreadsheetApp.getActive().getSheetByName("フォームの回答");
     const startRow = 2 // First row of data to process
@@ -88,7 +94,7 @@ function remindPayment() {
       values: function() { return dataRange.getValues() }
     }
   })()
-
+  
   var data = mSheet.values()
   for (var i = 0; i < data.length; ++i) {
     var row = data[i];
@@ -100,12 +106,12 @@ function remindPayment() {
     // 家族留学日の取得
     var familyAbroadDateStr = row[MAM_COLUMN.START_DATE]
     if (familyAbroadDateStr == "") { continue }
-
+    
     // 通知を行う日でなければ送信しない
     var familyAbroadDate = new Date(familyAbroadDateStr)
     var isNotify = mDate.before(familyAbroadDate, 5) == mDate.today() || mDate.before(familyAbroadDate, 9) == mDate.today()
     if (!isNotify) { continue }
-
+    
     //1人目
     var paymentStatus1 = row[MAM_COLUMN.CHECK_PAYMENT_1];
     if (paymentStatus1 === "") {

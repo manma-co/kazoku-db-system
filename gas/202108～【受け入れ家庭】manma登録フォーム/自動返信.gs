@@ -2,7 +2,7 @@
  * Created by shino on 2018/04/25.
  * Updated by go.yokoyama on 2021/08/04
  */
- function submitForm20180425(e){
+function submitForm20180425(e){
   var itemResponses = e.response.getItemResponses();
   var message = '';
   var username = '';
