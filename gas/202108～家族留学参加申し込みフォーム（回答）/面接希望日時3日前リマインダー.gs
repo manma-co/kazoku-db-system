@@ -1,13 +1,9 @@
-/**
- * Created by shino on 2018/04/25.
- */
-
 function m() {
   /* timeModule */
   const timeModule = (function () {
     const getCurrentTimeMilliSecond = function (currentDate) {
       // 今日の日付をフォーマットして取得
-      var year = currentDate.getFullYear()
+      var year =面接希望日時3日前リマインダー currentDate.getFullYear()
       var month = currentDate.getMonth()
       var day = currentDate.getDate()
       return new Date(year, month, day).getTime()

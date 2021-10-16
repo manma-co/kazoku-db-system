@@ -1,5 +1,6 @@
-// 自己紹介を催促するscript
-function remindSelfIntroduction() {
+// 自己紹介を催促するscript(家庭向け）
+// 20171116 composed by shinocchi
+function remindSelfIntroductionForFamily() {
   const MAM_COLUMN = {
     TIMESTAMP: 0,  // A1 記入日
     MANMA_member: 1,  // B1 担当
@@ -57,15 +58,27 @@ function remindSelfIntroduction() {
       body: function(name) {
         if (name === '') { return '' }
         return name + "さま\n\n"
-          + "お世話になっております、manmaです。\n\n"
-          + "家庭側とお繋ぎするメールは確認いただけましたでしょうか。\n"
-          + "その際に、自己紹介のお願いを記載させていただいております。\n"
-          + "お手数ですが、実施日も近づいてまいりましたので、ご確認の上、至急ご対応いただけたら幸いです。\n"
-          + "前にメールでコミュニケーションを多く取っておくことで、より家族留学を楽しんでいただけるかと思います。\n"
-          + "行き違いでのご連絡となっておりましたら申し訳ございません。\n"
-          + "何かご不明な点がございましたら info.manma@gmail.com までお気軽にお問い合わせください。\n\n"
-          + "何卒よろしくお願いいたします。\n\n"
-          + "manma";
+          + "こんにちは。\n"
+          + "いつも大変お世話になっております。\n"
+          + "家族留学マッチング担当の砂川と申します。\n"
+          + "\n"
+          + "この度は家族留学を受け入れてくださり誠にありがとうございます。\n"
+          + "\n"
+          + "本日は、自己紹介メールの送信のお願いをさせていただきたくご連絡させていただきました。\n"
+          + "一週間ほど前に送らせていただいた、\n"
+          + "【manma】家族留学当日のお知らせ\n"
+          + "という題のメールをご確認いただけましたでしょうか。\n"
+          + "\n"
+          + "お忙しいところ大変恐縮ですが\n"
+          + "ご確認いただき次第、そちらの文面にそって自己紹介メールを送っていただけますでしょうか。\n"
+          + "その際に、接続方法（未定の場合のみ）の記載もよろしくお願い致します。\n"
+          + "\n"
+          + "また、メール送信をこちらの方でも確認したいため、「全員に返信」の形でメールを送っていただきますようお願い致します。\n"
+          + "\n"
+          + "\n"
+          + "どうぞ宜しくお願い致します。\n"
+          + "\n"
+          + "manma砂川"
       },
       send: function(email, subject, body) {
         if (email === '' || body === ''){ return }
@@ -102,57 +115,38 @@ function remindSelfIntroduction() {
   for (var i = 0; i < data.length; ++i) {
     var row = data[i];
 
-    // 返信確認ステータスが空 = 家族留学が実施されていない ので送信しない
     var notification_date = row[MAM_COLUMN.IS_CONFIRM_EMAIL_SENT];
     if (notification_date === "") {
+      // Logger.log("家族ステータスが空 = 家族留学が実施されていないので送信しない
       continue
     }
 
-    // 家族留学日の取得
     var sfamily_abroad_date = row[MAM_COLUMN.START_DATE]
     if (sfamily_abroad_date == "") {
+      // Logger.log（”家族留学実施日が空のため送信しない")
       continue
     }
+
     var fad = new Date(sfamily_abroad_date)
-
-    // 通知を行う日であるか？
-    var is_notify = mDate.before(fad, 3) == mDate.today() || mDate.before(fad, 5) == mDate.today() || mDate.before(fad, 7) == mDate.today()
-    //Logger.log("家族留学実施日: " + fad)
-    //Logger.log("検証: " + before_args_day(fad, 5))
-    //Logger.log("今日:" + today)
+    // Logger.log("家族留学実施日: " + fad)
+    // Logger.log("検証: " + mDate.before(fad, 2))
+    // Logger.log("今日:" + mDate.today())
+    var is_notify = mDate.before(fad, 2) == mDate.today()
     if (!is_notify) {
+      // Logger.log("通知を行う日以外のため送信しない")
       continue
     }
 
-    Logger.log(row[MAM_COLUMN.STUDENT_EMAIL_1])
-    //1人目
-    var self_intro_1 = row[MAM_COLUMN.SELF_INTRO_1];
-    if (self_intro_1 === "") {
-      mMail.send(
-        row[MAM_COLUMN.STUDENT_EMAIL_1],
-        mMail.subject(),
-        mMail.body(row[MAM_COLUMN.STUDENT_NAME_1])
-      )
+    var self_intro_fam = row[MAM_COLUMN.SELF_INTRO_FAM];
+    if (self_intro_fam !== "") {
+      // Logger.log("自己紹介メール確認済みのため送信しない")
+      continue
     }
 
-    // 2人目
-    var self_intro_2 = row[MAM_COLUMN.SELF_INTRO_2];
-    if (self_intro_2 === "") {
-      mMail.send(
-        row[MAM_COLUMN.STUDENT_EMAIL_2],
-        mMail.subject(),
-        mMail.body(row[MAM_COLUMN.STUDENT_NAME_2])
-      )
-    }
-
-    // 3人目
-    var self_intro_3 = row[MAM_COLUMN.SELF_INTRO_3];
-    if (self_intro_3 === "") {
-      mMail.send(
-        row[MAM_COLUMN.STUDENT_EMAIL_3],
-        mMail.subject(),
-        mMail.body(row[MAM_COLUMN.STUDENT_NAME_3])
-      )
-    }
+    mMail.send(
+      row[MAM_COLUMN.FAMILY_EMAIL],
+      mMail.subject(),
+      mMail.body(row[MAM_COLUMN.FAMILY_NAME])
+    )
   }
 }

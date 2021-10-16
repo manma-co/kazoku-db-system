@@ -22,12 +22,12 @@ function postToSlack(options) {
   /**
    * 指定されたチャネルにメッセージを送信する
    */
-  const slackModule = (function () {
-    const webhookurl = "";
+  const slackModule = (function() {
+    const webhookurl = "https://hooks.slack.com/services/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";
     const botName = "参加応募通知" // 通知するロボットの名前
     const botIcon = ":manma:" // 通知するロボットのアイコン
     return {
-      exec: function (options) {
+      exec: function(options) {
         var jsonData = {
           "channel": options.channel || "家族留学レポート",
           "username": options.botName || botName,
@@ -36,8 +36,8 @@ function postToSlack(options) {
         };
         var payload = JSON.stringify(jsonData);
         var config = {
-          "method": "post",
-          "payload": payload
+          "method" : "post",
+          "payload" : payload
         };
         UrlFetchApp.fetch(webhookurl, config);
       }

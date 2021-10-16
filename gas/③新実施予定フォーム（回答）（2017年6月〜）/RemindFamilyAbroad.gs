@@ -60,6 +60,8 @@ function m() {
        * @return {Boolean} リマインドするかどうか
        */
       isRemind: function (currentDate, remindEndDate, beforeDays) {
+        Logger.log(currentDate)
+        Logger.log(remindEndDate)
         var remindStartDate = timeModule.getArgsDaysLater(remindEndDate, -beforeDays)
         return remindStartDate.getTime() <= currentDate.getTime() && currentDate.getTime() <= remindEndDate.getTime()
       },
@@ -122,33 +124,26 @@ function helper() {
         return studentEmail
       },
       getFamilyAbroadStartDateTime: function (row, column) {
-        if (typeof row[column.START_TIME] === 'string') {
-          return new Date(row[column.START_DATE] + ' ' + row[column.START_TIME])
-        } else {
-          const startTime = m().timeModule.formatDate('hh:mm', new Date(row[column.START_TIME]))
-          const startDate = m().timeModule.formatDate('YYYY/MM/DD', new Date(row[column.START_DATE]))
-          return new Date(startDate + ' ' + startTime)
-        }
+        const startTime = m().timeModule.formatDate('hh:mm', new Date(row[column.START_TIME]))
+        const startDate = m().timeModule.formatDate('YYYY/MM/DD', new Date(row[column.START_DATE]))
+        return new Date(startDate + ' ' + startTime)
       },
       getFamilyAbroadFinishDateTime: function (row, column) {
-        if (typeof row[column.FINISH_TIME] === 'string') {
-          return new Date(row[column.START_DATE] + ' ' + row[column.FINISH_TIME])
-        } else {
-          const finishTime = m().timeModule.formatDate('hh:mm', new Date(row[column.FINISH_TIME]))
-          const startDate = m().timeModule.formatDate('YYYY/MM/DD', new Date(row[column.START_DATE]))
-          return new Date(startDate + ' ' + startTime)
-        }
+        const finishTime = m().timeModule.formatDate('hh:mm', new Date(row[column.FINISH_TIME]))
+        const startDate = m().timeModule.formatDate('YYYY/MM/DD', new Date(row[column.START_DATE]))
+        return new Date(startDate + ' ' + finishTime)
       },
     }
   })()
   return {
-    common,
+    common: common,
   }
 }
 
 // 家族留学の詳細を学生と受け入れ家庭に連絡するscript
 // 10日前に家族留学のリマインドメールを送信する
-function remindFamilyAbroad(options) {
+function remindFamilyAbroad(opt) {
+  const options = opt || {}
   // フォーム回答の場合を実行
   const COLUMN = {
     TIMESTAMP: 0,  // A1 記入日
@@ -232,15 +227,15 @@ function remindFamilyAbroad(options) {
       continue
     }
 
-    var familyAbroadStartDateTime = new Date(helper().common.getFamilyAbroadStartDateTime(row, MAM_COLUMN))
+    var familyAbroadStartDateTime = helper().common.getFamilyAbroadStartDateTime(row, MAM_COLUMN)
     if (!m().utilModule.isRemind(currentDate, familyAbroadStartDateTime, 10)) {
       logger.log("リマインド日ではないため通知しない")
       continue
     }
 
     // メール文面用整形
-    var construction = row[MAM_COLUMN.FAMILY_CONSTRUCTION]                // F - 受け入れ家庭の家族構成
-    var meetingLocation = row[MAM_COLUMN.MTG_PLACE]                      // J - 集合場所
+    var construction = row[MAM_COLUMN.FAMILY_CONSTRUCTION];                // F - 受け入れ家庭の家族構成
+    var meetingLocation = row[MAM_COLUMN.MTG_PLACE];                      // J - 集合場所
     var abroadDate = m().timeModule.formatDate(
       'YYYY/MM/DD',
       familyAbroadStartDateTime
@@ -251,7 +246,7 @@ function remindFamilyAbroad(options) {
     )
     var finishTime = m().timeModule.formatDate(
       'hh:mm',
-      new Date(helper().common.getFamilyAbroadFinishDateTime(row, MAM_COLUMN))
+      helper().common.getFamilyAbroadFinishDateTime(row, MAM_COLUMN)
     )
 
     var mail = family_mail + "," + studentEmail + "," + ""
@@ -263,60 +258,57 @@ function remindFamilyAbroad(options) {
       + "お世話になっております。"
       + "家族留学実施日が近づいてまいりましたので、\n\n"
       + "manmaより、当日についてご連絡いたします。\n\n"
+      + "当日、よりキャリアや子育てについてのお話の時間を確保するため、\n"
+      + "事前にメールを通して、自己紹介等などのコミュニケーションを図っていただければと思います。\n\n"
+      + "以下、ご確認の上、本メールに【全員返信】にて、以下記載の事項を送付お願いします。\n\n"
       + "◆家族留学実施概要◆\n"
       + "実施日：" + abroadDate + "\n"
       + "集合時間：" + startTime + "\n"
-      + "集合場所：" + meetingLocation + "\n"
+      + "集合場所or接続方法：" + meetingLocation + "\n"
       + "終了予定時間：" + finishTime + "\n"
       + "参加留学生：" + studentName + "\n"
       // TODO: manmaシステムから家族構成情報を送信していない。確認事項。
       // + "ご家族構成：" + construction + "\n"
       + "緊急連絡先：\n"
       + "info.manma@gmail.com（manmaメール）\n\n"
-      + "またお手数ですが、下記の項目について\n"
-      + "こちらのメールに【全員に返信】していただく形で\n"
-      + "みなさま簡単に自己紹介と、緊急連絡先をお伝えください。（＊③、④は参加者のみ\n\n"
-      + "①自己紹介 \n"
-      + "→現在の所属、将来に対するイメージ（職種やキャリア、結婚、働き方など）\n"
+      + "◆事前送付事項◆\n"
+      + "＜受け入れ家庭/留学生共通＞\n"
+      + "①自己紹介\n"
+      + "→年齢、現在の所属、居住地、未婚/既婚、お子様がいる場合年齢(学年)\n"
       + "②緊急連絡先（携帯番号）\n"
-      + "③家族留学の目標\n"
+      + "③(オンライン参加者のみ)接続方法について\n"
+      + "当日つなぐことができるアカウント等を事前にお伝えください。\n"
+      + "接続方法を変更希望の場合も本メールでやりとりをお願いします。\n"
+      + "※zoomの場合は、参加者がURLを作成し、実施日までにURLをお貼りください。\n"
+      + "https://00m.in/TpI5T（作成方法）\n\n"
+      + "＜留学生のみ＞\n"
+      + " ④家族留学の目標\n"
       + "（例：子供への接し方を学ぶこと、自分の将来の生活のヒントを得ること、◯◯さまご一家と仲良くなること など）\n"
-      + "④聞いてみたいこと3つ\n"
+      + "⑤聞いてみたいこと3つ\n"
       + "ご自身のキャリアプランへの不安をもとにお考えください\n"
-      + "（例：結婚・出産のタイミング、両立のコツ、育児で大切にしていること）\n"
-      + "体験してみたいことがございましたら、ぜひ積極的にお伝えください！\n"
-      + "また、ご家庭のみなさまは、参加者からの質問にメールにて事前にお答えいただけますと幸いです。\n"
-      + "その際に『受入れの際に学生に留意してほしい点/子育てで大事にされており事前に知ってほしいこと』等ございましたらご記載ください。\n"
-      + "例：食物アレルギーがあるため特定の食材は食べさせないようにしてほしい/スマートフォン等に触れさせないようにしたいなど\n\n"
+      + "（例：結婚・出産のタイミング、両立のコツ、育児で大切にしていること）\n\n"
+      + "＜受け入れ家庭のみ＞\n"
+      + "⑥写真掲載について\n"
+      + "留学生には家族留学後に学び・感想の提出をお願いしております。また、その他SNSにて写真と共に感想を発信していただきたいと思っております。\n"
+      + "ご家族の写真掲載の可否について、以下よりご選択の上、留学生にご希望をお知らせください。\n"
+      + "a.写真掲載可　b.お子さんの顔がはっきり映らなければ可　c.写真掲載不可\n\n"
       + "＊その他注意事項＊\n"
-      + "・当日合流された場合は、こちらのメールに返信する形でご一報くださいませ。\n"
-      + "特に解散時には、学生のみなさんより当日の写真を添付してmanmaにご連絡していただきますようお願いいたします。\n"
-      + "manmaにメールを送信したことを確認したのち、帰宅されてください。\n"
-      + "・学生のみなさまには実施日翌日までに、ご家庭へのお礼・感想メールをお送りいただくようにお願いしております。\n"
-      + "下記の項目を含め、できるだけ詳細にご記入ください。\n\n"
-      + "---------------------------記入事項-----------------------------\n\n"
-      + "〈家族留学を通してきづいたことや学び（３つほど）〉\n"
-      + "〈家族留学を通じて変わったこと、変わらなかったことなど感想〉\n"
-      + "------------------------------------------------------------------------\n\n"
-      +
-      + "・家族留学後に簡単なアンケートへのご協力をお願いしております。\n"
-      + "実施日当日の夜に再度メールでご連絡いたしますので、翌日までにご回答いただけますと幸いです。\n"
-      + "▷▷▷受け入れ家庭の方\n"
-      + "https://docs.google.com/forms/d/e/1FAIpQLScDKSkR-A5T2FR9O6t19zMMoUES2RkfYlNwOt3e7UCT6DELtw/viewform\n"
-      + "\n"
-      + " ▷▷▷参加者の方\n"
-      + " https://docs.google.com/forms/d/e/1FAIpQLSfnCKgCFHtdUKAxXC_zEi_qn1WftKkLVn0eTPm4LrisAkkrrQ/viewform\n"
-      + "・家族留学のやりとりには、必ず【info.manma@gmail.com】を\n"
-      + "ccに入れていただきますようお願いいたします。\n\n"
-      + "当日の集合場所や時間、スケジュールに関するご相談なども、\n"
-      + "ぜひこちらのメールをご活用ください。\n\n"
-      + "当日、よりキャリアや子育てについてのお話をする時間を確保するため、\n"
-      + "メールを通して自己紹介等などのコミュニケーションを図っていただければと思います。\n\n"
-      + "ご不明な点などございましたら、お気軽にお問い合わせください。\n\n"
+      + "①当日合流時には、留学生よりmanma宛てにメールをお願いします。\n"
+      + "②万一、体調不良などで参加が難しくなりましたら、速やかに受け入れ家庭とmanmaにご連絡ください。\n"
+      + "③家族留学当日に緊急連絡事項発生時には、ご家庭・留学生間でまず直接ご連絡をお願いします。\n"
+      + "※上記を含めた家族留学のやりとりには、必ず【info.manma@gmail.com】をccに入れていただきますようお願いいたします。\n\n"
+      + "＊家族留学当日の過ごし方ヒント＊\n"
+      + "以下の資料は、家族留学当日をサポートするためのものです。参加時にご活用ください。\n"
+      + "https://drive.google.com/file/d/1FMI7_DaxnGVKdgnYtlCoy-D6d__7wvTF/view?usp=sharing\n\n"
+      + "また、manmaでは受け入れ家庭・参加者限定の「家族留学コミュニティ」を運営しています。\n"
+      + "過去の参加・受け入れの様子を知るのに是非ご活用ください！参加後の感想投稿も大歓迎です。\n"
+      + "下記のURLより参加申請をお願いいたします。\n"
+      + "https://www.facebook.com/groups/289936181853224/\n"
+      + "以上、ご不明な点などございましたら、お気軽にお問い合わせください。\n\n"
       + "当日の家族留学が素敵な時間になりますように\n"
       + "サポートさせていただけたらと思います。\n\n"
       + "どうぞ宜しくお願い致します！\n\n"
-      + "manma"
+      + "manma";
 
     logger.log('メールが送信される↓')
     logger.log(mail)
@@ -330,9 +322,4 @@ function remindFamilyAbroad(options) {
     // Make sure the cell is updated right away in case the script is interrupted
     spreadSheetApp.flush();
   }
-}
-
-module.exports = {
-  helper,
-  remindFamilyAbroad,
 }
