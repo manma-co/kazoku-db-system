@@ -11,4 +11,4 @@
 # Rails.application.config.middleware.use OmniAuth::Builder do
 #   provider :google_oauth2, Rails.application.secrets.google_client_id, Rails.application.secrets.google_client_secret
 # end
-OmniAuth.config.full_host = Rails.env.production? ? 'http://manma-system.herokuapp.com' : 'http://localhost:3000'
+OmniAuth.config.full_host = Rails.env.production? ? 'https://manma-system.herokuapp.com' : 'http://localhost:3000'
