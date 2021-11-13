@@ -149,7 +149,7 @@ class MailerBody
     body += "実施日時: #{event.hold_date.strftime('%H時%M分')}\n"
     body += "実施開始時間: #{event.start_time.strftime('%H時%M分')}\n"
     body += "実施終了時間: #{event.end_time.strftime('%H時%M分')}\n"
-    body += "集合場所: #{event.meeting_place}\n"
+    body += "集合場所or接続方法: #{event.meeting_place}\n"
     body += "備考: #{event.information}\n"
     body += <<~EOS
       ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝

@@ -40,7 +40,7 @@ RSpec.describe MailerBody do
           実施日時: 00時00分
           実施開始時間: 10時15分
           実施終了時間: 12時15分
-          集合場所: 東京駅
+          集合場所or接続方法: 東京駅
           備考: information text
           ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
 
@@ -91,7 +91,7 @@ RSpec.describe MailerBody do
           実施日時: 00時00分
           実施開始時間: 10時15分
           実施終了時間: 12時15分
-          集合場所: 東京駅
+          集合場所or接続方法: 東京駅
           備考: information text
           ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
 
