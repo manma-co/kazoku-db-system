@@ -10,8 +10,7 @@ orbs:
 jobs:
   build:
     docker:
-       - image: circleci/ruby:2.7.6-node-browsers
-
+       - image: cimg/ruby:2.7-browsers
       # Specify service dependencies here if necessary
       # CircleCI maintains a library of pre-built images
       # documented at https://circleci.com/docs/2.0/circleci-images/
