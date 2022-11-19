@@ -221,7 +221,8 @@ GEM
       ast (~> 2.4.1)
     pg (0.21.0)
     public_suffix (4.0.6)
-    puma (3.12.6)
+    puma (4.3.12)
+      nio4r (~> 2.0)
     racc (1.5.2)
     rack (2.2.3)
     rack-protection (2.1.0)
@@ -421,7 +422,7 @@ DEPENDENCIES
   omniauth-rails_csrf_protection
   paranoia
   pg (~> 0.18)
-  puma (~> 3.12)
+  puma (~> 4.3)
   rails (~> 5.0)
   rails-assets-sweetalert2 (~> 5.1.1)!
   rails-controller-testing
