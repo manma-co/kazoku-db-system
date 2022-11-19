@@ -7,7 +7,7 @@ require:
 Rails:
   Enabled: true
 AllCops:
-  TargetRubyVersion: 2.5.5
+  TargetRubyVersion: 2.7.6
   Exclude:
     - 'db/schema.rb'
     - 'vendor/**/*'
